@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace HousingRepairsOnlineApi.Helpers
 {
@@ -8,7 +8,8 @@ namespace HousingRepairsOnlineApi.Helpers
             new()
             {
                 {
-                    "kitchen", new Dictionary<string, Dictionary<string, string>>
+                    "kitchen",
+                    new Dictionary<string, Dictionary<string, string>>
                     {
                         {
                             "cupboards", new Dictionary<string, string>
@@ -75,7 +76,8 @@ namespace HousingRepairsOnlineApi.Helpers
                     }
                 },
                 {
-                    "bathroom", new Dictionary<string, Dictionary<string, string>>
+                    "bathroom",
+                    new Dictionary<string, Dictionary<string, string>>
                     {
                         {
                             "bath", new Dictionary<string, string>
