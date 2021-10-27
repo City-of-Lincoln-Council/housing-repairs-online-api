@@ -24,7 +24,7 @@ namespace HousingRepairsOnlineApi.Tests.HelpersTests
         [InlineData("kitchen", "wallsFloorsCeiling", "plasteringCeiling", "N413305")]
         [InlineData("kitchen", "wallsFloorsCeiling", "plasteringWalls", "N431023")]
         [InlineData("kitchen", "window", "stuckShut", "N318125")]
-        [InlineData("kitchen", "window", "condensated", "N318151")]
+        [InlineData("kitchen", "window", "condensation", "N318151")]
         [InlineData("kitchen", "door", "backDoorWooden", "N324123")]
         [InlineData("kitchen", "door", "backDoorUPVC", "N325117")]
         [InlineData("kitchen", "door", "backFrenchDoors", "N325117")]
