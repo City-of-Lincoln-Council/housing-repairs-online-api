@@ -27,4 +27,8 @@
     <ProjectReference Include="..\HousingRepairsOnlineApi\HousingRepairsOnlineApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="HelpersTests\ServiceCollectionExtensionsTestFiles\**" CopyToOutputDirectory="PreserveNewest" LinkBase="HelpersTests\ServiceCollectionExtensionsTestFiles\" />
+  </ItemGroup>
+
 </Project>

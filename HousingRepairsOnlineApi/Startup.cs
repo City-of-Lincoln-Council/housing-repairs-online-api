@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using HousingRepairsOnlineApi.Gateways;
+using HousingRepairsOnlineApi.Helpers;
 using HousingRepairsOnlineApi.UseCases;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,7 @@ namespace HousingRepairsOnlineApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSoREngine("SoRConfig.json");
 
             services.AddTransient<IRetrieveAddressesUseCase, RetrieveAddressesUseCase>();
             var addressesApiUrl = Environment.GetEnvironmentVariable("ADDRESSES_API_URL");

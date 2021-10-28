@@ -2,7 +2,7 @@
 
 namespace HousingRepairsOnlineApi.Helpers
 {
-    public class SoREngine
+    public class SoREngine : ISoREngine
     {
         private readonly IDictionary<string, IDictionary<string, IDictionary<string, string>>> soRMapping;
 

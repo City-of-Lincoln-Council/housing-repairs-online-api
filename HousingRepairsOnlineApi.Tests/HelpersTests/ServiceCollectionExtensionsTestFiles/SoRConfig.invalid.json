@@ -1,0 +1,11 @@
+{
+  "kitchen": {
+    "cupboards": {
+      "doorHangingOff": "SoR Code 1"
+  },
+  "bathroom": {
+    "bath": {
+      "taps": "SoR Code 1"
+    }
+  }
+}
