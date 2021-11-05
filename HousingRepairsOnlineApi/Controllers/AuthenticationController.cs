@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using HousingRepairsOnlineApi.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousingRepairsOnlineApi.Controllers
@@ -7,18 +8,18 @@ namespace HousingRepairsOnlineApi.Controllers
     [Route("[controller]")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly string identifier;
+        private readonly IIdentifierValidator identifierValidator;
 
-        public AuthenticationController(string identifier)
+        public AuthenticationController(IIdentifierValidator identifierValidator)
         {
-            this.identifier = identifier;
+            this.identifierValidator = identifierValidator;
         }
 
         [HttpPost]
         public async Task<IActionResult> Authenticate(string identifier)
         {
             IActionResult result;
-            if (string.IsNullOrWhiteSpace(identifier) || this.identifier != identifier)
+            if (!identifierValidator.Validate(identifier))
             {
                 result = Unauthorized();
             }

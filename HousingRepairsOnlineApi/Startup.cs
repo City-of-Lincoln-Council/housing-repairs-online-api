@@ -14,6 +14,8 @@ namespace HousingRepairsOnlineApi
 {
     public class Startup
     {
+        private const string AuthenticationIdentifier = "AUTHENTICATION_IDENTIFIER";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,6 +34,11 @@ namespace HousingRepairsOnlineApi
             services.AddHttpClient();
             services.AddTransient<IAddressGateway, AddressGateway>(s => new AddressGateway(
                 s.GetService<HttpClient>(), addressesApiUrl, addressApiKey));
+
+            var jwtSecret = GetEnvironmentVariable(AuthenticationIdentifier);
+            services.AddTransient<IIdentifierValidator, IdentifierValidator>(_ =>
+                new IdentifierValidator(jwtSecret));
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -59,6 +66,12 @@ namespace HousingRepairsOnlineApi
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static string GetEnvironmentVariable(string name)
+        {
+            return Environment.GetEnvironmentVariable(name) ??
+                   throw new InvalidOperationException($"Incorrect configuration: '{name}' environment variable must be set");
         }
     }
 }
