@@ -68,7 +68,7 @@ namespace HousingRepairsOnlineApi
                     options.IdentityFactory = dic => new ClaimsIdentity(dic.Select(p => new Claim(p.Key, p.Value)), authenticationScheme);
                 });
 
-            services.AddSingleton<IAlgorithmFactory>(service => new DelegateAlgorithmFactory(()=>new HMACSHA256Algorithm()));
+            services.AddSingleton<IAlgorithmFactory>(service => new DelegateAlgorithmFactory(() => new HMACSHA256Algorithm()));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -96,7 +96,7 @@ namespace HousingRepairsOnlineApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers().RequireAuthorization();;
+                endpoints.MapControllers().RequireAuthorization();
             });
         }
 

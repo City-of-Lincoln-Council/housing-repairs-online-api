@@ -30,7 +30,7 @@ namespace HousingRepairsOnlineApi.Controllers
             else
             {
                 var token = jwtTokenHelper.Generate();
-                result =  Ok(token);
+                result = Ok(token);
             }
 
             return await Task.FromResult(result);
