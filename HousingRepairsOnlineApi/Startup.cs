@@ -16,6 +16,9 @@ namespace HousingRepairsOnlineApi
     {
         private const string AuthenticationIdentifier = "AUTHENTICATION_IDENTIFIER";
 
+        private const string HousingRepairsOnline = "Housing Repairs Online";
+        private const string HousingRepairsOnlineApi = "Housing Repairs Online Api";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,9 +38,13 @@ namespace HousingRepairsOnlineApi
             services.AddTransient<IAddressGateway, AddressGateway>(s => new AddressGateway(
                 s.GetService<HttpClient>(), addressesApiUrl, addressApiKey));
 
-            var jwtSecret = GetEnvironmentVariable(AuthenticationIdentifier);
+            var authenticationIdentifier = GetEnvironmentVariable(AuthenticationIdentifier);
             services.AddTransient<IIdentifierValidator, IdentifierValidator>(_ =>
-                new IdentifierValidator(jwtSecret));
+                new IdentifierValidator(authenticationIdentifier));
+
+            var jwtSecret = GetEnvironmentVariable("JWT_SECRET");
+            services.AddTransient<IJwtTokenHelper, JwtTokenHelper>(_ =>
+                new JwtTokenHelper(jwtSecret, HousingRepairsOnlineApi, HousingRepairsOnline));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

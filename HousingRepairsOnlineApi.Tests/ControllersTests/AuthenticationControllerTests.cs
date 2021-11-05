@@ -12,11 +12,13 @@ namespace HousingRepairsOnlineApi.Tests.ControllersTests
     {
         private AuthenticationController systemUnderTest;
         private Mock<IIdentifierValidator> identifierValidatorMock;
+        private Mock<IJwtTokenHelper> jwtTokenHelperMock;
 
         public AuthenticationControllerTests()
         {
             identifierValidatorMock = new Mock<IIdentifierValidator>();
-            systemUnderTest = new AuthenticationController(identifierValidatorMock.Object);
+            jwtTokenHelperMock = new Mock<IJwtTokenHelper>();
+            systemUnderTest = new AuthenticationController(identifierValidatorMock.Object, jwtTokenHelperMock.Object);
         }
 
         [Theory]
@@ -69,6 +71,7 @@ namespace HousingRepairsOnlineApi.Tests.ControllersTests
             // Arrange
             const string identifier = "M3";
             identifierValidatorMock.Setup(x => x.Validate(identifier)).Returns(true);
+            jwtTokenHelperMock.Setup(x => x.Generate()).Returns("a token");
 
             // Act
             var result = await systemUnderTest.Authenticate(identifier);

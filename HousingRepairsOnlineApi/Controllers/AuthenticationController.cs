@@ -9,10 +9,12 @@ namespace HousingRepairsOnlineApi.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IIdentifierValidator identifierValidator;
+        private readonly IJwtTokenHelper jwtTokenHelper;
 
-        public AuthenticationController(IIdentifierValidator identifierValidator)
+        public AuthenticationController(IIdentifierValidator identifierValidator, IJwtTokenHelper jwtTokenHelper)
         {
             this.identifierValidator = identifierValidator;
+            this.jwtTokenHelper = jwtTokenHelper;
         }
 
         [HttpPost]
@@ -25,7 +27,8 @@ namespace HousingRepairsOnlineApi.Controllers
             }
             else
             {
-                result =  Ok("token");
+                var token = jwtTokenHelper.Generate();
+                result =  Ok(token);
             }
 
             return await Task.FromResult(result);
