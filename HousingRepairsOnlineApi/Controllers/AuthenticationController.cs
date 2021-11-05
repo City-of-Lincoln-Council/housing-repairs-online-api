@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using HousingRepairsOnlineApi.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousingRepairsOnlineApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [AllowAnonymous]
     public class AuthenticationController : ControllerBase
     {
         private readonly IIdentifierValidator identifierValidator;

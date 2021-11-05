@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Helpers;
 using HousingRepairsOnlineApi.UseCases;
+using JWT;
+using JWT.Algorithms;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +50,26 @@ namespace HousingRepairsOnlineApi
             services.AddTransient<IJwtTokenHelper, JwtTokenHelper>(_ =>
                 new JwtTokenHelper(jwtSecret, HousingRepairsOnlineApi, HousingRepairsOnline));
 
+            var authenticationScheme = JwtAuthenticationDefaults.AuthenticationScheme;
+
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = authenticationScheme;
+                    options.DefaultChallengeScheme = authenticationScheme;
+                })
+                .AddJwt(authenticationScheme, options =>
+                {
+                    // secrets, required only for symmetric algorithms
+                    options.Keys = new[] { jwtSecret };
+
+                    // force JwtDecoder to throw exception if JWT signature is invalid
+                    options.VerifySignature = true;
+
+                    options.IdentityFactory = dic => new ClaimsIdentity(dic.Select(p => new Claim(p.Key, p.Value)), authenticationScheme);
+                });
+
+            services.AddSingleton<IAlgorithmFactory>(service => new DelegateAlgorithmFactory(()=>new HMACSHA256Algorithm()));
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -67,11 +91,12 @@ namespace HousingRepairsOnlineApi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers().RequireAuthorization();;
             });
         }
 
