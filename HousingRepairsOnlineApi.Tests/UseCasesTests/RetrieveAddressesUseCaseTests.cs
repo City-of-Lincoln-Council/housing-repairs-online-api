@@ -81,5 +81,20 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             var data = sytemUndertest.Execute(postcode: TestPostcode);
             addressGatewayMock.Verify(x => x.Search(TestPostcode), Times.Never);
         }
+
+        [Fact]
+        public async void GivenAnAddressWithoutAnAddressLine_WhenExecuteIsCalled_ThenAnExceptionIsNotThrown()
+        {
+            // Arrange
+            const string postCode = "LN1 3PQ";
+            addressGatewayMock.Setup(x => x.Search(postCode))
+                .ReturnsAsync(new List<PropertyAddress> { new PropertyAddress { PostalCode = postCode } });
+
+            // Act
+            Func<Task> act = async () => await sytemUndertest.Execute(postCode);
+
+            // Assert
+            await act.Should().NotThrowAsync();
+        }
     }
 }

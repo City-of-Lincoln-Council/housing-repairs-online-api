@@ -29,7 +29,7 @@ namespace HousingRepairsOnlineApi.UseCases
                 result.AddRange(addresses.Select(address => new Address()
                 {
                     Uprn = "",
-                    AddressLine1 = address.AddressLine.First(),
+                    AddressLine1 = address.AddressLine?.First(),
                     AddressLine2 = address.CityName,
                     PostCode = address.PostalCode
                 }
