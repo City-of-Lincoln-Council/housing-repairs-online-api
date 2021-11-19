@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HousingRepairsOnlineApi.Domain;
+using HACT.Dtos;
 using HousingRepairsOnlineApi.Gateways;
+using Address = HousingRepairsOnlineApi.Domain.Address;
 
 namespace HousingRepairsOnlineApi.UseCases
 {
@@ -26,16 +27,27 @@ namespace HousingRepairsOnlineApi.UseCases
             if (!string.IsNullOrEmpty(postcode))
             {
                 var addresses = await addressGateway.Search(postcode);
-                result.AddRange(addresses.Select(address => new Address()
+                result.AddRange(addresses.Select(ConvertToHactPropertyAddress));
+            }
+
+            return result;
+
+            Address ConvertToHactPropertyAddress(PropertyAddress address)
+            {
+                var addressLine1Parts = new[] { address.BuildingNumber, address.AddressLine?.First() }
+                    .Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+                var addressLine1 = addressLine1Parts.Any()
+                    ? addressLine1Parts.Aggregate((s1, s2) => $"{s1} {s2}")
+                    : null;
+
+                return new Address
                 {
                     Uprn = "",
-                    AddressLine1 = address.AddressLine?.First(),
+                    AddressLine1 = addressLine1,
                     AddressLine2 = address.CityName,
                     PostCode = address.PostalCode
-                }
-                ));
+                };
             }
-            return result;
         }
     }
 }

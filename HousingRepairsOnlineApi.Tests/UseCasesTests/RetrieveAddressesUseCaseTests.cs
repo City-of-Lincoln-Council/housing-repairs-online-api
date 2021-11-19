@@ -67,6 +67,31 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         }
 
         [Fact]
+        public async Task GivenAnAddress_WhenExecuteIsCalled_ThenResultAddressLine1HasBuildingNumberAndAddressLine()
+        {
+            // Arrange
+            const string TestPostcode = "M3 0W";
+            var testAddress = new PropertyAddress()
+            {
+                BuildingNumber = "123",
+                AddressLine = new Collection<string>() { "cute street" },
+                PostalCode = TestPostcode,
+                CityName = "New Meow City"
+            };
+            addressGatewayMock.Setup(x => x.Search(It.IsAny<string>()))
+                .ReturnsAsync(new List<PropertyAddress>() { testAddress });
+
+            // Act
+            var data = await sytemUndertest.Execute(postcode: TestPostcode);
+
+            // Assert
+            var actual = data.Single();
+            Assert.Equal($"123 {testAddress.AddressLine.First()}", actual.AddressLine1);
+            Assert.Equal(testAddress.CityName, actual.AddressLine2);
+            Assert.Equal(TestPostcode, actual.PostCode);
+        }
+
+        [Fact]
         public async void ThrowsNullExceptionWhenPostcodeIsNull()
         {
             const string TestPostcode = null;
@@ -88,13 +113,65 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             // Arrange
             const string postCode = "LN1 3PQ";
             addressGatewayMock.Setup(x => x.Search(postCode))
-                .ReturnsAsync(new List<PropertyAddress> { new PropertyAddress { PostalCode = postCode } });
+                .ReturnsAsync(new List<PropertyAddress> { new() { BuildingNumber = "1", PostalCode = postCode } });
 
             // Act
             Func<Task> act = async () => await sytemUndertest.Execute(postCode);
 
             // Assert
             await act.Should().NotThrowAsync();
+        }
+
+        [Fact]
+        public async void GivenAnAddressWithoutAnAddressLine_WhenExecuteIsCalled_ThenAnExpectedAddressIsCreated()
+        {
+            // Arrange
+            const string postCode = "LN1 3PQ";
+            var buildingNumber = "1";
+            addressGatewayMock.Setup(x => x.Search(postCode))
+                .ReturnsAsync(new List<PropertyAddress> { new() { BuildingNumber = buildingNumber, PostalCode = postCode } });
+
+            // Act
+            var actual = await sytemUndertest.Execute(postCode);
+
+            // Assert
+            var actualAddress = actual.First();
+            Assert.Equal(postCode, actualAddress.PostCode);
+            Assert.Equal(buildingNumber, actualAddress.AddressLine1);
+            Assert.Null(actualAddress.AddressLine2);
+        }
+
+        [Fact]
+        public async void GivenAnAddressWithoutAnAddressLineAndBuildingNumber_WhenExecuteIsCalled_ThenAnExceptionIsNotThrown()
+        {
+            // Arrange
+            const string postCode = "LN1 3PQ";
+            addressGatewayMock.Setup(x => x.Search(postCode))
+                .ReturnsAsync(new List<PropertyAddress> { new() { PostalCode = postCode } });
+
+            // Act
+            Func<Task> act = async () => await sytemUndertest.Execute(postCode);
+
+            // Assert
+            await act.Should().NotThrowAsync();
+        }
+
+        [Fact]
+        public async void GivenAnAddressWithoutAnAddressLineAndBuildingNumber_WhenExecuteIsCalled_ThenAnExpectedAddressIsCreated()
+        {
+            // Arrange
+            const string postCode = "LN1 3PQ";
+            addressGatewayMock.Setup(x => x.Search(postCode))
+                .ReturnsAsync(new List<PropertyAddress> { new() { PostalCode = postCode } });
+
+            // Act
+            var actual = await sytemUndertest.Execute(postCode);
+
+            // Assert
+            var actualAddress = actual.Single();
+            Assert.Equal(postCode, actualAddress.PostCode);
+            Assert.Null(actualAddress.AddressLine1);
+            Assert.Null(actualAddress.AddressLine2);
         }
     }
 }
