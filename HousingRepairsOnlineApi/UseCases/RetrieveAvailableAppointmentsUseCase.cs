@@ -7,6 +7,10 @@ namespace HousingRepairsOnlineApi.UseCases
     {
         public async Task Execute(string repairCode, string uprn)
         {
+            if (repairCode == string.Empty)
+            {
+                throw new ArgumentException();
+            }
             throw new ArgumentNullException();
         }
     }
