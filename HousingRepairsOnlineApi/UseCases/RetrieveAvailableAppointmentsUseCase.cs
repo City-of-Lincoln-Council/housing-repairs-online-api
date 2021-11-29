@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 
 namespace HousingRepairsOnlineApi.UseCases
 {
@@ -7,11 +7,8 @@ namespace HousingRepairsOnlineApi.UseCases
     {
         public async Task Execute(string repairCode, string uprn)
         {
-            if (repairCode == string.Empty)
-            {
-                throw new ArgumentException();
-            }
-            throw new ArgumentNullException();
+            Guard.Against.NullOrWhiteSpace(repairCode, nameof(repairCode));
+            Guard.Against.NullOrWhiteSpace(uprn, nameof(uprn));
         }
     }
 }

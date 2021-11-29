@@ -12,7 +12,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         [Theory]
         [MemberData(nameof(InvalidArgumentTestData))]
 #pragma warning disable xUnit1026
-        public async void GivenAnInvalidIdentifier_WhenConstructing_ThenExceptionIsThrown<T>(T exception, string repairCode) where T : Exception
+        public async void GivenAnInvalidRepairCode_WhenExecute_ThenExceptionIsThrown<T>(T exception, string repairCode) where T : Exception
 #pragma warning restore xUnit1026
         {
             // Arrange
@@ -24,6 +24,23 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             // Assert
             await act.Should().ThrowExactlyAsync<T>();
         }
+
+        [Theory]
+        [MemberData(nameof(InvalidArgumentTestData))]
+#pragma warning disable xUnit1026
+        public async void GivenAnInvalidUprn_WhenExecute_ThenExceptionIsThrown<T>(T exception, string uprn) where T : Exception
+#pragma warning restore xUnit1026
+        {
+            // Arrange
+            var systemUnderTest = new RetrieveAvailableAppointmentsUseCase();
+
+            // Act
+            Func<Task> act = async () => await systemUnderTest.Execute("A repair code", uprn);
+
+            // Assert
+            await act.Should().ThrowExactlyAsync<T>();
+        }
+
 
         public static IEnumerable<object[]> InvalidArgumentTestData()
         {
