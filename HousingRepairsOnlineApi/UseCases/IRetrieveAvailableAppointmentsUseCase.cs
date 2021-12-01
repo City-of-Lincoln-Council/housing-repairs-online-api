@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using HACT.Dtos;
 
-namespace HousingRepairsOnlineApi.Tests.ControllersTests
+namespace HousingRepairsOnlineApi.UseCases
 {
     public interface IRetrieveAvailableAppointmentsUseCase
     {

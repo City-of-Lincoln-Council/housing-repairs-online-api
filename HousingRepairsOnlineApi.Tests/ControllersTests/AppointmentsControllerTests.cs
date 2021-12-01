@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
 using HousingRepairsOnlineApi.Controllers;
+using HousingRepairsOnlineApi.UseCases;
 using Moq;
 using Xunit;
 

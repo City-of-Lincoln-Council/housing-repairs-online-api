@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using HACT.Dtos;
+using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Helpers;
-using HousingRepairsOnlineApi.Tests.ControllersTests;
 
 namespace HousingRepairsOnlineApi.UseCases
 {

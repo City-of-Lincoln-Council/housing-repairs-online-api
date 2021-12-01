@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using HousingRepairsOnlineApi.Tests.ControllersTests;
+using HousingRepairsOnlineApi.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousingRepairsOnlineApi.Controllers

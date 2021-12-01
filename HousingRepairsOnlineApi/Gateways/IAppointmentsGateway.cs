@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using HACT.Dtos;
 
-namespace HousingRepairsOnlineApi.UseCases
+namespace HousingRepairsOnlineApi.Gateways
 {
     public interface IAppointmentsGateway
     {
