@@ -15,9 +15,9 @@ namespace HousingRepairsOnlineApi.Controllers
             this.retrieveAvailableAppointmentsUseCase = retrieveAvailableAppointmentsUseCase;
         }
         [HttpGet]
-        public async Task<IActionResult> AvailableAppointments([FromQuery] string RepairLocation, [FromQuery] string RepairProblem, [FromQuery] string RepairIssue, [FromQuery] string uprn)
+        public async Task<IActionResult> AvailableAppointments([FromQuery] string repairLocation, [FromQuery] string repairProblem, [FromQuery] string repairIssue, [FromQuery] string uprn)
         {
-            var result = await retrieveAvailableAppointmentsUseCase.Execute(RepairLocation, RepairProblem, RepairIssue, uprn);
+            var result = await retrieveAvailableAppointmentsUseCase.Execute(repairLocation, repairProblem, repairIssue, uprn);
             return Ok(result);
         }
     }
