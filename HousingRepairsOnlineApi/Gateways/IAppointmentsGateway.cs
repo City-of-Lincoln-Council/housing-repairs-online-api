@@ -6,6 +6,6 @@ namespace HousingRepairsOnlineApi.Gateways
 {
     public interface IAppointmentsGateway
     {
-        Task<IEnumerable<AvailableAppointments>> GetAvailableAppointments(string repairCode, string uprn);
+        Task<IEnumerable<Appointment>> GetAvailableAppointments(string sorCode, string locationId);
     }
 }

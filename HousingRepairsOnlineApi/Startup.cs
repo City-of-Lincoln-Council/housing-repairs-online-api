@@ -30,7 +30,10 @@ namespace HousingRepairsOnlineApi
             services.AddSoREngine("SoRConfig.json");
 
             services.AddTransient<IRetrieveAddressesUseCase, RetrieveAddressesUseCase>();
+            services.AddTransient<IRetrieveAvailableAppointmentsUseCase, RetrieveAvailableAppointmentsUseCase>();
+
             var addressesApiUrl = GetEnvironmentVariable("ADDRESSES_API_URL");
+            var schedulingApiUrl = GetEnvironmentVariable("SCHEDULING_API_URL");
             var authenticationIdentifier = GetEnvironmentVariable("AUTHENTICATION_IDENTIFIER");
             services.AddHttpClient();
 
@@ -39,6 +42,13 @@ namespace HousingRepairsOnlineApi
                 var httpClient = s.GetService<HttpClient>();
                 httpClient.BaseAddress = new Uri(addressesApiUrl);
                 return new AddressGateway(httpClient, authenticationIdentifier);
+            });
+
+            services.AddTransient<IAppointmentsGateway, AppointmentsGateway>(s =>
+            {
+                var httpClient = s.GetService<HttpClient>();
+                httpClient.BaseAddress = new Uri(schedulingApiUrl);
+                return new AppointmentsGateway(httpClient, authenticationIdentifier);
             });
 
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);

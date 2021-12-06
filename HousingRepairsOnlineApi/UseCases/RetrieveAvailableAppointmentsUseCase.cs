@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using HACT.Dtos;
@@ -27,7 +26,8 @@ namespace HousingRepairsOnlineApi.UseCases
             Guard.Against.NullOrWhiteSpace(uprn, nameof(uprn));
             var repairCode = sorEngine.MapSorCode(repairLocation, repairProblem, repairIssue);
             var result = await appointmentsGateway.GetAvailableAppointments(repairCode, uprn);
-            return null;
+
+            return result;
         }
     }
 }

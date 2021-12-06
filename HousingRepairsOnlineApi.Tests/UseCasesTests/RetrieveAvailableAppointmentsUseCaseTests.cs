@@ -52,7 +52,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             var systemUnderTest = new RetrieveAvailableAppointmentsUseCase(appointmentsGatewayMock.Object, sorEngineMock.Object);
 
             // Act
-            Func<Task> act = async () => await systemUnderTest.Execute(kitchen,repairProblem, doorHangingOff, "A UPRN");
+            Func<Task> act = async () => await systemUnderTest.Execute(kitchen, repairProblem, doorHangingOff, "A UPRN");
 
             // Assert
             await act.Should().ThrowExactlyAsync<T>();
@@ -84,7 +84,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             var systemUnderTest = new RetrieveAvailableAppointmentsUseCase(appointmentsGatewayMock.Object, sorEngineMock.Object);
 
             // Act
-            Func<Task> act = async () => await systemUnderTest.Execute(kitchen, cupboards,doorHangingOff, uprn);
+            Func<Task> act = async () => await systemUnderTest.Execute(kitchen, cupboards, doorHangingOff, uprn);
 
             // Assert
             await act.Should().ThrowExactlyAsync<T>();
@@ -100,7 +100,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         [Fact]
         public async void GivenRepairParameters_WhenExecute_ThenMapSorCodeIsCalled()
         {
-            await sytemUndertest.Execute(kitchen, cupboards,doorHangingOff, "uprn");
+            await sytemUndertest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
             sorEngineMock.Verify(x => x.MapSorCode(kitchen, cupboards, doorHangingOff), Times.Once);
         }
 
@@ -109,7 +109,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         {
             var repairCode = "N373049";
             sorEngineMock.Setup(x => x.MapSorCode(kitchen, cupboards, doorHangingOff)).Returns(repairCode);
-            await sytemUndertest.Execute(kitchen, cupboards,doorHangingOff, "uprn");
+            await sytemUndertest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
             appointmentsGatewayMock.Verify(x => x.GetAvailableAppointments(repairCode, "uprn"), Times.Once);
         }
     }

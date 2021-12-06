@@ -25,7 +25,7 @@ namespace HousingRepairsOnlineApi.Tests.ControllersTests
             const string RepairIssue = "doorHangingOff";
 
             const string Uprn = "12345";
-            var result = await sytemUndertest.AvailableAppointments(RepairLocation,RepairProblem, RepairIssue, Uprn);
+            var result = await sytemUndertest.AvailableAppointments(RepairLocation, RepairProblem, RepairIssue, Uprn);
             GetStatusCode(result).Should().Be(200);
             availableAppointmentsUseCaseMock.Verify(x => x.Execute(RepairLocation, RepairProblem, RepairIssue, Uprn), Times.Once);
         }
