@@ -33,7 +33,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             const string SorCode = "SOR Code";
             const string LocationId = "Location ID";
 
-            mockHttp.Expect($"/Appointments?sorCode={SorCode}&locationId={LocationId}")
+            mockHttp.Expect($"/Appointments/AvailableAppointments?sorCode={SorCode}&locationId={LocationId}")
                 .Respond("application/json", "[]");
 
             // Act
@@ -63,7 +63,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
                 }
             };
 
-            mockHttp.Expect($"/Appointments?sorCode={SorCode}&locationId={LocationId}")
+            mockHttp.Expect($"/Appointments/AvailableAppointments?sorCode={SorCode}&locationId={LocationId}")
                 .Respond($"application/json",
                     "[" + JsonConvert.SerializeObject(expected) + "]");
 
@@ -84,7 +84,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             const string SorCode = "SOR Code";
             const string LocationId = "Location ID";
 
-            mockHttp.Expect($"/Appointments?sorCode={SorCode}&locationId={LocationId}")
+            mockHttp.Expect($"/Appointments/AvailableAppointments?sorCode={SorCode}&locationId={LocationId}")
                 .Respond(httpStatusCode);
 
             // Act

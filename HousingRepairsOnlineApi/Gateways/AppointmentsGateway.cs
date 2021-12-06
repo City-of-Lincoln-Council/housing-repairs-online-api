@@ -23,7 +23,7 @@ namespace HousingRepairsOnlineApi.Gateways
         public async Task<IEnumerable<Appointment>> GetAvailableAppointments(string sorCode, string locationId)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"/Appointments?sorCode={sorCode}&locationId={locationId}");
+                $"/Appointments/AvailableAppointments?sorCode={sorCode}&locationId={locationId}");
 
             request.SetupJwtAuthentication(httpClient, authenticationIdentifier);
 
