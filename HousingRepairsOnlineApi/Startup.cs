@@ -33,8 +33,13 @@ namespace HousingRepairsOnlineApi
             var addressesApiUrl = GetEnvironmentVariable("ADDRESSES_API_URL");
             var authenticationIdentifier = GetEnvironmentVariable("AUTHENTICATION_IDENTIFIER");
             services.AddHttpClient();
-            services.AddTransient<IAddressGateway, AddressGateway>(s => new AddressGateway(
-                s.GetService<HttpClient>(), addressesApiUrl, authenticationIdentifier));
+
+            services.AddTransient<IAddressGateway, AddressGateway>(s =>
+            {
+                var httpClient = s.GetService<HttpClient>();
+                httpClient.BaseAddress = new Uri(addressesApiUrl);
+                return new AddressGateway(httpClient, authenticationIdentifier);
+            });
 
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
 

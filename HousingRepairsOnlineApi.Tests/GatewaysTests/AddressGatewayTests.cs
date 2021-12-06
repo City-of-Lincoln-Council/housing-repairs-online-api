@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,7 +13,6 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
     public class AddressGatewayTests
     {
         private const string authenticationIdentifier = "super secret";
-        private const string Token = "token";
         private const string AddressApiEndpoint = "https://our-porxy-UH.api";
         private readonly AddressGateway addressGateway;
         private readonly Mock<HttpClient> httpClientMock;
@@ -22,10 +22,9 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
         {
             mockHttp = new MockHttpMessageHandler();
 
-            mockHttp.Expect($"{AddressApiEndpoint}/authentication?identifier={authenticationIdentifier}")
-                .Respond(HttpStatusCode.OK, x => new StringContent(Token));
-
-            addressGateway = new AddressGateway(mockHttp.ToHttpClient(), AddressApiEndpoint, authenticationIdentifier);
+            var httpClient = mockHttp.ToHttpClient();
+            httpClient.BaseAddress = new Uri(AddressApiEndpoint);
+            addressGateway = new AddressGateway(httpClient, authenticationIdentifier);
         }
 
         [Fact]
@@ -35,7 +34,6 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             const string Postcode = "M3 OW";
 
             mockHttp.Expect($"{AddressApiEndpoint}/addresses?postcode={Postcode}")
-                .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(HttpStatusCode.OK, x => new StringContent("[]"));
 
             // Act
@@ -52,7 +50,6 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             const string Postcode = "M3 0W";
 
             mockHttp.Expect($"{AddressApiEndpoint}/addresses?postcode={Postcode}")
-                .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond("application/json",
                     "[{ \"UPRN\": \"944225244413\", " +
                     "\"Postbox\": \"null\", " +
@@ -84,7 +81,6 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             const string Postcode = "M3 0W";
 
             mockHttp.Expect($"{AddressApiEndpoint}/addresses?postcode={Postcode}")
-                .WithHeaders("Authorization", $"Bearer {Token}")
                 .Respond(statusCode: (HttpStatusCode)503);
             // Act
             var data = await addressGateway.Search(Postcode);
