@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using HACT.Dtos;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Helpers;
+using ApplicationTime = HousingRepairsOnlineApi.Domain.AppointmentTime;
 
 namespace HousingRepairsOnlineApi.UseCases
 {
@@ -18,16 +20,32 @@ namespace HousingRepairsOnlineApi.UseCases
             this.sorEngine = sorEngine;
         }
 
-        public async Task<IEnumerable<Appointment>> Execute(string repairLocation, string repairProblem, string repairIssue, string uprn)
+        public async Task<List<ApplicationTime>> Execute(string repairLocation, string repairProblem,
+            string repairIssue, string uprn)
         {
             Guard.Against.NullOrWhiteSpace(repairLocation, nameof(repairLocation));
             Guard.Against.NullOrWhiteSpace(repairProblem, nameof(repairProblem));
             Guard.Against.NullOrWhiteSpace(repairIssue, nameof(repairIssue));
             Guard.Against.NullOrWhiteSpace(uprn, nameof(uprn));
             var repairCode = sorEngine.MapSorCode(repairLocation, repairProblem, repairIssue);
-            var result = await appointmentsGateway.GetAvailableAppointments(repairCode, uprn);
 
-            return result;
+            var convertedResults = new List<ApplicationTime>();
+
+            var result = await appointmentsGateway.GetAvailableAppointments(repairCode, uprn);
+            convertedResults.AddRange(result.Select(ConvertToHactAppointment));
+
+            return convertedResults;
+
+            ApplicationTime ConvertToHactAppointment(Appointment appointment)
+            {
+
+                return new ApplicationTime
+                {
+                    Id = appointment.Reference,
+                    StartTime = appointment.TimeOfDay.EarliestArrivalTime,
+                    EndTime = appointment.TimeOfDay.LatestArrivalTime
+                };
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using HACT.Dtos;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Helpers;
 using HousingRepairsOnlineApi.UseCases;
@@ -112,5 +114,35 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             await sytemUndertest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
             appointmentsGatewayMock.Verify(x => x.GetAvailableAppointments(repairCode, "uprn"), Times.Once);
         }
+
+        [Fact]
+        public async void GivenRepairParameters_WhenExecute_AppointmentTimeAreReturned()
+        {
+            var repairCode = "N373049";
+            var startTime = DateTime.Today.AddHours(8);
+            var endTime = DateTime.Today.AddHours(12);
+            var dummyRef = new Reference();
+
+            sorEngineMock.Setup(x => x.MapSorCode(kitchen, cupboards, doorHangingOff)).Returns(repairCode);
+
+            appointmentsGatewayMock.Setup(x => x.GetAvailableAppointments(repairCode, "uprn"))
+                .ReturnsAsync(new List<Appointment> { new()
+                {
+                    Reference = dummyRef,
+                    TimeOfDay = new TimeOfDay
+                    {
+                        EarliestArrivalTime = startTime,
+                        LatestArrivalTime = endTime
+                    },
+                } });
+
+            var actual = await sytemUndertest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
+            var actualAddress = actual.First();
+
+            Assert.Equal(dummyRef, actualAddress.Id);
+            Assert.Equal(startTime, actualAddress.StartTime);
+            Assert.Equal(endTime, actualAddress.EndTime);
+        }
+
     }
 }
