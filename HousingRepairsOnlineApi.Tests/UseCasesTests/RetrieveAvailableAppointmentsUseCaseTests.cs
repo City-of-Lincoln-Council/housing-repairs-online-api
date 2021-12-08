@@ -121,14 +121,12 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             var repairCode = "N373049";
             var startTime = DateTime.Today.AddHours(8);
             var endTime = DateTime.Today.AddHours(12);
-            var dummyRef = new Reference();
 
             sorEngineMock.Setup(x => x.MapSorCode(kitchen, cupboards, doorHangingOff)).Returns(repairCode);
 
             appointmentsGatewayMock.Setup(x => x.GetAvailableAppointments(repairCode, "uprn"))
                 .ReturnsAsync(new List<Appointment> { new()
                 {
-                    Reference = dummyRef,
                     TimeOfDay = new TimeOfDay
                     {
                         EarliestArrivalTime = startTime,
@@ -139,7 +137,6 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             var actual = await sytemUndertest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
             var actualAddress = actual.First();
 
-            Assert.Equal(dummyRef, actualAddress.Id);
             Assert.Equal(startTime, actualAddress.StartTime);
             Assert.Equal(endTime, actualAddress.EndTime);
         }

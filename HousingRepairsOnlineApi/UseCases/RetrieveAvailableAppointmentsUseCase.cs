@@ -21,18 +21,17 @@ namespace HousingRepairsOnlineApi.UseCases
         }
 
         public async Task<List<ApplicationTime>> Execute(string repairLocation, string repairProblem,
-            string repairIssue, string uprn)
+            string repairIssue, string locationId)
         {
             Guard.Against.NullOrWhiteSpace(repairLocation, nameof(repairLocation));
             Guard.Against.NullOrWhiteSpace(repairProblem, nameof(repairProblem));
             Guard.Against.NullOrWhiteSpace(repairIssue, nameof(repairIssue));
-            Guard.Against.NullOrWhiteSpace(uprn, nameof(uprn));
+            Guard.Against.NullOrWhiteSpace(locationId, nameof(locationId));
             var repairCode = sorEngine.MapSorCode(repairLocation, repairProblem, repairIssue);
 
-            var convertedResults = new List<ApplicationTime>();
 
-            var result = await appointmentsGateway.GetAvailableAppointments(repairCode, uprn);
-            convertedResults.AddRange(result.Select(ConvertToHactAppointment));
+            var result = await appointmentsGateway.GetAvailableAppointments(repairCode, locationId);
+            var convertedResults = result.Select(ConvertToHactAppointment).ToList();
 
             return convertedResults;
 
@@ -41,7 +40,6 @@ namespace HousingRepairsOnlineApi.UseCases
 
                 return new ApplicationTime
                 {
-                    Id = appointment.Reference,
                     StartTime = appointment.TimeOfDay.EarliestArrivalTime,
                     EndTime = appointment.TimeOfDay.LatestArrivalTime
                 };

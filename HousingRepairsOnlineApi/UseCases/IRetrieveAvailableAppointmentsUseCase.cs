@@ -8,6 +8,6 @@ namespace HousingRepairsOnlineApi.UseCases
     public interface IRetrieveAvailableAppointmentsUseCase
     {
         public Task<List<AppointmentTime>> Execute(string repairLocation, string repairProblem, string repairIssue,
-            string uprn);
+            string locationId);
     }
 }
