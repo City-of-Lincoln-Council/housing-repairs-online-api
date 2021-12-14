@@ -100,6 +100,21 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         }
 
         [Fact]
+#pragma warning disable xUnit1026
+        public async void GivenANullFromDate_WhenExecute_ThenExceptionIsNotThrown()
+#pragma warning restore xUnit1026
+        {
+            // Arrange
+            var systemUnderTest = new RetrieveAvailableAppointmentsUseCase(appointmentsGatewayMock.Object, sorEngineMock.Object);
+
+            // Act
+            Func<Task> act = async () => await systemUnderTest.Execute(kitchen, cupboards, doorHangingOff, "Location ID", null);
+
+            // Assert
+            await act.Should().NotThrowAsync<ArgumentNullException>();
+        }
+
+        [Fact]
         public async void GivenRepairParameters_WhenExecute_ThenMapSorCodeIsCalled()
         {
             await sytemUndertest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
@@ -112,7 +127,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             var repairCode = "N373049";
             sorEngineMock.Setup(x => x.MapSorCode(kitchen, cupboards, doorHangingOff)).Returns(repairCode);
             await sytemUndertest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
-            appointmentsGatewayMock.Verify(x => x.GetAvailableAppointments(repairCode, "uprn"), Times.Once);
+            appointmentsGatewayMock.Verify(x => x.GetAvailableAppointments(repairCode, "uprn", null), Times.Once);
         }
 
         [Fact]
@@ -124,7 +139,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 
             sorEngineMock.Setup(x => x.MapSorCode(kitchen, cupboards, doorHangingOff)).Returns(repairCode);
 
-            appointmentsGatewayMock.Setup(x => x.GetAvailableAppointments(repairCode, "uprn"))
+            appointmentsGatewayMock.Setup(x => x.GetAvailableAppointments(repairCode, "uprn", null))
                 .ReturnsAsync(new List<Appointment> { new()
                 {
                     TimeOfDay = new TimeOfDay

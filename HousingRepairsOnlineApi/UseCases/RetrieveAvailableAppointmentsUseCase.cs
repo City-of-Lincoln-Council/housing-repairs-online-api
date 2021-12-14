@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -21,7 +22,7 @@ namespace HousingRepairsOnlineApi.UseCases
         }
 
         public async Task<List<ApplicationTime>> Execute(string repairLocation, string repairProblem,
-            string repairIssue, string locationId)
+            string repairIssue, string locationId, DateTime? fromDate = null)
         {
             Guard.Against.NullOrWhiteSpace(repairLocation, nameof(repairLocation));
             Guard.Against.NullOrWhiteSpace(repairProblem, nameof(repairProblem));
@@ -30,7 +31,7 @@ namespace HousingRepairsOnlineApi.UseCases
             var repairCode = sorEngine.MapSorCode(repairLocation, repairProblem, repairIssue);
 
 
-            var result = await appointmentsGateway.GetAvailableAppointments(repairCode, locationId);
+            var result = await appointmentsGateway.GetAvailableAppointments(repairCode, locationId, fromDate);
             var convertedResults = result.Select(ConvertToHactAppointment).ToList();
 
             return convertedResults;

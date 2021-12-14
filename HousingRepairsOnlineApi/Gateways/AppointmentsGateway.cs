@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -20,10 +21,10 @@ namespace HousingRepairsOnlineApi.Gateways
             this.authenticationIdentifier = authenticationIdentifier;
         }
 
-        public async Task<IEnumerable<Appointment>> GetAvailableAppointments(string sorCode, string locationId)
+        public async Task<IEnumerable<Appointment>> GetAvailableAppointments(string sorCode, string locationId, DateTime? fromDate = null)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"/Appointments/AvailableAppointments?sorCode={sorCode}&locationId={locationId}");
+                $"/Appointments/AvailableAppointments?sorCode={sorCode}&locationId={locationId}&fromDate={fromDate}");
 
             request.SetupJwtAuthentication(httpClient, authenticationIdentifier);
 
