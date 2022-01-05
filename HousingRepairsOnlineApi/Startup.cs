@@ -23,15 +23,10 @@ namespace HousingRepairsOnlineApi
             Configuration = configuration;
         }
 
-        private static readonly string EndpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
-        private static readonly string AuthorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
-        private static readonly string DatabaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
-        private static readonly string ContainerId = GetEnvironmentVariable("COSMOS_CONTAINER_ID");
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
             services.AddSoREngine("SoRConfig.json");
 
@@ -66,9 +61,22 @@ namespace HousingRepairsOnlineApi
                 c.AddJwtSecurityScheme();
             });
 
-            services.AddTransient<ICosmosGateway, CosmosGateway>(s => new CosmosGateway(
-                EndpointUrl, AuthorizationKey, DatabaseId, ContainerId
-                ));
+            var EndpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
+            var AuthorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
+            var DatabaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
+            var ContainerId = GetEnvironmentVariable("COSMOS_CONTAINER_ID");
+
+            CosmosClient cosmosClient = new CosmosClient(EndpointUrl, AuthorizationKey);
+
+            await cosmosClient.CreateDatabaseIfNotExistsAsync(DatabaseId);
+            CosmosContainer cosmosContainer= await cosmosClient.GetDatabase(DatabaseId).CreateContainerIfNotExistsAsync(ContainerId, "/RepairID");
+
+            services.AddTransient<ICosmosGateway, CosmosGateway>(s =>
+            {
+                return new CosmosGateway(
+                    cosmosContainer
+                );
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
