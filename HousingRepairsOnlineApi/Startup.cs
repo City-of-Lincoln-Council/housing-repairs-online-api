@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using Azure.Cosmos;
 using HousingRepairsOnline.Authentication.DependencyInjection;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Helpers;
@@ -21,6 +22,11 @@ namespace HousingRepairsOnlineApi
         {
             Configuration = configuration;
         }
+
+        private static readonly string EndpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
+        private static readonly string AuthorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
+        private static readonly string DatabaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
+        private static readonly string ContainerId = GetEnvironmentVariable("COSMOS_CONTAINER_ID");
 
         public IConfiguration Configuration { get; }
 
@@ -59,6 +65,10 @@ namespace HousingRepairsOnlineApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HousingRepairsOnlineApi", Version = "v1" });
                 c.AddJwtSecurityScheme();
             });
+
+            services.AddTransient<ICosmosGateway, CosmosGateway>(s => new CosmosGateway(
+                EndpointUrl, AuthorizationKey, DatabaseId, ContainerId
+                ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
