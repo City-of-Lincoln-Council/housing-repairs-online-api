@@ -25,32 +25,32 @@ namespace HousingRepairsOnlineApi.Domain
     }
     public class RepairLocation
     {
-        public string value {get; set;}
-        public string display {get; set;}
+        public string value { get; set; }
+        public string display { get; set; }
     }
     public class RepairProblem
     {
-        public string value {get; set;}
-        public string display {get; set;}
+        public string value { get; set; }
+        public string display { get; set; }
     }
     public class RepairProblemBestDescription
     {
-        public string value {get; set;}
-        public string display {get; set;}
+        public string value { get; set; }
+        public string display { get; set; }
     }
     public class RepairDescription
     {
-        public string photo {get;set;}
-        public string text {get;set;}
+        public string photo { get; set; }
+        public string text { get; set; }
     }
     public class RepairContactDetails
     {
-        public string type {get;set;}
-        public string value {get;set;}
+        public string type { get; set; }
+        public string value { get; set; }
     }
     public class RepairAvailability
     {
-        public string value {get;set;}
-        public string display {get;set;}
+        public string value { get; set; }
+        public string display { get; set; }
     }
 }

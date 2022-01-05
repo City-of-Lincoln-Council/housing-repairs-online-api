@@ -27,7 +27,7 @@ namespace HousingRepairsOnlineApi.Gateways
                 ItemResponse<RepairRequest> itemResponse = await container.ReadItemAsync<RepairRequest>(repairRequest.Id, new PartitionKey(repairRequest.Id));
                 Console.WriteLine("Item in database with id: {0} already exists\n", itemResponse.Value.Id);
             }
-            catch(CosmosException ex) when (ex.Status == (int)HttpStatusCode.NotFound)
+            catch (CosmosException ex) when (ex.Status == (int)HttpStatusCode.NotFound)
             {
                 // Create an item in the container. Note we provide the value of the partition key for this item, which is ID
                 ItemResponse<RepairRequest> itemResponse = await container.CreateItemAsync<RepairRequest>(repairRequest, new PartitionKey(repairRequest.Id));

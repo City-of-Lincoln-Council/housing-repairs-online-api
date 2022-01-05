@@ -69,7 +69,7 @@ namespace HousingRepairsOnlineApi
             CosmosClient cosmosClient = new CosmosClient(EndpointUrl, AuthorizationKey);
 
             await cosmosClient.CreateDatabaseIfNotExistsAsync(DatabaseId);
-            CosmosContainer cosmosContainer= await cosmosClient.GetDatabase(DatabaseId).CreateContainerIfNotExistsAsync(ContainerId, "/RepairID");
+            CosmosContainer cosmosContainer = await cosmosClient.GetDatabase(DatabaseId).CreateContainerIfNotExistsAsync(ContainerId, "/RepairID");
 
             services.AddTransient<ICosmosGateway, CosmosGateway>(s =>
             {
