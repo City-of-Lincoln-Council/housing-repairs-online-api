@@ -20,10 +20,9 @@ namespace HousingRepairsOnlineApi.Gateways
         /// </summary>
         public async Task<string> AddItemToContainerAsync(RepairRequest repairRequest)
         {
-            CosmosContainer container = cosmosContainer;
 
             // Create an item in the container. Note we provide the value of the partition key for this item, which is ID
-            ItemResponse<RepairRequest> itemResponse = await container.CreateItemAsync<RepairRequest>(repairRequest, new PartitionKey(repairRequest.Id));
+            ItemResponse<RepairRequest> itemResponse = await cosmosContainer.CreateItemAsync<RepairRequest>(repairRequest);
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse.
             Console.WriteLine("Created item in database with id: {0}\n", itemResponse.Value.Id);
