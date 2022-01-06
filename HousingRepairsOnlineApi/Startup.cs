@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Azure.Cosmos;
 using HousingRepairsOnline.Authentication.DependencyInjection;
 using HousingRepairsOnlineApi.Gateways;
@@ -26,7 +27,7 @@ namespace HousingRepairsOnlineApi
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public async void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddSoREngine("SoRConfig.json");
 
@@ -53,13 +54,7 @@ namespace HousingRepairsOnlineApi
             });
 
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
-
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HousingRepairsOnlineApi", Version = "v1" });
-                c.AddJwtSecurityScheme();
-            });
+            services.AddTransient<ISaveRepairRequestUseCase, SaveRepairRequestUseCase>();
 
             var EndpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
             var AuthorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
@@ -68,8 +63,11 @@ namespace HousingRepairsOnlineApi
 
             CosmosClient cosmosClient = new CosmosClient(EndpointUrl, AuthorizationKey);
 
-            await cosmosClient.CreateDatabaseIfNotExistsAsync(DatabaseId);
-            CosmosContainer cosmosContainer = await cosmosClient.GetDatabase(DatabaseId).CreateContainerIfNotExistsAsync(ContainerId, "/RepairID");
+            Task<DatabaseResponse> databaseResponseTask = cosmosClient.CreateDatabaseIfNotExistsAsync(DatabaseId);
+            _ = databaseResponseTask.GetAwaiter().GetResult();;
+
+            Task<ContainerResponse> cosmosContainerResponse = cosmosClient.GetDatabase(DatabaseId).CreateContainerIfNotExistsAsync(ContainerId, "/RepairID");
+            ContainerResponse cosmosContainer = cosmosContainerResponse.GetAwaiter().GetResult();;
 
             services.AddTransient<ICosmosGateway, CosmosGateway>(s =>
             {
@@ -77,6 +75,19 @@ namespace HousingRepairsOnlineApi
                     cosmosContainer
                 );
             });
+
+
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HousingRepairsOnlineApi", Version = "v1" });
+                c.AddJwtSecurityScheme();
+            });
+
+
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
