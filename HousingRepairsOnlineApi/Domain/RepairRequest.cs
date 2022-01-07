@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace HousingRepairsOnlineApi.Domain
@@ -40,7 +41,8 @@ namespace HousingRepairsOnlineApi.Domain
     }
     public class RepairDescription
     {
-        public string photo { get; set; }
+        public string photo_url { get; set; }
+        public string base64_img { get; set; }
         public string text { get; set; }
     }
     public class RepairContactDetails

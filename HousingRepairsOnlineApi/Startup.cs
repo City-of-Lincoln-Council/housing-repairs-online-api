@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Azure.Cosmos;
+using Azure.Storage.Blobs;
 using HousingRepairsOnline.Authentication.DependencyInjection;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Helpers;
@@ -75,7 +76,18 @@ namespace HousingRepairsOnlineApi
                     cosmosContainer
                 );
             });
+            string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            string blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
 
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient  = blobServiceClient.GetBlobContainerClient(blobContainerName);
+
+            services.AddTransient<IAzureStorageGateway, AzureStorageGateway>(s =>
+            {
+                return new AzureStorageGateway(
+                    containerClient
+                );
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -83,10 +95,6 @@ namespace HousingRepairsOnlineApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HousingRepairsOnlineApi", Version = "v1" });
                 c.AddJwtSecurityScheme();
             });
-
-
-
-
 
         }
 
