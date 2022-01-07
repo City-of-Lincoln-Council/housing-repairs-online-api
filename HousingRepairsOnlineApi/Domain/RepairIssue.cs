@@ -1,7 +1,7 @@
 ﻿
 namespace HousingRepairsOnlineApi.Domain
 {
-    public class RepairProblemBestDescription
+    public class RepairIssue
     {
         public string Value { get; set; }
         public string Display { get; set; }

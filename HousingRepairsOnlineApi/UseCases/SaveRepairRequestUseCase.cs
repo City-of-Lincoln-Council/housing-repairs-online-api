@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Gateways;
+using HousingRepairsOnlineApi.Helpers;
 
 namespace HousingRepairsOnlineApi.UseCases
 {
@@ -9,12 +10,14 @@ namespace HousingRepairsOnlineApi.UseCases
     {
         private readonly ICosmosGateway cosmosGateway;
         private readonly IAzureStorageGateway storageGateway;
+        private readonly ISoREngine sorEngine;
 
-        public SaveRepairRequestUseCase(ICosmosGateway cosmosGateway, IAzureStorageGateway storageGateway)
+        public SaveRepairRequestUseCase(ICosmosGateway cosmosGateway, IAzureStorageGateway storageGateway, ISoREngine sorEngine)
 
         {
             this.cosmosGateway = cosmosGateway;
             this.storageGateway = storageGateway;
+            this.sorEngine = sorEngine;
         }
 
         public async Task<string> Execute(RepairRequest repairRequest)
@@ -29,7 +32,7 @@ namespace HousingRepairsOnlineApi.UseCases
                 Location = repairRequest.Location,
                 ContactDetails = repairRequest.ContactDetails,
                 Problem = repairRequest.Problem,
-                ProblemBestDescription = repairRequest.ProblemBestDescription,
+                Issue = repairRequest.Issue,
                 ContactPersonNumber = repairRequest.ContactPersonNumber,
                 Time = repairRequest.Time,
                 Description = new RepairDescription
@@ -37,7 +40,7 @@ namespace HousingRepairsOnlineApi.UseCases
                     Text = repairRequest.Description.Text,
                     PhotoUrl = photoUrl
                 },
-                SOR = "booooo"
+                SOR = sorEngine.MapSorCode(repairRequest.Location.Value, repairRequest.Problem.Value, repairRequest.Issue.Value)
             };
             // TODO: TEST NON UNIQUE ID
             var savedRequest = await cosmosGateway.AddItemToContainerAsync(repair);

@@ -11,7 +11,7 @@ namespace HousingRepairsOnlineApi.Domain
         public RepairAddress Address { get; set; }
         public RepairLocation Location { get; set; }
         public RepairProblem Problem { get; set; }
-        public RepairProblemBestDescription ProblemBestDescription { get; set; }
+        public RepairIssue Issue { get; set; }
         public string ContactPersonNumber { get; set; }
         public RepairDescription Description { get; set; }
         public RepairContactDetails ContactDetails { get; set; }
