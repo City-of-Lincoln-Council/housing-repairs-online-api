@@ -19,10 +19,28 @@ namespace HousingRepairsOnlineApi.UseCases
 
         public async Task<string> Execute(RepairRequest repairRequest)
         {
+            var photoUrl = storageGateway.UploadBlob(repairRequest.Description.Base64Img, repairRequest.Description.FileExtension).Result;
+
+            var repair = new Repair
+            {
+                Id = Guid.NewGuid().ToString().GetHashCode().ToString("x").ToUpper(),
+                Address = repairRequest.Address,
+                Postcode = repairRequest.Postcode,
+                Location = repairRequest.Location,
+                ContactDetails = repairRequest.ContactDetails,
+                Problem = repairRequest.Problem,
+                ProblemBestDescription = repairRequest.ProblemBestDescription,
+                ContactPersonNumber = repairRequest.ContactPersonNumber,
+                Time = repairRequest.Time,
+                Description = new RepairDescription
+                {
+                    Text = repairRequest.Description.Text,
+                    PhotoUrl = photoUrl
+                },
+                SOR = "booooo"
+            };
             // TODO: TEST NON UNIQUE ID
-            repairRequest.Id = Guid.NewGuid().ToString().GetHashCode().ToString("x").ToUpper();
-            repairRequest.Description.photo_url = storageGateway.UploadBlob(repairRequest.Description.base64_img).Result;
-            var savedRequest = await cosmosGateway.AddItemToContainerAsync(repairRequest);
+            var savedRequest = await cosmosGateway.AddItemToContainerAsync(repair);
 
             return savedRequest;
         }

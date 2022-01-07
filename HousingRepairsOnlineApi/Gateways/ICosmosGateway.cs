@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using HACT.Dtos;
+﻿using System.Threading.Tasks;
 using HousingRepairsOnlineApi.Domain;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
     public interface ICosmosGateway
     {
-        Task<string> AddItemToContainerAsync(RepairRequest repairRequest);
+        Task<string> AddItemToContainerAsync(Repair repair);
     }
 }

@@ -65,10 +65,10 @@ namespace HousingRepairsOnlineApi
             CosmosClient cosmosClient = new CosmosClient(EndpointUrl, AuthorizationKey);
 
             Task<DatabaseResponse> databaseResponseTask = cosmosClient.CreateDatabaseIfNotExistsAsync(DatabaseId);
-            _ = databaseResponseTask.GetAwaiter().GetResult();;
+            _ = databaseResponseTask.GetAwaiter().GetResult(); ;
 
             Task<ContainerResponse> cosmosContainerResponse = cosmosClient.GetDatabase(DatabaseId).CreateContainerIfNotExistsAsync(ContainerId, "/RepairID");
-            ContainerResponse cosmosContainer = cosmosContainerResponse.GetAwaiter().GetResult();;
+            ContainerResponse cosmosContainer = cosmosContainerResponse.GetAwaiter().GetResult(); ;
 
             services.AddTransient<ICosmosGateway, CosmosGateway>(s =>
             {
@@ -80,7 +80,7 @@ namespace HousingRepairsOnlineApi
             string blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
 
             BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-            BlobContainerClient containerClient  = blobServiceClient.GetBlobContainerClient(blobContainerName);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
 
             services.AddTransient<IAzureStorageGateway, AzureStorageGateway>(s =>
             {

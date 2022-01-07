@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
-using Microsoft.AspNetCore.Http;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
@@ -15,26 +14,21 @@ namespace HousingRepairsOnlineApi.Gateways
             this.storageContainerClient = storageContainerClient;
         }
 
-        public async Task<string> UploadBlob(string base64_img)
+        public async Task<string> UploadBlob(string base64Img, string fileExtension)
         {
-            string fileName = "test.png";
+            string fileName = $"{Guid.NewGuid().ToString()}.{fileExtension}";
 
-            // Get a reference to a blob
             BlobClient blobClient = storageContainerClient.GetBlobClient(fileName);
 
             Console.WriteLine("Uploading to Blob storage as blob:\n\t {0}\n", blobClient.Uri);
 
-            byte[] bytes = Convert.FromBase64String(base64_img);
-            using (MemoryStream stream = new MemoryStream(bytes)){
+            byte[] bytes = Convert.FromBase64String(base64Img);
+            using (MemoryStream stream = new MemoryStream(bytes))
+            {
                 blobClient.Upload(stream);
             }
 
-            // blobClient.Upload(base64_img);
-
-            // using(var stream = filepond.OpenReadStream()) {
-            // }
-            var absoluteUrl= blobClient.Uri.AbsoluteUri;
-            return absoluteUrl;
+            return blobClient.Uri.AbsoluteUri;
         }
     }
 }
