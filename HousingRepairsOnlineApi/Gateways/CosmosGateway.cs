@@ -24,7 +24,6 @@ namespace HousingRepairsOnlineApi.Gateways
             ItemResponse<Repair> itemResponse = await cosmosContainer.CreateItemAsync(repair);
 
             // Note that after creating the item, we can access the body of the item with the Resource property off the ItemResponse.
-            Console.WriteLine("Created item in database with id: {0}\n", itemResponse.Value.Id);
             return itemResponse.Value.Id;
 
         }

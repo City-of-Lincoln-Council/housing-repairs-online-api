@@ -1,0 +1,79 @@
+﻿using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Gateways;
+using HousingRepairsOnlineApi.Helpers;
+using HousingRepairsOnlineApi.UseCases;
+using Moq;
+using Xunit;
+
+namespace HousingRepairsOnlineApi.Tests.UseCasesTests
+{
+    public class SaveRepairRequestUseCaseTests
+    {
+        private readonly SaveRepairRequestUseCase sytemUndertest;
+        private readonly Mock<ISoREngine> mockSorEngine;
+        private readonly Mock<ICosmosGateway> mockCosmosGateway;
+        private readonly Mock<IAzureStorageGateway> mockAzureStorageGateway;
+
+        public SaveRepairRequestUseCaseTests()
+        {
+            mockSorEngine = new Mock<ISoREngine>();
+            mockCosmosGateway = new Mock<ICosmosGateway>();
+            mockAzureStorageGateway = new Mock<IAzureStorageGateway>();
+            sytemUndertest = new SaveRepairRequestUseCase(
+                mockCosmosGateway.Object,
+                mockAzureStorageGateway.Object,
+                mockSorEngine.Object
+                );
+        }
+
+        [Fact]
+        public async void GivenARepairRequestARepairIsSaved()
+        {
+            const string Location = "kitchen";
+            const string Problem = "cupboards";
+            const string Issue = "doorHangingOff";
+            const string RepairCode = "N373049";
+            const string Base64Img = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw1AUhU9TpaJVB4uIOGSoThZERRy1CkWoEGqFVh1MXvojNGlIUlwcBdeCgz+LVQcXZ10dXAVB8AfE0clJ0UVKvC8ptIjxwuN9nHfP4b37AKFWYprVNgZoum2mEnExk10RQ68IIIQe9KNLZpYxK0lJ+NbXPXVT3cV4ln/fn9Wt5iwGBETiGWaYNvE68dSmbXDeJ46woqwSnxOPmnRB4keuKx6/cS64LPDMiJlOzRFHiMVCCystzIqmRjxJHFU1nfKFjMcq5y3OWqnCGvfkLwzn9OUlrtMaQgILWIQEEQoq2EAJNmK066RYSNF53Mc/6Polcink2gAjxzzK0CC7fvA/+D1bKz8x7iWF40D7i+N8DAOhXaBedZzvY8epnwDBZ+BKb/rLNWD6k/RqU4seAb3bwMV1U1P2gMsdYODJkE3ZlYK0hHweeD+jb8oCfbdA56o3t8Y5Th+ANM0qeQMcHAIjBcpe83l3R+vc/u1pzO8H+I9yds6VEEcAAAAJcEhZcwAALiMAAC4jAXilP3YAAAAHdElNRQfmAQcOFjXsyx/IAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAAxJREFUCNdj0HiTBAACtgF3wqeo5gAAAABJRU5ErkJggg==";
+            const string FileExtension = "png";
+            const string ImgUrl = "http://img.png";
+
+            var repairRequest = new RepairRequest()
+            {
+                Location = new RepairLocation()
+                {
+                    Value = Location
+                },
+                Problem = new RepairProblem()
+                {
+                    Value = Problem,
+                },
+                Issue = new RepairIssue()
+                {
+                    Value = Issue
+                },
+                Description = new RepairDescriptionRequest()
+                {
+                    Base64Img = Base64Img,
+                    FileExtension = FileExtension
+                }
+
+            };
+
+            mockSorEngine.Setup(x => x.MapSorCode(Location, Problem, Issue))
+                .Returns(RepairCode);
+
+            mockAzureStorageGateway.Setup(x => x.UploadBlob(Base64Img, FileExtension))
+                .ReturnsAsync(ImgUrl);
+
+            mockCosmosGateway.Setup(x => x.AddItemToContainerAsync(It.IsAny<Repair>()))
+                .ReturnsAsync((Repair r) => r.Id);
+
+            var actual = await sytemUndertest.Execute(repairRequest);
+
+            mockAzureStorageGateway.Verify(x => x.UploadBlob(Base64Img, FileExtension), Times.Once);
+            mockSorEngine.Verify(x => x.MapSorCode(Location, Problem, Issue), Times.Once);
+            mockCosmosGateway.Verify(x => x.AddItemToContainerAsync(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == ImgUrl)), Times.Once);
+            Assert.Matches("[A-Z0-9]{8}", actual);
+        }
+    }
+}

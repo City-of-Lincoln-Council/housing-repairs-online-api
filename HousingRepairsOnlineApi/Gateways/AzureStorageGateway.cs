@@ -20,8 +20,6 @@ namespace HousingRepairsOnlineApi.Gateways
 
             BlobClient blobClient = storageContainerClient.GetBlobClient(fileName);
 
-            Console.WriteLine("Uploading to Blob storage as blob:\n\t {0}\n", blobClient.Uri);
-
             byte[] bytes = Convert.FromBase64String(base64Img);
             using (MemoryStream stream = new MemoryStream(bytes))
             {

@@ -22,7 +22,10 @@ namespace HousingRepairsOnlineApi.UseCases
 
         public async Task<string> Execute(RepairRequest repairRequest)
         {
-            var photoUrl = storageGateway.UploadBlob(repairRequest.Description.Base64Img, repairRequest.Description.FileExtension).Result;
+            var photoUrl = storageGateway.UploadBlob(
+                repairRequest.Description.Base64Img,
+                repairRequest.Description.FileExtension
+            ).Result;
 
             var repair = new Repair
             {
@@ -40,7 +43,10 @@ namespace HousingRepairsOnlineApi.UseCases
                     Text = repairRequest.Description.Text,
                     PhotoUrl = photoUrl
                 },
-                SOR = sorEngine.MapSorCode(repairRequest.Location.Value, repairRequest.Problem.Value, repairRequest.Issue.Value)
+                SOR = sorEngine.MapSorCode(
+                    repairRequest.Location.Value,
+                    repairRequest.Problem.Value,
+                    repairRequest.Issue.Value)
             };
             // TODO: TEST NON UNIQUE ID
             var savedRequest = await cosmosGateway.AddItemToContainerAsync(repair);
