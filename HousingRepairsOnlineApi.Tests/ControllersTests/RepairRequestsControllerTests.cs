@@ -23,9 +23,24 @@ namespace HousingRepairsOnlineApi.Tests
         public async Task TestEndpoint()
         {
             RepairRequest repairRequest = new RepairRequest();
+            const string RepairId = "1AB2C3D4";
+            saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).ReturnsAsync(RepairId);
+
             var result = await sytemUndertest.SaveRepairRequests(repairRequest);
 
             GetStatusCode(result).Should().Be(200);
+            saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
+        }
+        [Fact]
+        public async Task ReturnsErrorWhenFailsToSave()
+        {
+            RepairRequest repairRequest = new RepairRequest();
+
+            saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).Throws<System.Exception>();
+
+            var result = await sytemUndertest.SaveRepairRequests(repairRequest);
+
+            GetStatusCode(result).Should().Be(500);
             saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
         }
     }

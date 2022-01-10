@@ -21,8 +21,16 @@ namespace HousingRepairsOnlineApi.Controllers
         [Route("RepairRequests")]
         public async Task<IActionResult> SaveRepairRequests([FromBody] RepairRequest repairRequest)
         {
-            var result = await saveRepairRequestUseCase.Execute(repairRequest);
-            return Ok(result);
+            try
+            {
+                var result = await saveRepairRequestUseCase.Execute(repairRequest);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
     }
 }
