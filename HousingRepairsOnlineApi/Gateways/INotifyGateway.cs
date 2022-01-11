@@ -6,7 +6,9 @@ namespace HousingRepairsOnlineApi.Gateways
 {
     public interface INotifyGateway
     {
-        public Task<SendSmsResponse> SendSms(string number, string templateId,
+        public Task<SendSmsConfirmationResponse> SendSms(string number, string templateId,
+            Dictionary<string, dynamic> personalisation);
+        public Task<SendEmailConfirmationResponse> SendEmail(string email, string templateId,
             Dictionary<string, dynamic> personalisation);
     }
 }

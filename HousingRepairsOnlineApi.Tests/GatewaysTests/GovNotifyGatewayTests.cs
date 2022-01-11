@@ -62,7 +62,51 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
 
             //Assert
             notifyClinet.Verify(x => x.SendSms("07415678534", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
-            result.Should().BeOfType<SendSmsResponse>();
+            result.Should().BeOfType<SendSmsConfirmationResponse>();
+        }
+
+        [Fact]
+        public async Task GivenNoException_WhenSendEmail_ThenSendEmailIsCalledOnClient()
+        {
+            //Arrange
+            var personalisation = new Dictionary<string, dynamic>
+            {
+                {"booking_ref", "XXXX"},
+                {"appointment_time", "10.00am"}
+
+            };
+            notifyClinet.Setup(x =>
+                    x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), personalisation, It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new EmailNotificationResponse { id = It.IsAny<string>() });
+
+            //Act
+            await systemUnderTest.SendEmail("dr.who@tardis.com", "templateId", personalisation);
+
+            //Assert
+            notifyClinet.Verify(x => x.SendEmail("dr.who@tardis.com", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+
+        }
+
+        [Fact]
+        public async Task GivenNoException_WhenSendEmail_ThenSendEmailResponseIsReturned()
+        {
+            //Arrange
+            var personalisation = new Dictionary<string, dynamic>
+            {
+                {"booking_ref", "XXXX"},
+                {"appointment_time", "10.00am"}
+
+            };
+            notifyClinet.Setup(x =>
+                    x.SendEmail(It.IsAny<string>(), It.IsAny<string>(), personalisation, It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new EmailNotificationResponse { id = It.IsAny<string>() });
+
+            //Act
+            var result = await systemUnderTest.SendEmail("dr.who@tardis.com", "templateId", personalisation);
+
+            //Assert
+            notifyClinet.Verify(x => x.SendEmail("dr.who@tardis.com", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+            result.Should().BeOfType<SendEmailConfirmationResponse>();
         }
     }
 }

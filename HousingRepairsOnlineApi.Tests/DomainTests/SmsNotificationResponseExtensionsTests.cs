@@ -25,14 +25,39 @@ namespace HousingRepairsOnlineApi.Tests.DomainTests
                 id = "id",
                 reference = "reference",
                 template = It.IsAny<Template>(),
-                uri = It.IsAny<string>()
+                uri = It.IsAny<string>(),
             };
 
             //Act
             var response = result.ToSendSmsResponse("number", "templateId", personalisation);
 
             //Assert
-            response.Should().BeOfType<SendSmsResponse>();
+            response.Should().BeOfType<SendSmsConfirmationResponse>();
+        }
+
+        [Fact]
+        public void CanMapToSendEmailResponse()
+        {
+            //Arrange
+            var personalisation = new Dictionary<string, dynamic>
+            {
+                {"booking_ref", "XXXX"},
+                {"appointment_time", "10.00am"}
+            };
+            var result = new EmailNotificationResponse()
+            {
+                content = It.IsAny<EmailResponseContent>(),
+                id = "id",
+                reference = "reference",
+                template = It.IsAny<Template>(),
+                uri = It.IsAny<string>()
+            };
+
+            //Act
+            var response = result.ToSendEmailResponse("dr.who@tardis.com", "templateId", personalisation);
+
+            //Assert
+            response.Should().BeOfType<SendEmailConfirmationResponse>();
         }
     }
 }

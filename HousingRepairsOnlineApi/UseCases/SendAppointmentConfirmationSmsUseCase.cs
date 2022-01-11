@@ -10,16 +10,16 @@ namespace HousingRepairsOnlineApi.UseCases
 {
     public class SendAppointmentConfirmationSmsUseCase : ISendAppointmentConfirmationSmsUseCase
     {
-        private readonly INotifyGateway _notifyGateway;
+        private readonly INotifyGateway notifyGateway;
         private readonly string templateId;
 
         public SendAppointmentConfirmationSmsUseCase(INotifyGateway notifyGateway, string templateId)
         {
-            this._notifyGateway = notifyGateway;
+            this.notifyGateway = notifyGateway;
             this.templateId = templateId;
         }
 
-        public async Task<SendSmsResponse> Execute(string number, string bookingRef, string appointmentTime)
+        public async Task<SendSmsConfirmationResponse> Execute(string number, string bookingRef, string appointmentTime)
         {
             Guard.Against.NullOrWhiteSpace(number, nameof(number), "The phone number provided is invalid");
             Guard.Against.NullOrWhiteSpace(bookingRef, nameof(bookingRef), "The booking reference provided is invalid");
@@ -32,7 +32,7 @@ namespace HousingRepairsOnlineApi.UseCases
                 {"appointment_time", appointmentTime}
             };
 
-            var response = await _notifyGateway.SendSms(number, templateId, personalisation);
+            var response = await notifyGateway.SendSms(number, templateId, personalisation);
             return response;
         }
 

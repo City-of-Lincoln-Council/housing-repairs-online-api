@@ -1,6 +1,6 @@
 ﻿namespace HousingRepairsOnlineApi.Domain
 {
-    public class SendSmsResponse
+    public class SendSmsConfirmationResponse
     {
         public string BookingReference { get; set; }
         public string PhoneNumber { get; set; }
