@@ -11,14 +11,14 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
     {
         private readonly SaveRepairRequestUseCase sytemUndertest;
         private readonly Mock<ISoREngine> mockSorEngine;
-        private readonly Mock<ICosmosGateway> mockCosmosGateway;
-        private readonly Mock<IAzureStorageGateway> mockAzureStorageGateway;
+        private readonly Mock<IRepairStorageGateway> mockCosmosGateway;
+        private readonly Mock<IBlobStorageGateway> mockAzureStorageGateway;
 
         public SaveRepairRequestUseCaseTests()
         {
             mockSorEngine = new Mock<ISoREngine>();
-            mockCosmosGateway = new Mock<ICosmosGateway>();
-            mockAzureStorageGateway = new Mock<IAzureStorageGateway>();
+            mockCosmosGateway = new Mock<IRepairStorageGateway>();
+            mockAzureStorageGateway = new Mock<IBlobStorageGateway>();
             sytemUndertest = new SaveRepairRequestUseCase(
                 mockCosmosGateway.Object,
                 mockAzureStorageGateway.Object,
@@ -65,15 +65,14 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             mockAzureStorageGateway.Setup(x => x.UploadBlob(Base64Img, FileExtension))
                 .ReturnsAsync(ImgUrl);
 
-            mockCosmosGateway.Setup(x => x.AddItemToContainerAsync(It.IsAny<Repair>()))
+            mockCosmosGateway.Setup(x => x.AddRepair(It.IsAny<Repair>()))
                 .ReturnsAsync((Repair r) => r.Id);
 
-            var actual = await sytemUndertest.Execute(repairRequest);
+            var _ = await sytemUndertest.Execute(repairRequest);
 
             mockAzureStorageGateway.Verify(x => x.UploadBlob(Base64Img, FileExtension), Times.Once);
             mockSorEngine.Verify(x => x.MapSorCode(Location, Problem, Issue), Times.Once);
-            mockCosmosGateway.Verify(x => x.AddItemToContainerAsync(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == ImgUrl)), Times.Once);
-            Assert.Matches("[A-Z0-9]{8}", actual);
+            mockCosmosGateway.Verify(x => x.AddRepair(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == ImgUrl)), Times.Once);
         }
     }
 }

@@ -8,11 +8,11 @@ namespace HousingRepairsOnlineApi.UseCases
 {
     public class SaveRepairRequestUseCase : ISaveRepairRequestUseCase
     {
-        private readonly ICosmosGateway cosmosGateway;
-        private readonly IAzureStorageGateway storageGateway;
+        private readonly IRepairStorageGateway cosmosGateway;
+        private readonly IBlobStorageGateway storageGateway;
         private readonly ISoREngine sorEngine;
 
-        public SaveRepairRequestUseCase(ICosmosGateway cosmosGateway, IAzureStorageGateway storageGateway, ISoREngine sorEngine)
+        public SaveRepairRequestUseCase(IRepairStorageGateway cosmosGateway, IBlobStorageGateway storageGateway, ISoREngine sorEngine)
 
         {
             this.cosmosGateway = cosmosGateway;
@@ -29,7 +29,6 @@ namespace HousingRepairsOnlineApi.UseCases
 
             var repair = new Repair
             {
-                Id = Guid.NewGuid().ToString().GetHashCode().ToString("x").ToUpper(),
                 Address = repairRequest.Address,
                 Postcode = repairRequest.Postcode,
                 Location = repairRequest.Location,
@@ -48,8 +47,8 @@ namespace HousingRepairsOnlineApi.UseCases
                     repairRequest.Problem.Value,
                     repairRequest.Issue.Value)
             };
-            // TODO: TEST NON UNIQUE ID
-            var savedRequest = await cosmosGateway.AddItemToContainerAsync(repair);
+
+            var savedRequest = await cosmosGateway.AddRepair(repair);
 
             return savedRequest;
         }

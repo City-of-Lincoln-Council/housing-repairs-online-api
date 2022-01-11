@@ -57,35 +57,21 @@ namespace HousingRepairsOnlineApi
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
             services.AddTransient<ISaveRepairRequestUseCase, SaveRepairRequestUseCase>();
 
-            var EndpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
-            var AuthorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
-            var DatabaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
-            var ContainerId = GetEnvironmentVariable("COSMOS_CONTAINER_ID");
+            var cosmosContainer = GetCosmosContainer();
 
-            CosmosClient cosmosClient = new CosmosClient(EndpointUrl, AuthorizationKey);
-
-            Task<DatabaseResponse> databaseResponseTask = cosmosClient.CreateDatabaseIfNotExistsAsync(DatabaseId);
-            _ = databaseResponseTask.GetAwaiter().GetResult(); ;
-
-            Task<ContainerResponse> cosmosContainerResponse = cosmosClient.GetDatabase(DatabaseId).CreateContainerIfNotExistsAsync(ContainerId, "/RepairID");
-            ContainerResponse cosmosContainer = cosmosContainerResponse.GetAwaiter().GetResult(); ;
-
-            services.AddTransient<ICosmosGateway, CosmosGateway>(s =>
+            services.AddTransient<IRepairStorageGateway, CosmosGateway>(s =>
             {
                 return new CosmosGateway(
-                    cosmosContainer
+                    cosmosContainer, new IdGenerator()
                 );
             });
-            string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
-            string blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
 
-            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
+            var blobContainerClient = GetBlobContainerClient();
 
-            services.AddTransient<IAzureStorageGateway, AzureStorageGateway>(s =>
+            services.AddTransient<IBlobStorageGateway, AzureStorageGateway>(s =>
             {
                 return new AzureStorageGateway(
-                    containerClient
+                    blobContainerClient
                 );
             });
 
@@ -96,6 +82,36 @@ namespace HousingRepairsOnlineApi
                 c.AddJwtSecurityScheme();
             });
 
+        }
+
+        private static BlobContainerClient GetBlobContainerClient()
+        {
+            string storageConnectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            string blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
+
+            BlobServiceClient blobServiceClient = new BlobServiceClient(storageConnectionString);
+            BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
+            return blobContainerClient;
+        }
+
+        private static ContainerResponse GetCosmosContainer()
+        {
+            var endpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
+            var authorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
+            var databaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
+            var containerId = GetEnvironmentVariable("COSMOS_CONTAINER_ID");
+
+            CosmosClient cosmosClient = new CosmosClient(endpointUrl, authorizationKey);
+
+            Task<DatabaseResponse> databaseResponseTask = cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
+            _ = databaseResponseTask.GetAwaiter().GetResult();
+            ;
+
+            Task<ContainerResponse> cosmosContainerResponse =
+                cosmosClient.GetDatabase(databaseId).CreateContainerIfNotExistsAsync(containerId, "/RepairID");
+            ContainerResponse cosmosContainer = cosmosContainerResponse.GetAwaiter().GetResult();
+            ;
+            return cosmosContainer;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,7 +5,7 @@ using Azure.Storage.Blobs;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
-    public class AzureStorageGateway : IAzureStorageGateway
+    public class AzureStorageGateway : IBlobStorageGateway
     {
         private BlobContainerClient storageContainerClient;
 

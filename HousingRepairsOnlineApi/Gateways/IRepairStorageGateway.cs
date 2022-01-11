@@ -3,8 +3,8 @@ using HousingRepairsOnlineApi.Domain;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
-    public interface ICosmosGateway
+    public interface IRepairStorageGateway
     {
-        Task<string> AddItemToContainerAsync(Repair repair);
+        Task<string> AddRepair(Repair repair);
     }
 }

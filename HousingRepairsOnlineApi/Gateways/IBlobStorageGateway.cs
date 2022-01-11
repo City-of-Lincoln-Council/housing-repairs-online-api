@@ -2,7 +2,7 @@
 
 namespace HousingRepairsOnlineApi.Gateways
 {
-    public interface IAzureStorageGateway
+    public interface IBlobStorageGateway
     {
         Task<string> UploadBlob(string base64Img, string fileExtension);
     }
