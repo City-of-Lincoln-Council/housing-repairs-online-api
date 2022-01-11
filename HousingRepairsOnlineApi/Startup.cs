@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Notify.Client;
 
 namespace HousingRepairsOnlineApi
 {
@@ -50,6 +51,15 @@ namespace HousingRepairsOnlineApi
                 httpClient.BaseAddress = new Uri(schedulingApiUrl);
                 return new AppointmentsGateway(httpClient, authenticationIdentifier);
             });
+
+            var notifyApiKey = GetEnvironmentVariable("GOV_NOTIFY_KEY");
+
+            var notifyClient = new NotificationClient(notifyApiKey);
+
+            services.AddTransient<IGovNotifyGateway, GovNotifyGateway>(s => new GovNotifyGateway(
+                notifyClient
+            ));
+            services.AddTransient<ISendAppointmentConfirmationSmsUseCase, SendAppointmentConfirmationSmsUseCase>();
 
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
 
