@@ -13,6 +13,7 @@ namespace HousingRepairsOnlineApi.Tests.DomainTests
         [Fact]
         public void CanMapToSendSmsResponse()
         {
+            //Arrange
             var personalisation = new Dictionary<string, dynamic>
             {
                 {"booking_ref", "XXXX"},
@@ -26,7 +27,11 @@ namespace HousingRepairsOnlineApi.Tests.DomainTests
                 template = It.IsAny<Template>(),
                 uri = It.IsAny<string>()
             };
+
+            //Act
             var response = result.ToSendSmsResponse("number", "templateId", personalisation);
+
+            //Assert
             response.Should().BeOfType<SendSmsResponse>();
         }
     }

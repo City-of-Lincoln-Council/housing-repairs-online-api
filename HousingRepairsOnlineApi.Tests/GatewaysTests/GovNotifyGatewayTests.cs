@@ -24,6 +24,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
         [Fact]
         public async Task GivenNoException_WhenSendSms_ThenSendSmsIsCalledOnClient()
         {
+            //Arrange
             var personalisation = new Dictionary<string, dynamic>
             {
                 {"booking_ref", "XXXX"},
@@ -33,14 +34,19 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             notifyClinet.Setup(x =>
                     x.SendSms(It.IsAny<string>(), It.IsAny<string>(), personalisation, It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new SmsNotificationResponse { id = It.IsAny<string>() });
+
+            //Act
             await systemUnderTest.SendSms("07415678534", "templateId", personalisation);
+
+            //Assert
             notifyClinet.Verify(x => x.SendSms("07415678534", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
 
         }
+
         [Fact]
         public async Task GivenNoException_WhenSendSms_ThenSendSmsResponseIsReturned()
         {
-
+            //Arrange
             var personalisation = new Dictionary<string, dynamic>
             {
                 {"booking_ref", "XXXX"},
@@ -50,7 +56,11 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             notifyClinet.Setup(x =>
                     x.SendSms(It.IsAny<string>(), It.IsAny<string>(), personalisation, It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(new SmsNotificationResponse { id = It.IsAny<string>() });
+
+            //Act
             var result = await systemUnderTest.SendSms("07415678534", "templateId", personalisation);
+
+            //Assert
             notifyClinet.Verify(x => x.SendSms("07415678534", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
             result.Should().BeOfType<SendSmsResponse>();
         }
