@@ -11,11 +11,11 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 {
     public class SendAppointmentConfirmationSmsUseCaseTests
     {
-        private readonly Mock<IGovNotifyGateway> govNotifyGatewayMock;
+        private readonly Mock<INotifyGateway> govNotifyGatewayMock;
         private readonly SendAppointmentConfirmationSmsUseCase systemUnderTest;
         public SendAppointmentConfirmationSmsUseCaseTests()
         {
-            govNotifyGatewayMock = new Mock<IGovNotifyGateway>();
+            govNotifyGatewayMock = new Mock<INotifyGateway>();
             systemUnderTest = new SendAppointmentConfirmationSmsUseCase(govNotifyGatewayMock.Object, "templateId");
         }
 
@@ -34,7 +34,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         {
             yield return new object[] { new ArgumentNullException(), null };
             yield return new object[] { new ArgumentException(), "" };
-            yield return new object[] { new ArgumentException(), "0741630005444" };
+            yield return new object[] { new ArgumentException(), "0741630004744" };
         }
 
         [Theory]

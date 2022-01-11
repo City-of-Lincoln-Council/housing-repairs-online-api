@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Notify.Models.Responses;
+using HousingRepairsOnlineApi.Domain;
 
 namespace HousingRepairsOnlineApi.UseCases
 {

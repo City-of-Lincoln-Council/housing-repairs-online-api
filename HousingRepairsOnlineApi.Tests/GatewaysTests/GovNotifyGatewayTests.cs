@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
+using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Gateways;
-using HousingRepairsOnlineApi.UseCases;
 using Moq;
 using Notify.Interfaces;
 using Notify.Models.Responses;
@@ -12,13 +12,13 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
 {
     public class GovNotifyGatewayTests
     {
-        private readonly GovNotifyGateway systemUnderTest;
+        private readonly NotifyGateway systemUnderTest;
         private readonly Mock<INotificationClient> notifyClinet;
 
         public GovNotifyGatewayTests()
         {
             notifyClinet = new Mock<INotificationClient>();
-            systemUnderTest = new GovNotifyGateway(notifyClinet.Object);
+            systemUnderTest = new NotifyGateway(notifyClinet.Object);
         }
 
         [Fact]

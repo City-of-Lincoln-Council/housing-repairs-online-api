@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HousingRepairsOnlineApi.UseCases;
+using HousingRepairsOnlineApi.Domain;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
-    public interface IGovNotifyGateway
+    public interface INotifyGateway
     {
         public Task<SendSmsResponse> SendSms(string number, string templateId,
             Dictionary<string, dynamic> personalisation);

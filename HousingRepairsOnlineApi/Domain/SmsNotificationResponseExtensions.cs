@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using HousingRepairsOnlineApi.UseCases;
 using Notify.Models.Responses;
 
-namespace HousingRepairsOnlineApi.Factories
+namespace HousingRepairsOnlineApi.Domain
 {
-    public static class ResponseFactory
+    public static class SmsNotificationResponseExtensions
     {
-        public static SendSmsResponse ToResponse(this SmsNotificationResponse notificationResponse, string number,
+        public static SendSmsResponse ToSendSmsResponse(this SmsNotificationResponse notificationResponse, string number,
             string templateId, Dictionary<string, dynamic> personalisation)
         {
             return new SendSmsResponse

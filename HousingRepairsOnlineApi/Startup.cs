@@ -54,12 +54,19 @@ namespace HousingRepairsOnlineApi
 
             var notifyApiKey = GetEnvironmentVariable("GOV_NOTIFY_KEY");
 
-            var notifyClient = new NotificationClient(notifyApiKey);
+            services.AddTransient<INotifyGateway, NotifyGateway>(s =>
+                {
+                    var notifyClient = new NotificationClient(notifyApiKey);
+                    return new NotifyGateway(notifyClient);
+                }
+            );
+            var smsConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_SMS_NOTIFY_TEMPLATE_ID");
 
-            services.AddTransient<IGovNotifyGateway, GovNotifyGateway>(s => new GovNotifyGateway(
-                notifyClient
-            ));
-            services.AddTransient<ISendAppointmentConfirmationSmsUseCase, SendAppointmentConfirmationSmsUseCase>();
+            services.AddTransient<ISendAppointmentConfirmationSmsUseCase, SendAppointmentConfirmationSmsUseCase>(s =>
+            {
+                var notifyGateway = s.GetService<INotifyGateway>();
+                return new SendAppointmentConfirmationSmsUseCase(notifyGateway, smsConfirmationTemplateId);
+            });
 
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
 

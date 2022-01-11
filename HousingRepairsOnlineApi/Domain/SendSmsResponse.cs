@@ -1,4 +1,4 @@
-﻿namespace HousingRepairsOnlineApi.UseCases
+﻿namespace HousingRepairsOnlineApi.Domain
 {
     public class SendSmsResponse
     {

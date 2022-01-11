@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using HousingRepairsOnlineApi.Factories;
-using HousingRepairsOnlineApi.UseCases;
+using HousingRepairsOnlineApi.Domain;
 using Moq;
 using Notify.Models;
 using Notify.Models.Responses;
 using Xunit;
 
-namespace HousingRepairsOnlineApi.Tests.Factories
+namespace HousingRepairsOnlineApi.Tests.DomainTests
 {
-    public class ResponseFactoryTests
+    public class SmsNotificationResponseExtensionsTests
     {
         [Fact]
         public void CanMapToSendSmsResponse()
@@ -27,7 +26,7 @@ namespace HousingRepairsOnlineApi.Tests.Factories
                 template = It.IsAny<Template>(),
                 uri = It.IsAny<string>()
             };
-            var response = result.ToResponse("number", "templateId", personalisation);
+            var response = result.ToSendSmsResponse("number", "templateId", personalisation);
             response.Should().BeOfType<SendSmsResponse>();
         }
     }

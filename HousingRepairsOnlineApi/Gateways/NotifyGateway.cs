@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HousingRepairsOnlineApi.Factories;
-using HousingRepairsOnlineApi.UseCases;
+using HousingRepairsOnlineApi.Domain;
 using Notify.Interfaces;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
-    public class GovNotifyGateway : IGovNotifyGateway
+    public class NotifyGateway : INotifyGateway
     {
         private readonly INotificationClient client;
 
-        public GovNotifyGateway(INotificationClient client)
+        public NotifyGateway(INotificationClient client)
         {
             this.client = client;
         }
@@ -24,7 +23,7 @@ namespace HousingRepairsOnlineApi.Gateways
                     personalisation: personalisation
                 );
             var response = result
-                .ToResponse(number, templateId, personalisation);
+                .ToSendSmsResponse(number, templateId, personalisation);
             return response;
         }
 
