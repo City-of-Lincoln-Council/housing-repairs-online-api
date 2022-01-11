@@ -18,7 +18,6 @@ namespace HousingRepairsOnlineApi.Controllers
         }
 
         [HttpPost]
-        [Route("RepairRequests")]
         public async Task<IActionResult> SaveRepairRequests([FromBody] RepairRequest repairRequest)
         {
             try
