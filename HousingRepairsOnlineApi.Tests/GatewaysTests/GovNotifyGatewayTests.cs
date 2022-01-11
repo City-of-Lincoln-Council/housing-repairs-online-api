@@ -31,10 +31,10 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
 
             };
             notifyClinet.Setup(x =>
-                    x.SendSms(It.IsAny<string>(), It.IsAny<string>() , personalisation, It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new SmsNotificationResponse{ id = It.IsAny<string>()});
-            await systemUnderTest.SendSms("07415678534","templateId",  personalisation);
-            notifyClinet.Verify(x => x.SendSms("07415678534","templateId",  personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+                    x.SendSms(It.IsAny<string>(), It.IsAny<string>(), personalisation, It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new SmsNotificationResponse { id = It.IsAny<string>() });
+            await systemUnderTest.SendSms("07415678534", "templateId", personalisation);
+            notifyClinet.Verify(x => x.SendSms("07415678534", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
 
         }
         [Fact]
@@ -48,10 +48,10 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
 
             };
             notifyClinet.Setup(x =>
-                    x.SendSms(It.IsAny<string>(), It.IsAny<string>() , personalisation, It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new SmsNotificationResponse{ id = It.IsAny<string>()});
-            var result = await systemUnderTest.SendSms("07415678534","templateId",  personalisation);
-            notifyClinet.Verify(x => x.SendSms("07415678534","templateId",  personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+                    x.SendSms(It.IsAny<string>(), It.IsAny<string>(), personalisation, It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new SmsNotificationResponse { id = It.IsAny<string>() });
+            var result = await systemUnderTest.SendSms("07415678534", "templateId", personalisation);
+            notifyClinet.Verify(x => x.SendSms("07415678534", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
             result.Should().BeOfType<SendSmsResponse>();
         }
     }

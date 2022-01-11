@@ -11,11 +11,11 @@ namespace HousingRepairsOnlineApi.Factories
         {
             return new SendSmsResponse
             {
-                BookingReference = (string) personalisation["booking_ref"],
+                BookingReference = (string)personalisation["booking_ref"],
                 TemplateId = templateId,
                 PhoneNumber = number,
                 GovNotifyId = notificationResponse.id,
-                AppointmentTime = (string) personalisation["appointment_time"],
+                AppointmentTime = (string)personalisation["appointment_time"],
             };
         }
     }

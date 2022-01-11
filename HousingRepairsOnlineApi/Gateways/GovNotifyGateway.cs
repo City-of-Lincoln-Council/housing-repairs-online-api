@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HousingRepairsOnlineApi.Factories;
 using HousingRepairsOnlineApi.UseCases;
 using Notify.Interfaces;
-using HousingRepairsOnlineApi.Factories;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
