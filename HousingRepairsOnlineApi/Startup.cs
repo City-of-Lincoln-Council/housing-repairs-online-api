@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Notify.Client;
 
 namespace HousingRepairsOnlineApi
 {
@@ -49,6 +50,30 @@ namespace HousingRepairsOnlineApi
                 var httpClient = s.GetService<HttpClient>();
                 httpClient.BaseAddress = new Uri(schedulingApiUrl);
                 return new AppointmentsGateway(httpClient, authenticationIdentifier);
+            });
+
+            var notifyApiKey = GetEnvironmentVariable("GOV_NOTIFY_KEY");
+
+            services.AddTransient<INotifyGateway, NotifyGateway>(s =>
+                {
+                    var notifyClient = new NotificationClient(notifyApiKey);
+                    return new NotifyGateway(notifyClient);
+                }
+            );
+            var smsConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_SMS_NOTIFY_TEMPLATE_ID");
+
+            var emailConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_EMAIL_NOTIFY_TEMPLATE_ID");
+
+            services.AddTransient<ISendAppointmentConfirmationSmsUseCase, SendAppointmentConfirmationSmsUseCase>(s =>
+            {
+                var notifyGateway = s.GetService<INotifyGateway>();
+                return new SendAppointmentConfirmationSmsUseCase(notifyGateway, smsConfirmationTemplateId);
+            });
+
+            services.AddTransient<ISendAppointmentConfirmationEmailUseCase, SendAppointmentConfirmationEmailUseCase>(s =>
+            {
+                var notifyGateway = s.GetService<INotifyGateway>();
+                return new SendAppointmentConfirmationEmailUseCase(notifyGateway, emailConfirmationTemplateId);
             });
 
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
