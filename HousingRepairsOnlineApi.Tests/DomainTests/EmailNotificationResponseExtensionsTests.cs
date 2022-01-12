@@ -33,6 +33,7 @@ namespace HousingRepairsOnlineApi.Tests.DomainTests
 
             //Assert
             response.Should().BeOfType<SendEmailConfirmationResponse>();
+
             // response.TemplateId.Should().Be("templateId");
             // response.AppointmentTime.Should().Be(personalisation["appointment_time"]);
             // response.BookingReference.Should().Be(personalisation["booking_ref"]);
