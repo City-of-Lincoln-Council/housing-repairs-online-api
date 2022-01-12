@@ -24,7 +24,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         {
             yield return new object[] { new ArgumentNullException(), null };
             yield return new object[] { new ArgumentException(), "" };
-            yield return new object[] { new ArgumentException(), "0741630004744" };
+            yield return new object[] { new ArgumentException(), "074353000554" };
         }
 
         [Theory]

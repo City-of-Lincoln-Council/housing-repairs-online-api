@@ -24,6 +24,7 @@ namespace HousingRepairsOnlineApi.UseCases
             Guard.Against.NullOrWhiteSpace(bookingRef, nameof(bookingRef), "The booking reference provided is invalid");
             Guard.Against.NullOrWhiteSpace(appointmentTime, nameof(appointmentTime), "The appointment time provided is invalid");
 
+            ValidateEmail(email);
             var personalisation = new Dictionary<string, dynamic>
             {
                 {"booking_ref", bookingRef},
@@ -32,6 +33,16 @@ namespace HousingRepairsOnlineApi.UseCases
 
             var response = await notifyGateway.SendEmail(email, templateId, personalisation);
             return response;
+        }
+
+        private static bool ValidateEmail(string email)
+        {
+            var result = new Regex(@"^\w+([\.-]?\w+)*([\+\.-]?\w+)?@\w+([\.-]?\w+)*(\.\w{2,3})+");
+            if (!result.IsMatch(email))
+            {
+                throw new ArgumentException("The email provided is invalid", nameof(email));
+            }
+            return true;
         }
     }
 

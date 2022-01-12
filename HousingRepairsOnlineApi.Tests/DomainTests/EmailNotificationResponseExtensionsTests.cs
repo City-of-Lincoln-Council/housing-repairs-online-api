@@ -8,10 +8,10 @@ using Xunit;
 
 namespace HousingRepairsOnlineApi.Tests.DomainTests
 {
-    public class SmsNotificationResponseExtensionsTests
+    public class EmailNotificationResponseExtensionsTests
     {
         [Fact]
-        public void CanMapToSendSmsResponse()
+        public void CanMapToSendEmailResponse()
         {
             //Arrange
             var personalisation = new Dictionary<string, dynamic>
@@ -19,20 +19,20 @@ namespace HousingRepairsOnlineApi.Tests.DomainTests
                 {"booking_ref", "XXXX"},
                 {"appointment_time", "10.00am"}
             };
-            var result = new SmsNotificationResponse()
+            var result = new EmailNotificationResponse()
             {
-                content = It.IsAny<SmsResponseContent>(),
+                content = It.IsAny<EmailResponseContent>(),
                 id = "id",
                 reference = "reference",
                 template = It.IsAny<Template>(),
-                uri = It.IsAny<string>(),
+                uri = It.IsAny<string>()
             };
 
             //Act
-            var response = result.ToSendSmsResponse("number", "templateId", personalisation);
+            var response = result.ToSendEmailResponse("dr.who@tardis.com", "templateId", personalisation);
 
             //Assert
-            response.Should().BeOfType<SendSmsConfirmationResponse>();
+            response.Should().BeOfType<SendEmailConfirmationResponse>();
         }
     }
 }
