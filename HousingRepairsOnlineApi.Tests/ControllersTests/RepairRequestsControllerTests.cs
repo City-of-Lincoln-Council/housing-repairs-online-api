@@ -12,11 +12,15 @@ namespace HousingRepairsOnlineApi.Tests
     {
         private RepairController sytemUndertest;
         private Mock<ISaveRepairRequestUseCase> saveRepairRequestUseCaseMock;
+        private Mock<ISendAppointmentConfirmationEmailUseCase> sendAppointmentConfirmationEmailUseCase;
+        private Mock<ISendAppointmentConfirmationSmsUseCase> sendAppointmentConfirmationSmsUseCase;
 
         public RepairRequestsControllerTests()
         {
             saveRepairRequestUseCaseMock = new Mock<ISaveRepairRequestUseCase>();
-            sytemUndertest = new RepairController(saveRepairRequestUseCaseMock.Object);
+            sendAppointmentConfirmationEmailUseCase = new Mock<ISendAppointmentConfirmationEmailUseCase>();
+            sendAppointmentConfirmationSmsUseCase = new Mock<ISendAppointmentConfirmationSmsUseCase>();
+            sytemUndertest = new RepairController(saveRepairRequestUseCaseMock.Object, sendAppointmentConfirmationEmailUseCase.Object, sendAppointmentConfirmationSmsUseCase.Object);
         }
 
         [Fact]
@@ -31,6 +35,7 @@ namespace HousingRepairsOnlineApi.Tests
             GetStatusCode(result).Should().Be(200);
             saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
         }
+
         [Fact]
         public async Task ReturnsErrorWhenFailsToSave()
         {
@@ -42,6 +47,58 @@ namespace HousingRepairsOnlineApi.Tests
 
             GetStatusCode(result).Should().Be(500);
             saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenEmailContact_WhenRepair_ThenSendAppointmentConfirmationEmailUseCaseIsCalled()
+        {
+            //Arrange
+            RepairRequest repairRequest = new RepairRequest
+            {
+                ContactDetails = new RepairContactDetails
+                {
+                    Type = "email",
+                    Value = "dr.who@tardis.com"
+                },
+                Time = new RepairAvailability
+                {
+                    Display = "Displayed Time"
+                }
+            };
+            const string RepairId = "1AB2C3D4";
+            saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest)).ReturnsAsync(RepairId);
+
+            //Assert
+            await sytemUndertest.SaveRepair(repairRequest);
+
+            //Act
+            sendAppointmentConfirmationEmailUseCase.Verify(x => x.Execute(repairRequest.ContactDetails.Value, RepairId, "Displayed Time"), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenSmsContact_WhenRepair_ThenSendAppointmentConfirmationSmsUseCaseIsCalled()
+        {
+            //Arrange
+            RepairRequest repairRequest = new RepairRequest
+            {
+                ContactDetails = new RepairContactDetails
+                {
+                    Type = "sms",
+                    Value = "07653744057"
+                },
+                Time = new RepairAvailability
+                {
+                    Display = "Displayed Time"
+                }
+            };
+            const string RepairId = "1AB2C3D4";
+            saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest)).ReturnsAsync(RepairId);
+
+            //Act
+            await sytemUndertest.SaveRepair(repairRequest);
+
+            //Assert
+            sendAppointmentConfirmationSmsUseCase.Verify(x => x.Execute(repairRequest.ContactDetails.Value, RepairId, "Displayed Time"), Times.Once);
         }
     }
 }

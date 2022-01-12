@@ -11,10 +11,18 @@ namespace HousingRepairsOnlineApi.Controllers
     public class RepairController : ControllerBase
     {
         private readonly ISaveRepairRequestUseCase saveRepairRequestUseCase;
+        private readonly ISendAppointmentConfirmationEmailUseCase sendAppointmentConfirmationEmailUseCase;
+        private readonly ISendAppointmentConfirmationSmsUseCase sendAppointmentConfirmationSmsUseCase;
 
-        public RepairController(ISaveRepairRequestUseCase saveRepairRequestUseCase)
+        public RepairController(
+            ISaveRepairRequestUseCase saveRepairRequestUseCase,
+            ISendAppointmentConfirmationEmailUseCase sendAppointmentConfirmationEmailUseCase,
+            ISendAppointmentConfirmationSmsUseCase sendAppointmentConfirmationSmsUseCase
+            )
         {
             this.saveRepairRequestUseCase = saveRepairRequestUseCase;
+            this.sendAppointmentConfirmationEmailUseCase = sendAppointmentConfirmationEmailUseCase;
+            this.sendAppointmentConfirmationSmsUseCase = sendAppointmentConfirmationSmsUseCase;
         }
 
         [HttpPost]
@@ -23,7 +31,17 @@ namespace HousingRepairsOnlineApi.Controllers
             try
             {
                 var result = await saveRepairRequestUseCase.Execute(repairRequest);
-
+                switch (repairRequest?.ContactDetails?.Type)
+                {
+                    case "email":
+                        await sendAppointmentConfirmationEmailUseCase.Execute(repairRequest.ContactDetails.Value, result,
+                            repairRequest.Time.Display);
+                        break;
+                    case "sms":
+                        await sendAppointmentConfirmationSmsUseCase.Execute(repairRequest.ContactDetails.Value, result,
+                            repairRequest.Time.Display);
+                        break;
+                }
                 return Ok(result);
             }
             catch (Exception ex)
