@@ -8,17 +8,17 @@ namespace HousingRepairsOnlineApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RepairRequestsController : ControllerBase
+    public class RepairController : ControllerBase
     {
         private readonly ISaveRepairRequestUseCase saveRepairRequestUseCase;
 
-        public RepairRequestsController(ISaveRepairRequestUseCase saveRepairRequestUseCase)
+        public RepairController(ISaveRepairRequestUseCase saveRepairRequestUseCase)
         {
             this.saveRepairRequestUseCase = saveRepairRequestUseCase;
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveRepairRequests([FromBody] RepairRequest repairRequest)
+        public async Task<IActionResult> SaveRepair([FromBody] RepairRequest repairRequest)
         {
             try
             {

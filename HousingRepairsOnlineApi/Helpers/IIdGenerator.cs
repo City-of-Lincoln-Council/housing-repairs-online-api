@@ -1,7 +1,7 @@
 ﻿namespace HousingRepairsOnlineApi.Helpers
 {
-    public abstract class IIdGenerator
+    public interface IIdGenerator
     {
-        public abstract string Generate();
+        public string Generate();
     }
 }
