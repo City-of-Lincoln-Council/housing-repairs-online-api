@@ -34,7 +34,7 @@ namespace HousingRepairsOnlineApi.Tests.DomainTests
             //Assert
             response.Should().BeOfType<SendSmsConfirmationResponse>();
             response.TemplateId.Should().Be("templateId");
-            // response.AppointmentTime.Should().Be("10.00am");
+            response.AppointmentTime.Should().Be("10.00am");
             // response.BookingReference.Should().Be("XXXX");
             // response.PhoneNumber.Should().Be("number");
             // response.GovNotifyId.Should().Be("id");
