@@ -84,7 +84,7 @@ namespace HousingRepairsOnlineApi.Tests
                 ContactDetails = new RepairContactDetails
                 {
                     Type = "sms",
-                    Value = "07653744057"
+                    Value = "0765374057"
                 },
                 Time = new RepairAvailability
                 {
