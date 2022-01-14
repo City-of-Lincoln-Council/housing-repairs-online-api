@@ -9,20 +9,20 @@ namespace HousingRepairsOnlineApi.Tests
 {
     public class AddressesControllerTests : ControllerTests
     {
-        private AddressesController sytemUndertest;
+        private AddressesController systemUnderTest;
         private Mock<IRetrieveAddressesUseCase> retrieveAddressesUseCaseMock;
 
         public AddressesControllerTests()
         {
             retrieveAddressesUseCaseMock = new Mock<IRetrieveAddressesUseCase>();
-            sytemUndertest = new AddressesController(retrieveAddressesUseCaseMock.Object);
+            systemUnderTest = new AddressesController(retrieveAddressesUseCaseMock.Object);
         }
 
         [Fact]
         public async Task TestEndpoint()
         {
             const string Postcode = "M3 0W";
-            var result = await sytemUndertest.Addresses(Postcode);
+            var result = await systemUnderTest.Addresses(Postcode);
 
             GetStatusCode(result).Should().Be(200);
             retrieveAddressesUseCaseMock.Verify(x => x.Execute(Postcode), Times.Once);

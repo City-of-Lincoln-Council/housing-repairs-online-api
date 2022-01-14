@@ -10,7 +10,7 @@ namespace HousingRepairsOnlineApi.Tests
 {
     public class RepairRequestsControllerTests : ControllerTests
     {
-        private RepairController sytemUndertest;
+        private RepairController systemUnderTest;
         private Mock<ISaveRepairRequestUseCase> saveRepairRequestUseCaseMock;
         private Mock<ISendAppointmentConfirmationEmailUseCase> sendAppointmentConfirmationEmailUseCase;
         private Mock<ISendAppointmentConfirmationSmsUseCase> sendAppointmentConfirmationSmsUseCase;
@@ -20,7 +20,7 @@ namespace HousingRepairsOnlineApi.Tests
             saveRepairRequestUseCaseMock = new Mock<ISaveRepairRequestUseCase>();
             sendAppointmentConfirmationEmailUseCase = new Mock<ISendAppointmentConfirmationEmailUseCase>();
             sendAppointmentConfirmationSmsUseCase = new Mock<ISendAppointmentConfirmationSmsUseCase>();
-            sytemUndertest = new RepairController(saveRepairRequestUseCaseMock.Object, sendAppointmentConfirmationEmailUseCase.Object, sendAppointmentConfirmationSmsUseCase.Object);
+            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, sendAppointmentConfirmationEmailUseCase.Object, sendAppointmentConfirmationSmsUseCase.Object);
         }
 
         [Fact]
@@ -30,7 +30,7 @@ namespace HousingRepairsOnlineApi.Tests
             const string RepairId = "1AB2C3D4";
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).ReturnsAsync(RepairId);
 
-            var result = await sytemUndertest.SaveRepair(repairRequest);
+            var result = await systemUnderTest.SaveRepair(repairRequest);
 
             GetStatusCode(result).Should().Be(200);
             saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
@@ -43,7 +43,7 @@ namespace HousingRepairsOnlineApi.Tests
 
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).Throws<System.Exception>();
 
-            var result = await sytemUndertest.SaveRepair(repairRequest);
+            var result = await systemUnderTest.SaveRepair(repairRequest);
 
             GetStatusCode(result).Should().Be(500);
             saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
@@ -69,7 +69,7 @@ namespace HousingRepairsOnlineApi.Tests
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest)).ReturnsAsync(RepairId);
 
             //Assert
-            await sytemUndertest.SaveRepair(repairRequest);
+            await systemUnderTest.SaveRepair(repairRequest);
 
             //Act
             sendAppointmentConfirmationEmailUseCase.Verify(x => x.Execute(repairRequest.ContactDetails.Value, RepairId, "Displayed Time"), Times.Once);
@@ -95,7 +95,7 @@ namespace HousingRepairsOnlineApi.Tests
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest)).ReturnsAsync(RepairId);
 
             //Act
-            await sytemUndertest.SaveRepair(repairRequest);
+            await systemUnderTest.SaveRepair(repairRequest);
 
             //Assert
             sendAppointmentConfirmationSmsUseCase.Verify(x => x.Execute(repairRequest.ContactDetails.Value, RepairId, "Displayed Time"), Times.Once);

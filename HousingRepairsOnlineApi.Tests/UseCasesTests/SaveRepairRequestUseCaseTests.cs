@@ -9,7 +9,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 {
     public class SaveRepairRequestUseCaseTests
     {
-        private readonly SaveRepairRequestUseCase sytemUndertest;
+        private readonly SaveRepairRequestUseCase systemUnderTest;
         private readonly Mock<ISoREngine> mockSorEngine;
         private readonly Mock<IRepairStorageGateway> mockCosmosGateway;
         private readonly Mock<IBlobStorageGateway> mockAzureStorageGateway;
@@ -19,7 +19,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             mockSorEngine = new Mock<ISoREngine>();
             mockCosmosGateway = new Mock<IRepairStorageGateway>();
             mockAzureStorageGateway = new Mock<IBlobStorageGateway>();
-            sytemUndertest = new SaveRepairRequestUseCase(
+            systemUnderTest = new SaveRepairRequestUseCase(
                 mockCosmosGateway.Object,
                 mockAzureStorageGateway.Object,
                 mockSorEngine.Object
@@ -68,7 +68,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             mockCosmosGateway.Setup(x => x.AddRepair(It.IsAny<Repair>()))
                 .ReturnsAsync((Repair r) => r.Id);
 
-            var _ = await sytemUndertest.Execute(repairRequest);
+            var _ = await systemUnderTest.Execute(repairRequest);
 
             mockAzureStorageGateway.Verify(x => x.UploadBlob(Base64Img, FileExtension), Times.Once);
             mockSorEngine.Verify(x => x.MapSorCode(Location, Problem, Issue), Times.Once);
