@@ -20,7 +20,7 @@ namespace HousingRepairsOnlineApi.UseCases
             this.sorEngine = sorEngine;
         }
 
-        public async Task<string> Execute(RepairRequest repairRequest)
+        public async Task<Repair> Execute(RepairRequest repairRequest)
         {
             var photoUrl = storageGateway.UploadBlob(
                 repairRequest.Description.Base64Img,
@@ -40,6 +40,7 @@ namespace HousingRepairsOnlineApi.UseCases
                 Description = new RepairDescription
                 {
                     Text = repairRequest.Description.Text,
+                    Base64Image = repairRequest.Description.Base64Img,
                     PhotoUrl = photoUrl
                 },
                 SOR = sorEngine.MapSorCode(

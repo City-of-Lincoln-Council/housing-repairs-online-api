@@ -5,6 +5,6 @@ namespace HousingRepairsOnlineApi.Gateways
 {
     public interface IRepairStorageGateway
     {
-        Task<string> AddRepair(Repair repair);
+        Task<Repair> AddRepair(Repair repair);
     }
 }

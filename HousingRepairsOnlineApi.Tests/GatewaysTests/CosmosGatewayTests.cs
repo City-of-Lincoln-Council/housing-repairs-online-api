@@ -44,7 +44,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             var actual = await azureStorageGateway.AddRepair(dummyRepair);
 
             // Assert
-            Assert.Equal(repairId, actual);
+            Assert.Equal(repairId, actual.Id);
             mockIdGenerator.Verify(_ => _.Generate(), Times.Once());
         }
 
@@ -75,7 +75,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
 
             // Assert
             mockIdGenerator.Verify(_ => _.Generate(), Times.Exactly(2));
-            Assert.Equal(repairId, actual);
+            Assert.Equal(repairId, actual.Id);
         }
     }
 }

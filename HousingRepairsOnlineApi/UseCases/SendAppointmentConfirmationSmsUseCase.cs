@@ -19,7 +19,7 @@ namespace HousingRepairsOnlineApi.UseCases
             this.templateId = templateId;
         }
 
-        public async Task<SendSmsConfirmationResponse> Execute(string number, string bookingRef, string appointmentTime)
+        public async Task Execute(string number, string bookingRef, string appointmentTime)
         {
             Guard.Against.NullOrWhiteSpace(number, nameof(number), "The phone number provided is invalid");
             Guard.Against.NullOrWhiteSpace(bookingRef, nameof(bookingRef), "The booking reference provided is invalid");
@@ -28,12 +28,11 @@ namespace HousingRepairsOnlineApi.UseCases
 
             var personalisation = new Dictionary<string, dynamic>
             {
-                {"booking_ref", bookingRef},
+                {"repair_ref", bookingRef},
                 {"appointment_time", appointmentTime}
             };
 
-            var response = await notifyGateway.SendSms(number, templateId, personalisation);
-            return response;
+            await notifyGateway.SendSms(number, templateId, personalisation);
         }
 
         private static bool ValidatePhoneNumber(string number)

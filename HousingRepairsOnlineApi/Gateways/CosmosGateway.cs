@@ -20,7 +20,7 @@ namespace HousingRepairsOnlineApi.Gateways
         /// <summary>
         /// Add Repair items to the container
         /// </summary>
-        public async Task<string> AddRepair(Repair repair)
+        public async Task<Repair> AddRepair(Repair repair)
         {
             repair.Id = idGenerator.Generate();
 
@@ -28,12 +28,12 @@ namespace HousingRepairsOnlineApi.Gateways
             {
                 ItemResponse<Repair> itemResponse = await cosmosContainer.CreateItemAsync(repair);
 
-                return itemResponse.Value.Id;
+                return itemResponse.Value;
             }
             catch (CosmosException ex)
             {
-                var reponseId = await AddRepair(repair);
-                return reponseId;
+                var newRepair = await AddRepair(repair);
+                return newRepair;
             }
         }
     }

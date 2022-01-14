@@ -18,7 +18,7 @@ namespace HousingRepairsOnlineApi.UseCases
             this.notifyGateway = notifyGateway;
             this.templateId = templateId;
         }
-        public async Task<SendEmailConfirmationResponse> Execute(string email, string bookingRef, string appointmentTime)
+        public async Task Execute(string email, string bookingRef, string appointmentTime)
         {
             Guard.Against.NullOrWhiteSpace(email, nameof(email), "The email provided is invalid");
             Guard.Against.NullOrWhiteSpace(bookingRef, nameof(bookingRef), "The booking reference provided is invalid");
@@ -27,12 +27,11 @@ namespace HousingRepairsOnlineApi.UseCases
             ValidateEmail(email);
             var personalisation = new Dictionary<string, dynamic>
             {
-                {"booking_ref", bookingRef},
+                {"repair_ref", bookingRef},
                 {"appointment_time", appointmentTime}
             };
 
-            var response = await notifyGateway.SendEmail(email, templateId, personalisation);
-            return response;
+            await notifyGateway.SendEmail(email, templateId, personalisation);
         }
 
         private static bool ValidateEmail(string email)
