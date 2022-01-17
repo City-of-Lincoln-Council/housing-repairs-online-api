@@ -79,12 +79,7 @@ namespace HousingRepairsOnlineApi
                 return new SendAppointmentConfirmationEmailUseCase(notifyGateway, emailConfirmationTemplateId);
             });
 
-            services.AddTransient<IAppointmentConfirmationSender, AppointmentConfirmationSender>(s =>
-            {
-                var sendAppointmentConfirmationEmailUseCase = s.GetService<ISendAppointmentConfirmationEmailUseCase>();
-                var sendAppointmentConfirmationSmsUseCase = s.GetService<ISendAppointmentConfirmationSmsUseCase>();
-                return new AppointmentConfirmationSender(sendAppointmentConfirmationEmailUseCase, sendAppointmentConfirmationSmsUseCase);
-            });
+            services.AddTransient<IAppointmentConfirmationSender, AppointmentConfirmationSender>();
 
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
             services.AddTransient<ISaveRepairRequestUseCase, SaveRepairRequestUseCase>();

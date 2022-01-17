@@ -20,10 +20,10 @@ namespace HousingRepairsOnlineApi.Helpers
         {
             switch (repairRequest?.ContactDetails?.Type)
             {
-                case Constants.Email:
+                case AppointmentConfirmationSendingTypes.Email:
                     sendAppointmentConfirmationEmailUseCase.Execute(repairRequest.ContactDetails.Value, repairId, repairRequest.Time.Display);
                     break;
-                case Constants.Sms:
+                case AppointmentConfirmationSendingTypes.Sms:
                     sendAppointmentConfirmationSmsUseCase.Execute(repairRequest.ContactDetails.Value, repairId,
                         repairRequest.Time.Display);
                     break;

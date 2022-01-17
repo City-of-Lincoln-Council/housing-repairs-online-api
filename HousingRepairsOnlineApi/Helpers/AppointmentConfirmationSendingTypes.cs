@@ -2,7 +2,7 @@
 
 namespace HousingRepairsOnlineApi.Helpers
 {
-    public static class Constants
+    public static class AppointmentConfirmationSendingTypes
     {
         public const string Email = "email";
         public const string Sms = "sms";
