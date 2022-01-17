@@ -67,6 +67,10 @@ namespace HousingRepairsOnlineApi
 
             var emailConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_EMAIL_NOTIFY_TEMPLATE_ID");
 
+            var internalEmailConfirmationTemplateId = GetEnvironmentVariable("INTERNAL_EMAIL_NOTIFY_TEMPLATE_ID");
+
+            var internalEmail = GetEnvironmentVariable("INTERNAL_EMAIL");
+
             services.AddTransient<ISendAppointmentConfirmationSmsUseCase, SendAppointmentConfirmationSmsUseCase>(s =>
             {
                 var notifyGateway = s.GetService<INotifyGateway>();
@@ -77,6 +81,12 @@ namespace HousingRepairsOnlineApi
             {
                 var notifyGateway = s.GetService<INotifyGateway>();
                 return new SendAppointmentConfirmationEmailUseCase(notifyGateway, emailConfirmationTemplateId);
+            });
+
+            services.AddTransient<ISendInternalEmailUseCase, SendInternalEmailUseCase>(s =>
+            {
+                var notifyGateway = s.GetService<INotifyGateway>();
+                return new SendInternalEmailUseCase(notifyGateway, internalEmailConfirmationTemplateId, internalEmail);
             });
 
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
