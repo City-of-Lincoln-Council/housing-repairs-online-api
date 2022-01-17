@@ -28,7 +28,7 @@ namespace HousingRepairsOnlineApi.Tests
         {
             var repairRequest = new RepairRequest
             {
-                ContactDetails = new RepairContactDetails { Value =  "07465087654" },
+                ContactDetails = new RepairContactDetails { Value = "07465087654" },
                 Address = new RepairAddress { Display = "address", LocationId = "uprn" },
                 Description = new RepairDescriptionRequest { Text = "repair description", Base64Img = "image" },
                 Location = new RepairLocation { Value = "location" },

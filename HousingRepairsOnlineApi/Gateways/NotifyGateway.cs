@@ -22,7 +22,7 @@ namespace HousingRepairsOnlineApi.Gateways
         public async Task SendEmail(string email, string templateId,
             Dictionary<string, dynamic> personalisation)
         {
-            client.SendEmail(emailAddress: email,templateId: templateId,personalisation: personalisation);
+            client.SendEmail(emailAddress: email, templateId: templateId, personalisation: personalisation);
         }
     }
 }
