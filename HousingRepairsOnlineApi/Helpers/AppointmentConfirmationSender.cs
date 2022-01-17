@@ -28,7 +28,7 @@ namespace HousingRepairsOnlineApi.Helpers
                         repairRequest.Time.Display);
                     break;
                 default:
-                    throw new Exception("Invalid contact type");
+                    throw new Exception($"Invalid contact type: {repairRequest?.ContactDetails?.Type}");
             }
         }
     }
