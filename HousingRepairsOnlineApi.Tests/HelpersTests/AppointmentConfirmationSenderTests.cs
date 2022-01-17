@@ -31,7 +31,7 @@ namespace HousingRepairsOnlineApi.Tests.HelpersTests
         [Fact]
         public void GivenSmsContact_WhenExecute_ThenSendAppointmentConfirmationSmsUseCaseIsCalled()
         {
-            var repairRequest = new RepairRequest { ContactDetails = new RepairContactDetails { Type = "sms", Value = "0754325678" }, Time = new RepairAvailability() { Display = "some time" } };
+            var repairRequest = new RepairRequest { ContactDetails = new RepairContactDetails { Type = HousingRepairsOnlineApi.Helpers.Constants.Sms, Value = "0754325678" }, Time = new RepairAvailability() { Display = "some time" } };
             systemUnderTest.Execute(repairRequest, "id");
             sendAppointmentConfirmationEmailUseCaseMock.Verify(x => x.Execute(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
             sendAppointmentConfirmationSmsUseCaseMock.Verify(x => x.Execute(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
