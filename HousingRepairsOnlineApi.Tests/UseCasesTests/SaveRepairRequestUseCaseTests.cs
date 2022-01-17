@@ -27,7 +27,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         }
 
         [Fact]
-        public async void GivenARepairRequestARepairIsSaved()
+        public async void GivenARepairRequestWithImageARepairIsSaved()
         {
             const string Location = "kitchen";
             const string Problem = "cupboards";
@@ -73,6 +73,48 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             mockAzureStorageGateway.Verify(x => x.UploadBlob(Base64Img, FileExtension), Times.Once);
             mockSorEngine.Verify(x => x.MapSorCode(Location, Problem, Issue), Times.Once);
             mockCosmosGateway.Verify(x => x.AddRepair(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == ImgUrl)), Times.Once);
+        }
+
+        [Fact]
+        public async void GivenARepairRequestWithoutAnImageARepairIsSaved()
+        {
+            const string Location = "kitchen";
+            const string Problem = "cupboards";
+            const string Issue = "doorHangingOff";
+            const string RepairCode = "N373049";
+
+            var repairRequest = new RepairRequest()
+            {
+                Location = new RepairLocation()
+                {
+                    Value = Location
+                },
+                Problem = new RepairProblem()
+                {
+                    Value = Problem,
+                },
+                Issue = new RepairIssue()
+                {
+                    Value = Issue
+                },
+                Description = new RepairDescriptionRequest()
+                {
+                    Text = "Lorem ipsum"
+                }
+
+            };
+
+            mockSorEngine.Setup(x => x.MapSorCode(Location, Problem, Issue))
+                .Returns(RepairCode);
+
+            mockCosmosGateway.Setup(x => x.AddRepair(It.IsAny<Repair>()))
+                .ReturnsAsync((Repair r) => r.Id);
+
+            var _ = await sytemUndertest.Execute(repairRequest);
+
+            mockSorEngine.Verify(x => x.MapSorCode(Location, Problem, Issue), Times.Once);
+            mockCosmosGateway.Verify(x => x.AddRepair(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == null)), Times.Once);
+            mockAzureStorageGateway.Verify(x => x.UploadBlob(null, null), Times.Never());
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -34,7 +34,7 @@
         "COSMOS_DATABASE_ID": "housing-repairs-online",
         "COSMOS_CONTAINER_ID": "repairs-requests",
         "AZURE_STORAGE_CONNECTION_STRING": "<REPLACE WITH AZURE STORAGE CONNECTION STRING>",
-        "STORAGE_CONTAINER_NAME": "housing-repairs-online"
+        "STORAGE_CONTAINER_NAME": "housing-repairs-online",
         "GOV_NOTIFY_KEY" : "<REPLACE WITH GOV NOTIFY API URL>",
         "CONFIRMATION_SMS_NOTIFY_TEMPLATE_ID": "<REPLACE WITH GOV NOTIFY SMS TEMPLATE ID>",
         "CONFIRMATION_EMAIL_NOTIFY_TEMPLATE_ID": "<REPLACE WITH GOV NOTIFY EMAIL TEMPLATE ID>"
