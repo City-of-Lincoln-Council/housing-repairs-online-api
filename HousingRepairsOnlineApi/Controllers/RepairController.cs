@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Helpers;
 using HousingRepairsOnlineApi.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,18 +12,15 @@ namespace HousingRepairsOnlineApi.Controllers
     public class RepairController : ControllerBase
     {
         private readonly ISaveRepairRequestUseCase saveRepairRequestUseCase;
-        private readonly ISendAppointmentConfirmationEmailUseCase sendAppointmentConfirmationEmailUseCase;
-        private readonly ISendAppointmentConfirmationSmsUseCase sendAppointmentConfirmationSmsUseCase;
+        private readonly IAppointmentConfirmationSender appointmentConfirmationSender;
 
         public RepairController(
             ISaveRepairRequestUseCase saveRepairRequestUseCase,
-            ISendAppointmentConfirmationEmailUseCase sendAppointmentConfirmationEmailUseCase,
-            ISendAppointmentConfirmationSmsUseCase sendAppointmentConfirmationSmsUseCase
+            IAppointmentConfirmationSender appointmentConfirmationSender
             )
         {
             this.saveRepairRequestUseCase = saveRepairRequestUseCase;
-            this.sendAppointmentConfirmationEmailUseCase = sendAppointmentConfirmationEmailUseCase;
-            this.sendAppointmentConfirmationSmsUseCase = sendAppointmentConfirmationSmsUseCase;
+            this.appointmentConfirmationSender = appointmentConfirmationSender;
         }
 
         [HttpPost]
@@ -31,17 +29,8 @@ namespace HousingRepairsOnlineApi.Controllers
             try
             {
                 var result = await saveRepairRequestUseCase.Execute(repairRequest);
-                switch (repairRequest?.ContactDetails?.Type)
-                {
-                    case "email":
-                        await sendAppointmentConfirmationEmailUseCase.Execute(repairRequest.ContactDetails.Value, result,
-                            repairRequest.Time.Display);
-                        break;
-                    case "sms":
-                        await sendAppointmentConfirmationSmsUseCase.Execute(repairRequest.ContactDetails.Value, result,
-                            repairRequest.Time.Display);
-                        break;
-                }
+                appointmentConfirmationSender.Execute(repairRequest, result);
+
                 return Ok(result);
             }
             catch (Exception ex)

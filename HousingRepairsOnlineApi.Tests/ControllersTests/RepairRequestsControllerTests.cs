@@ -2,6 +2,7 @@
 using FluentAssertions;
 using HousingRepairsOnlineApi.Controllers;
 using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Helpers;
 using HousingRepairsOnlineApi.UseCases;
 using Moq;
 using Xunit;
@@ -12,15 +13,13 @@ namespace HousingRepairsOnlineApi.Tests
     {
         private RepairController systemUnderTest;
         private Mock<ISaveRepairRequestUseCase> saveRepairRequestUseCaseMock;
-        private Mock<ISendAppointmentConfirmationEmailUseCase> sendAppointmentConfirmationEmailUseCase;
-        private Mock<ISendAppointmentConfirmationSmsUseCase> sendAppointmentConfirmationSmsUseCase;
+        private Mock<IAppointmentConfirmationSender> appointmentConfirmationSender;
 
         public RepairRequestsControllerTests()
         {
             saveRepairRequestUseCaseMock = new Mock<ISaveRepairRequestUseCase>();
-            sendAppointmentConfirmationEmailUseCase = new Mock<ISendAppointmentConfirmationEmailUseCase>();
-            sendAppointmentConfirmationSmsUseCase = new Mock<ISendAppointmentConfirmationSmsUseCase>();
-            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, sendAppointmentConfirmationEmailUseCase.Object, sendAppointmentConfirmationSmsUseCase.Object);
+            appointmentConfirmationSender = new Mock<IAppointmentConfirmationSender>();
+            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, appointmentConfirmationSender.Object);
         }
 
         [Fact]
@@ -72,7 +71,7 @@ namespace HousingRepairsOnlineApi.Tests
             await systemUnderTest.SaveRepair(repairRequest);
 
             //Act
-            sendAppointmentConfirmationEmailUseCase.Verify(x => x.Execute(repairRequest.ContactDetails.Value, RepairId, "Displayed Time"), Times.Once);
+            appointmentConfirmationSender.Verify(x => x.Execute(repairRequest, RepairId), Times.Once);
         }
 
         [Fact]
@@ -98,7 +97,7 @@ namespace HousingRepairsOnlineApi.Tests
             await systemUnderTest.SaveRepair(repairRequest);
 
             //Assert
-            sendAppointmentConfirmationSmsUseCase.Verify(x => x.Execute(repairRequest.ContactDetails.Value, RepairId, "Displayed Time"), Times.Once);
+            appointmentConfirmationSender.Verify(x => x.Execute(repairRequest, RepairId), Times.Once);
         }
     }
 }
