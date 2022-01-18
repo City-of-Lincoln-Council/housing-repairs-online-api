@@ -90,7 +90,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
 
             await Assert.ThrowsAsync<Exception>(async () =>
             {
-                await azureStorageGateway.GetServiceSasUriForBlob(fileName, 100,"anything");
+                await azureStorageGateway.GetServiceSasUriForBlob(fileName, 100, "anything");
             });
 
             // Assert

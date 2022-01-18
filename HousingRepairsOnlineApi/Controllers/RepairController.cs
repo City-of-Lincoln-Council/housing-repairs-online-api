@@ -33,7 +33,7 @@ namespace HousingRepairsOnlineApi.Controllers
             {
                 var result = await saveRepairRequestUseCase.Execute(repairRequest);
                 var imageLink = await retrieveImageLinkUseCase.Execute(result.Description.PhotoUrl);
-                await sendInternalEmailUseCase.Execute(result.Id, result.Address.LocationId, result.Address.Display, result.SOR, result.Description.Text, result.ContactDetails?.Value, imageLink );
+                await sendInternalEmailUseCase.Execute(result.Id, result.Address.LocationId, result.Address.Display, result.SOR, result.Description.Text, result.ContactDetails?.Value, imageLink);
 
                 return Ok(result);
             }

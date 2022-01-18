@@ -25,7 +25,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 
             var _ = await sytemUndertest.Execute(FileName);
 
-            mockAzureStorageGateway.Verify(x => x.GetServiceSasUriForBlob ("0f6780dd-ce73-44f9-b64c-b56c061560ea.png", 100, null), Times.Once);
+            mockAzureStorageGateway.Verify(x => x.GetServiceSasUriForBlob("0f6780dd-ce73-44f9-b64c-b56c061560ea.png", 100, null), Times.Once);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace HousingRepairsOnlineApi.Gateways
             return blobClient.Uri.AbsoluteUri;
         }
 
-        public async Task<string> GetServiceSasUriForBlob(string fileName, int daysUntilExpiry,string storedPolicyName = null)
+        public async Task<string> GetServiceSasUriForBlob(string fileName, int daysUntilExpiry, string storedPolicyName = null)
         {
 
             var blobClient = storageContainerClient.GetBlobClient(fileName);
@@ -56,8 +56,9 @@ namespace HousingRepairsOnlineApi.Gateways
 
                 var sasUri = blobClient.GenerateSasUri(sasBuilder);
                 Console.WriteLine("SAS URI for blob is: {0}", sasUri);
-                return  sasUri.AbsoluteUri;
-            } else
+                return sasUri.AbsoluteUri;
+            }
+            else
             {
                 throw new Exception(
                     "BlobClient must be authorized with Shared Keycredentials to create a service SAS.");
