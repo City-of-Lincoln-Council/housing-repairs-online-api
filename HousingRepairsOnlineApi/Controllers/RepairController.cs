@@ -13,14 +13,17 @@ namespace HousingRepairsOnlineApi.Controllers
     {
         private readonly ISaveRepairRequestUseCase saveRepairRequestUseCase;
         private readonly ISendInternalEmailUseCase sendInternalEmailUseCase;
+        private readonly IRetrieveImageLinkUseCase retrieveImageLinkUseCase;
 
         public RepairController(
             ISaveRepairRequestUseCase saveRepairRequestUseCase,
-            ISendInternalEmailUseCase sendInternalEmailUseCase
+            ISendInternalEmailUseCase sendInternalEmailUseCase,
+            IRetrieveImageLinkUseCase retrieveImageLinkUseCase
             )
         {
             this.saveRepairRequestUseCase = saveRepairRequestUseCase;
             this.sendInternalEmailUseCase = sendInternalEmailUseCase;
+            this.retrieveImageLinkUseCase = retrieveImageLinkUseCase;
         }
 
         [HttpPost]
@@ -29,8 +32,8 @@ namespace HousingRepairsOnlineApi.Controllers
             try
             {
                 var result = await saveRepairRequestUseCase.Execute(repairRequest);
-
-                await sendInternalEmailUseCase.Execute(result.Id, result.Address.LocationId, result.Address.Display, result.SOR, result.Description.Text, result.ContactDetails?.Value, result.Description.Base64Image);
+                var imageLink = await retrieveImageLinkUseCase.Execute(result.Description.PhotoUrl);
+                await sendInternalEmailUseCase.Execute(result.Id, result.Address.LocationId, result.Address.Display, result.SOR, result.Description.Text, result.ContactDetails?.Value, imageLink );
 
                 return Ok(result);
             }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
-using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Gateways;
 
 namespace HousingRepairsOnlineApi.UseCases
@@ -32,8 +31,6 @@ namespace HousingRepairsOnlineApi.UseCases
 
             ValidateEmail(internalEmail);
 
-            var documentContents = Convert.FromBase64String(image);
-
             var personalisation = new Dictionary<string, dynamic>
             {
                 {"repair_ref", repairRef},
@@ -42,8 +39,7 @@ namespace HousingRepairsOnlineApi.UseCases
                 {"sor", sor},
                 {"repair_desc", repairDescription},
                 {"contact_no", contactNumber},
-                {"link_to_file", documentContents},
-
+                {"image_1", image},
             };
 
             await notifyGateway.SendEmail(internalEmail, templateId, personalisation);

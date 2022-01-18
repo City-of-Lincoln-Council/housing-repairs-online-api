@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HousingRepairsOnlineApi.Domain;
 using Notify.Interfaces;
 
 namespace HousingRepairsOnlineApi.Gateways

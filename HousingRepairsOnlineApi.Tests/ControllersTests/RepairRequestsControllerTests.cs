@@ -14,13 +14,14 @@ namespace HousingRepairsOnlineApi.Tests
         private RepairController sytemUndertest;
         private Mock<ISaveRepairRequestUseCase> saveRepairRequestUseCaseMock;
         private Mock<ISendInternalEmailUseCase> sendInternalEmailUseCase;
-
+        private Mock<IRetrieveImageLinkUseCase> retrieveImageLinkUseCase;
 
         public RepairRequestsControllerTests()
         {
             saveRepairRequestUseCaseMock = new Mock<ISaveRepairRequestUseCase>();
             sendInternalEmailUseCase = new Mock<ISendInternalEmailUseCase>();
-            sytemUndertest = new RepairController(saveRepairRequestUseCaseMock.Object, sendInternalEmailUseCase.Object);
+            retrieveImageLinkUseCase = new Mock<IRetrieveImageLinkUseCase>();
+            sytemUndertest = new RepairController(saveRepairRequestUseCaseMock.Object, sendInternalEmailUseCase.Object, retrieveImageLinkUseCase.Object);
         }
 
         [Fact]
@@ -41,7 +42,7 @@ namespace HousingRepairsOnlineApi.Tests
                 Id = "1AB2C3D4",
                 ContactDetails = new RepairContactDetails { Value = "07465087654" },
                 Address = new RepairAddress { Display = "address", LocationId = "uprn" },
-                Description = new RepairDescription() { Text = "repair description", Base64Image = "image" },
+                Description = new RepairDescription { Text = "repair description", Base64Image = "image" , PhotoUrl = "x/Url.png"},
                 Location = new RepairLocation { Value = "location" },
                 Problem = new RepairProblem { Value = "problem" },
                 Issue = new RepairIssue { Value = "issue" },
@@ -49,6 +50,8 @@ namespace HousingRepairsOnlineApi.Tests
             };
 
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).ReturnsAsync(repair);
+
+            retrieveImageLinkUseCase.Setup(x => x.Execute(repair.Description.PhotoUrl)).ReturnsAsync("Url.png");
 
             var result = await sytemUndertest.SaveRepair(repairRequest);
 
@@ -61,10 +64,12 @@ namespace HousingRepairsOnlineApi.Tests
                 repair.SOR,
                 repair.Description.Text,
                 repair.ContactDetails.Value,
-                repair.Description.Base64Image),
+                "Url.png"),
                 Times.Once);
 
             saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
+
+            retrieveImageLinkUseCase.Verify(x => x.Execute(It.IsAny<string>()), Times.Once);
         }
         [Fact]
         public async Task ReturnsErrorWhenFailsToSave()
