@@ -22,6 +22,7 @@ jobs:
         run: dotnet tool update --global dotnet-format
       - name: Run dotnet format
         run: dotnet format --check --verbosity diagnostic
+
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -35,6 +36,7 @@ jobs:
         run: dotnet nuget add source --username ${{ secrets.NUGET_AUTH_GITHUB_USERNAME }} --password ${{ secrets.NUGET_AUTH_GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/City-of-Lincoln-Council/index.json"
       - name: Test
         run: dotnet test --logger:"console;verbosity=detailed"
+
   build:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: Build Release
@@ -59,6 +61,7 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
+
   deploy:
     name: Deploy
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
