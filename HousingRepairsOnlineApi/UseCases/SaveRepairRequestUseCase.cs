@@ -22,11 +22,6 @@ namespace HousingRepairsOnlineApi.UseCases
 
         public async Task<Repair> Execute(RepairRequest repairRequest)
         {
-            var photoUrl = storageGateway.UploadBlob(
-                repairRequest.Description.Base64Img,
-                repairRequest.Description.FileExtension
-            ).Result;
-
             var repair = new Repair
             {
                 Address = repairRequest.Address,
@@ -40,14 +35,22 @@ namespace HousingRepairsOnlineApi.UseCases
                 Description = new RepairDescription
                 {
                     Text = repairRequest.Description.Text,
-                    Base64Image = repairRequest.Description.Base64Img,
-                    PhotoUrl = photoUrl
                 },
                 SOR = sorEngine.MapSorCode(
                     repairRequest.Location.Value,
                     repairRequest.Problem.Value,
                     repairRequest.Issue.Value)
             };
+
+            if (!string.IsNullOrEmpty(repairRequest.Description.Base64Img))
+            {
+                var photoUrl = storageGateway.UploadBlob(
+                    repairRequest.Description.Base64Img,
+                    repairRequest.Description.FileExtension
+                ).Result;
+                repair.Description.PhotoUrl = photoUrl;
+
+            }
 
             var savedRequest = await cosmosGateway.AddRepair(repair);
 
