@@ -22,7 +22,7 @@ namespace HousingRepairsOnlineApi.UseCases
             try
             {
                 var blobName = GetBlobNameFromPhotoUrl(photoUrl);
-                return await storageGateway.GetServiceSasUriForBlob(blobName, daysUntilImageExpiry);
+                return await storageGateway.GetUriForBlob(blobName, daysUntilImageExpiry);
             }
             catch (Exception e)
             {

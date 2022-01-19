@@ -31,7 +31,7 @@ namespace HousingRepairsOnlineApi.Gateways
             return blobClient.Uri.AbsoluteUri;
         }
 
-        public async Task<string> GetServiceSasUriForBlob(string blobName, int daysUntilExpiry, string storedPolicyName = null)
+        public async Task<string> GetUriForBlob(string blobName, int daysUntilExpiry, string storedPolicyName = null)
         {
 
             var blobClient = storageContainerClient.GetBlobClient(blobName);
