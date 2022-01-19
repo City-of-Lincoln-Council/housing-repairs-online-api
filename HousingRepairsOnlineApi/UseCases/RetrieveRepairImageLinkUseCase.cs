@@ -21,8 +21,8 @@ namespace HousingRepairsOnlineApi.UseCases
         {
             try
             {
-                var fileName = GetFileNameFromPhotoUrl(photoUrl);
-                return await storageGateway.GetServiceSasUriForBlob(fileName, daysUntilImageExpiry);
+                var blobName = GetBlobNameFromPhotoUrl(photoUrl);
+                return await storageGateway.GetServiceSasUriForBlob(blobName, daysUntilImageExpiry);
             }
             catch (Exception e)
             {
@@ -31,7 +31,7 @@ namespace HousingRepairsOnlineApi.UseCases
             }
         }
 
-        private static string GetFileNameFromPhotoUrl(string photoUrl)
+        private static string GetBlobNameFromPhotoUrl(string photoUrl)
         {
             var photoUrlArray = photoUrl.Split("/");
             var fileName = photoUrlArray.Last();

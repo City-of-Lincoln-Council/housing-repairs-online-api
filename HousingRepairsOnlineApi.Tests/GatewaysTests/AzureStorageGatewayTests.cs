@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Specialized;
 using Azure.Storage.Sas;
 using HousingRepairsOnlineApi.Gateways;
 using Moq;
@@ -51,7 +50,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
         public async void GivenABlob_WhenGetBlobSasUri_ThenASasUriIsGenerated()
         {
             // Arrange
-            const string fileName = "something.png";
+            const string blobName = "something.png";
 
             var mockBlobClient = new Mock<BlobClient>();
 
@@ -68,17 +67,17 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
                 .Returns(mockBlobClient.Object);
 
 
-            var actual = await azureStorageGateway.GetServiceSasUriForBlob(fileName, 100, "antything");
+            var actual = await azureStorageGateway.GetServiceSasUriForBlob(blobName, 100, "antything");
 
             // Assert
-            mockStorageContainerClient.Verify(foo => foo.GetBlobClient(It.IsRegex(fileName)), Times.Once());
+            mockStorageContainerClient.Verify(foo => foo.GetBlobClient(It.IsRegex(blobName)), Times.Once());
             mockBlobClient.Verify(x => x.GenerateSasUri(It.IsAny<BlobSasBuilder>()), Times.Once);
         }
         [Fact]
         public async void GivenInvalidPermissions_WhenGetBlobSasUri_ThenExceptionIsThrown()
         {
             // Arrange
-            const string fileName = "something.png";
+            const string blobName = "something.png";
 
             var mockBlobClient = new Mock<BlobClient>();
 
@@ -90,7 +89,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
 
             await Assert.ThrowsAsync<Exception>(async () =>
             {
-                await azureStorageGateway.GetServiceSasUriForBlob(fileName, 100, "anything");
+                await azureStorageGateway.GetServiceSasUriForBlob(blobName, 100, "anything");
             });
 
             // Assert
