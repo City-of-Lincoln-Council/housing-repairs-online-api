@@ -41,7 +41,7 @@ namespace HousingRepairsOnlineApi.Tests.HelpersTests
 
             retrieveImageLinkUseCase.Setup(x => x.Execute(repair.Description.PhotoUrl)).Returns("Url.png");
 
-            systemUnderTest.Execute(repair);
+            await systemUnderTest.Execute(repair);
 
             sendInternalEmailUseCase.Verify(x => x.Execute(
                 repair.Id,

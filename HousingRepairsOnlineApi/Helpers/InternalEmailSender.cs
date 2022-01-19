@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.UseCases;
 
@@ -15,13 +16,16 @@ namespace HousingRepairsOnlineApi.Helpers
             this.sendInternalEmailUseCase = sendInternalEmailUseCase;
         }
 
-        public void Execute(Repair repair)
+        public async Task Execute(Repair repair)
         {
-            var imageLink = retrieveImageLinkUseCase.Execute(repair.Description.PhotoUrl);
-            if (!String.IsNullOrEmpty(imageLink))
+            var imageLink = "";
+
+            await Task.Run(() =>
             {
-                sendInternalEmailUseCase.Execute(repair.Id, repair.Address.LocationId, repair.Address.Display, repair.SOR, repair.Description.Text, repair.ContactDetails?.Value, imageLink);
-            }
+                imageLink = retrieveImageLinkUseCase.Execute(repair.Description.PhotoUrl);
+
+            });
+            sendInternalEmailUseCase.Execute(repair.Id, repair.Address.LocationId, repair.Address.Display, repair.SOR, repair.Description.Text, repair.ContactDetails?.Value, imageLink);
         }
     }
 }
