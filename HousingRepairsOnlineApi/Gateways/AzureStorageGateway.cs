@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
+using HousingRepairsOnlineApi.Helpers;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
@@ -41,7 +42,7 @@ namespace HousingRepairsOnlineApi.Gateways
                 {
                     BlobContainerName = storageContainerClient.Name,
                     BlobName = blobClient.Name,
-                    Resource = "b"
+                    Resource = AzureResourceTypes.Blob
                 };
 
                 if (storedPolicyName == null)

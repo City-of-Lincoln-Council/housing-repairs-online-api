@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace HousingRepairsOnlineApi.Helpers
+﻿namespace HousingRepairsOnlineApi.Helpers
 {
     public static class AppointmentConfirmationSendingTypes
     {
