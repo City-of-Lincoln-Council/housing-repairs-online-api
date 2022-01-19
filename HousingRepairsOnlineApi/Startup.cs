@@ -85,6 +85,8 @@ namespace HousingRepairsOnlineApi
                 return new SendAppointmentConfirmationEmailUseCase(notifyGateway, emailConfirmationTemplateId);
             });
 
+            services.AddTransient<IAppointmentConfirmationSender, AppointmentConfirmationSender>();
+
             services.AddTransient<IRetrieveImageLinkUseCase, RetrieveImageLinkUseCase>(s =>
             {
                 var azureStorageGateway = s.GetService<IBlobStorageGateway>();

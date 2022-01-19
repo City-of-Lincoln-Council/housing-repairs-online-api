@@ -12,18 +12,21 @@ namespace HousingRepairsOnlineApi.Controllers
     public class RepairController : ControllerBase
     {
         private readonly ISaveRepairRequestUseCase saveRepairRequestUseCase;
+        private readonly IAppointmentConfirmationSender appointmentConfirmationSender;
         private readonly ISendInternalEmailUseCase sendInternalEmailUseCase;
         private readonly IRetrieveImageLinkUseCase retrieveImageLinkUseCase;
 
         public RepairController(
             ISaveRepairRequestUseCase saveRepairRequestUseCase,
             ISendInternalEmailUseCase sendInternalEmailUseCase,
-            IRetrieveImageLinkUseCase retrieveImageLinkUseCase
-            )
+            IRetrieveImageLinkUseCase retrieveImageLinkUseCase,
+            IAppointmentConfirmationSender appointmentConfirmationSender
+        )
         {
             this.saveRepairRequestUseCase = saveRepairRequestUseCase;
             this.sendInternalEmailUseCase = sendInternalEmailUseCase;
             this.retrieveImageLinkUseCase = retrieveImageLinkUseCase;
+            this.appointmentConfirmationSender = appointmentConfirmationSender;
         }
 
         [HttpPost]
@@ -32,6 +35,7 @@ namespace HousingRepairsOnlineApi.Controllers
             try
             {
                 var result = await saveRepairRequestUseCase.Execute(repairRequest);
+                await appointmentConfirmationSender.Execute(result);
                 var imageLink = await retrieveImageLinkUseCase.Execute(result.Description.PhotoUrl);
                 await sendInternalEmailUseCase.Execute(result.Id, result.Address.LocationId, result.Address.Display, result.SOR, result.Description.Text, result.ContactDetails?.Value, imageLink);
 

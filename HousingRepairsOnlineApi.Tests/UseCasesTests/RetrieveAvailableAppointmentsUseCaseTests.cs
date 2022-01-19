@@ -14,7 +14,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 {
     public class RetrieveAvailableAppointmentsUseCaseTests
     {
-        private readonly RetrieveAvailableAppointmentsUseCase sytemUndertest;
+        private readonly RetrieveAvailableAppointmentsUseCase systemUnderTest;
         private readonly Mock<IAppointmentsGateway> appointmentsGatewayMock;
         private readonly Mock<ISoREngine> sorEngineMock;
         const string kitchen = "kitchen";
@@ -25,7 +25,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         {
             sorEngineMock = new Mock<ISoREngine>();
             appointmentsGatewayMock = new Mock<IAppointmentsGateway>();
-            sytemUndertest = new RetrieveAvailableAppointmentsUseCase(appointmentsGatewayMock.Object, sorEngineMock.Object);
+            systemUnderTest = new RetrieveAvailableAppointmentsUseCase(appointmentsGatewayMock.Object, sorEngineMock.Object);
         }
 
         [Theory]
@@ -117,7 +117,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         [Fact]
         public async void GivenRepairParameters_WhenExecute_ThenMapSorCodeIsCalled()
         {
-            await sytemUndertest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
+            await systemUnderTest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
             sorEngineMock.Verify(x => x.MapSorCode(kitchen, cupboards, doorHangingOff), Times.Once);
         }
 
@@ -126,7 +126,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         {
             var repairCode = "N373049";
             sorEngineMock.Setup(x => x.MapSorCode(kitchen, cupboards, doorHangingOff)).Returns(repairCode);
-            await sytemUndertest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
+            await systemUnderTest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
             appointmentsGatewayMock.Verify(x => x.GetAvailableAppointments(repairCode, "uprn", null), Times.Once);
         }
 
@@ -149,7 +149,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
                     },
                 } });
 
-            var actual = await sytemUndertest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
+            var actual = await systemUnderTest.Execute(kitchen, cupboards, doorHangingOff, "uprn");
             var actualAddress = actual.First();
 
             Assert.Equal(startTime, actualAddress.StartTime);

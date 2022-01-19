@@ -11,17 +11,20 @@ namespace HousingRepairsOnlineApi.Tests
 {
     public class RepairRequestsControllerTests : ControllerTests
     {
-        private RepairController sytemUndertest;
+        private RepairController systemUnderTest;
         private Mock<ISaveRepairRequestUseCase> saveRepairRequestUseCaseMock;
         private Mock<ISendInternalEmailUseCase> sendInternalEmailUseCase;
         private Mock<IRetrieveImageLinkUseCase> retrieveImageLinkUseCase;
+        private Mock<IAppointmentConfirmationSender> appointmentConfirmationSender;
 
         public RepairRequestsControllerTests()
         {
             saveRepairRequestUseCaseMock = new Mock<ISaveRepairRequestUseCase>();
+            appointmentConfirmationSender = new Mock<IAppointmentConfirmationSender>();
             sendInternalEmailUseCase = new Mock<ISendInternalEmailUseCase>();
             retrieveImageLinkUseCase = new Mock<IRetrieveImageLinkUseCase>();
-            sytemUndertest = new RepairController(saveRepairRequestUseCaseMock.Object, sendInternalEmailUseCase.Object, retrieveImageLinkUseCase.Object);
+            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, sendInternalEmailUseCase.Object, retrieveImageLinkUseCase.Object, appointmentConfirmationSender.Object);
+
         }
 
         [Fact]
@@ -53,7 +56,7 @@ namespace HousingRepairsOnlineApi.Tests
 
             retrieveImageLinkUseCase.Setup(x => x.Execute(repair.Description.PhotoUrl)).ReturnsAsync("Url.png");
 
-            var result = await sytemUndertest.SaveRepair(repairRequest);
+            var result = await systemUnderTest.SaveRepair(repairRequest);
 
             GetStatusCode(result).Should().Be(200);
 
@@ -71,6 +74,7 @@ namespace HousingRepairsOnlineApi.Tests
 
             retrieveImageLinkUseCase.Verify(x => x.Execute(It.IsAny<string>()), Times.Once);
         }
+
         [Fact]
         public async Task ReturnsErrorWhenFailsToSave()
         {
@@ -78,10 +82,87 @@ namespace HousingRepairsOnlineApi.Tests
 
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).Throws<System.Exception>();
 
-            var result = await sytemUndertest.SaveRepair(repairRequest);
+            var result = await systemUnderTest.SaveRepair(repairRequest);
 
             GetStatusCode(result).Should().Be(500);
             saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenEmailContact_WhenRepair_ThenSendAppointmentConfirmationEmailUseCaseIsCalled()
+        {
+            //Arrange
+            RepairRequest repairRequest = new RepairRequest
+            {
+                ContactDetails = new RepairContactDetails
+                {
+                    Type = "email",
+                    Value = "dr.who@tardis.com"
+                },
+                Time = new RepairAvailability
+                {
+                    Display = "Displayed Time"
+                }
+            };
+            var repair = new Repair()
+            {
+                Id = "1AB2C3D4",
+                ContactDetails = new RepairContactDetails
+                {
+                    Type = "email",
+                    Value = "dr.who@tardis.com"
+                },
+                Time = new RepairAvailability
+                {
+                    Display = "Displayed Time"
+                }
+            };
+            saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest)).ReturnsAsync(repair);
+
+            //Assert
+            await systemUnderTest.SaveRepair(repairRequest);
+
+            //Act
+            appointmentConfirmationSender.Verify(x => x.Execute(repair), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenSmsContact_WhenRepair_ThenSendAppointmentConfirmationSmsUseCaseIsCalled()
+        {
+            //Arrange
+            var repairRequest = new RepairRequest()
+            {
+                ContactDetails = new RepairContactDetails
+                {
+                    Type = "sms",
+                    Value = "0765374057"
+                },
+                Time = new RepairAvailability
+                {
+                    Display = "Displayed Time"
+                }
+            };
+            var repair = new Repair
+            {
+                Id = "1AB2C3D4",
+                ContactDetails = new RepairContactDetails
+                {
+                    Type = "sms",
+                    Value = "0765374057"
+                },
+                Time = new RepairAvailability
+                {
+                    Display = "Displayed Time"
+                }
+            };
+
+            saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest)).ReturnsAsync(repair);
+
+            //Act
+            await systemUnderTest.SaveRepair(repairRequest);
+
+            //Assert
+            appointmentConfirmationSender.Verify(x => x.Execute(repair), Times.Once);
         }
     }
 }
