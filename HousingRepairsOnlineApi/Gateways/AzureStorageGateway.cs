@@ -60,7 +60,7 @@ namespace HousingRepairsOnlineApi.Gateways
             else
             {
                 throw new Exception(
-                    "BlobClient must be authorized with Shared Keycredentials to create a service SAS.");
+                    "BlobClient must be authorized with Shared Key credentials to create a service SAS.");
             }
         }
     }
