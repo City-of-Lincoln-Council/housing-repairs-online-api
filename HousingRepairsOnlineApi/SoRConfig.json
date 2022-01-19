@@ -25,7 +25,8 @@
       "lightFitting":"N858111",
       "skirtingBoardArchitrave":"N381001",
       "plasteringCeiling":"N413305",
-      "plasteringWalls":"N431023"
+      "plasteringWalls":"N431023",
+      "woodenFloorboards": "N301125"
     },
     "window":{
       "stuckShut":"N318125",
@@ -68,7 +69,8 @@
       "lightFitting":"N858111",
       "skirtingBoardArchitrave":"N381001",
       "plasteringCeiling":"N413305",
-      "plasteringWalls":"N431023"
+      "plasteringWalls":"N431023",
+      "woodenFloorboards": "N301125"
     }
   },
   "bedroom": {
@@ -78,7 +80,8 @@
       "lightFitting":"N858111",
       "skirtingBoardArchitrave":"N381001",
       "plasteringCeiling":"N413305",
-      "plasteringWalls":"N431023"
+      "plasteringWalls":"N431023",
+      "woodenFloorboards": "N301125"
     }
   },
   "livingAreas": {
@@ -88,7 +91,8 @@
       "lightFitting":"N858111",
       "skirtingBoardArchitrave":"N381001",
       "plasteringCeiling":"N413305",
-      "plasteringWalls":"N431023"
+      "plasteringWalls":"N431023",
+      "woodenFloorboards": "N301125"
     }
   }
 }
