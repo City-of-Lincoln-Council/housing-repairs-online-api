@@ -67,7 +67,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
                 .Returns(mockBlobClient.Object);
 
 
-            var actual = await azureStorageGateway.GetUriForBlob(blobName, 100, "antything");
+            var actual = azureStorageGateway.GetUriForBlob(blobName, 100, "antything");
 
             // Assert
             mockStorageContainerClient.Verify(foo => foo.GetBlobClient(It.IsRegex(blobName)), Times.Once());
@@ -89,7 +89,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
 
             await Assert.ThrowsAsync<Exception>(async () =>
             {
-                await azureStorageGateway.GetUriForBlob(blobName, 100, "anything");
+                azureStorageGateway.GetUriForBlob(blobName, 100, "anything");
             });
 
             // Assert

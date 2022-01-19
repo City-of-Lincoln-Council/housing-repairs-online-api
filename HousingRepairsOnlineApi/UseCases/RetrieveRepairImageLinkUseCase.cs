@@ -17,12 +17,12 @@ namespace HousingRepairsOnlineApi.UseCases
             this.daysUntilImageExpiry = daysUntilImageExpiry;
         }
 
-        public async Task<string> Execute(string photoUrl)
+        public string Execute(string photoUrl)
         {
             try
             {
                 var blobName = GetBlobNameFromPhotoUrl(photoUrl);
-                return await storageGateway.GetUriForBlob(blobName, daysUntilImageExpiry);
+                return storageGateway.GetUriForBlob(blobName, daysUntilImageExpiry);
             }
             catch (Exception e)
             {

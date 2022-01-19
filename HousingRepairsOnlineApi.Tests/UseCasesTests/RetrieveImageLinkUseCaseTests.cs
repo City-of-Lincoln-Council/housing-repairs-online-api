@@ -21,9 +21,9 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         {
             const string BlobName = "//https://housingrepairsonline.blob.core.windows.net/housing-repairs-online/0f6780dd-ce73-44f9-b64c-b56c061560ea.png";
             mockAzureStorageGateway.Setup(x =>
-                x.GetUriForBlob(BlobName, 100, null)).ReturnsAsync("uri");
+                x.GetUriForBlob(BlobName, 100, null)).Returns("uri");
 
-            var _ = await sytemUndertest.Execute(BlobName);
+            var _ = sytemUndertest.Execute(BlobName);
 
             mockAzureStorageGateway.Verify(x => x.GetUriForBlob("0f6780dd-ce73-44f9-b64c-b56c061560ea.png", 100, null), Times.Once);
         }

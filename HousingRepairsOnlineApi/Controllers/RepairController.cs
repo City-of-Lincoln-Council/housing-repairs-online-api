@@ -13,19 +13,16 @@ namespace HousingRepairsOnlineApi.Controllers
     {
         private readonly ISaveRepairRequestUseCase saveRepairRequestUseCase;
         private readonly IAppointmentConfirmationSender appointmentConfirmationSender;
-        private readonly ISendInternalEmailUseCase sendInternalEmailUseCase;
-        private readonly IRetrieveImageLinkUseCase retrieveImageLinkUseCase;
+        private readonly IInternalEmailSender internalEmailSender;
 
         public RepairController(
             ISaveRepairRequestUseCase saveRepairRequestUseCase,
-            ISendInternalEmailUseCase sendInternalEmailUseCase,
-            IRetrieveImageLinkUseCase retrieveImageLinkUseCase,
+            IInternalEmailSender internalEmailSender,
             IAppointmentConfirmationSender appointmentConfirmationSender
         )
         {
             this.saveRepairRequestUseCase = saveRepairRequestUseCase;
-            this.sendInternalEmailUseCase = sendInternalEmailUseCase;
-            this.retrieveImageLinkUseCase = retrieveImageLinkUseCase;
+            this.internalEmailSender = internalEmailSender;
             this.appointmentConfirmationSender = appointmentConfirmationSender;
         }
 
@@ -36,9 +33,7 @@ namespace HousingRepairsOnlineApi.Controllers
             {
                 var result = await saveRepairRequestUseCase.Execute(repairRequest);
                 appointmentConfirmationSender.Execute(result);
-                var imageLink = await retrieveImageLinkUseCase.Execute(result.Description.PhotoUrl);
-                sendInternalEmailUseCase.Execute(result.Id, result.Address.LocationId, result.Address.Display, result.SOR, result.Description.Text, result.ContactDetails?.Value, imageLink);
-
+                internalEmailSender.Execute(result);
                 return Ok(result);
             }
             catch (Exception ex)

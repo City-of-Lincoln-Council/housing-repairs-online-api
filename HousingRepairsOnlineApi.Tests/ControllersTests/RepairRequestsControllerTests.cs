@@ -13,17 +13,15 @@ namespace HousingRepairsOnlineApi.Tests
     {
         private RepairController systemUnderTest;
         private Mock<ISaveRepairRequestUseCase> saveRepairRequestUseCaseMock;
-        private Mock<ISendInternalEmailUseCase> sendInternalEmailUseCase;
-        private Mock<IRetrieveImageLinkUseCase> retrieveImageLinkUseCase;
+        private Mock<IInternalEmailSender> internalEmailSender;
         private Mock<IAppointmentConfirmationSender> appointmentConfirmationSender;
 
         public RepairRequestsControllerTests()
         {
             saveRepairRequestUseCaseMock = new Mock<ISaveRepairRequestUseCase>();
             appointmentConfirmationSender = new Mock<IAppointmentConfirmationSender>();
-            sendInternalEmailUseCase = new Mock<ISendInternalEmailUseCase>();
-            retrieveImageLinkUseCase = new Mock<IRetrieveImageLinkUseCase>();
-            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, sendInternalEmailUseCase.Object, retrieveImageLinkUseCase.Object, appointmentConfirmationSender.Object);
+            internalEmailSender = new Mock<IInternalEmailSender>();
+            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, internalEmailSender.Object, appointmentConfirmationSender.Object);
 
         }
 
@@ -54,25 +52,14 @@ namespace HousingRepairsOnlineApi.Tests
 
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).ReturnsAsync(repair);
 
-            retrieveImageLinkUseCase.Setup(x => x.Execute(repair.Description.PhotoUrl)).ReturnsAsync("Url.png");
-
             var result = await systemUnderTest.SaveRepair(repairRequest);
 
             GetStatusCode(result).Should().Be(200);
 
-            sendInternalEmailUseCase.Verify(x => x.Execute(
-                repair.Id,
-                repair.Address.LocationId,
-                repair.Address.Display,
-                repair.SOR,
-                repair.Description.Text,
-                repair.ContactDetails.Value,
-                "Url.png"),
-                Times.Once);
 
             saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
 
-            retrieveImageLinkUseCase.Verify(x => x.Execute(It.IsAny<string>()), Times.Once);
+            internalEmailSender.Verify(x => x.Execute(repair), Times.Once);
         }
 
         [Fact]
