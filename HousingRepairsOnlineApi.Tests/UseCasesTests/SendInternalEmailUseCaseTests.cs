@@ -20,7 +20,6 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             systemUnderTest = new SendInternalEmailUseCase(govNotifyGatewayMock.Object, "templateId", "dr.who@tardis.com");
         }
 
-        //Arrange
         public static IEnumerable<object[]> InvalidBookingRefArgumentTestData()
         {
             yield return new object[] { new ArgumentNullException(), null };
@@ -42,7 +41,6 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             await act.Should().ThrowExactlyAsync<T>();
         }
 
-        //Arrange
         public static IEnumerable<object[]> InvalidAddressArgumentTestData()
         {
             yield return new object[] { new ArgumentNullException(), null };
@@ -64,7 +62,6 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             await act.Should().ThrowExactlyAsync<T>();
         }
 
-        //Arrange
         public static IEnumerable<object[]> InvalidSorArgumentTestData()
         {
             yield return new object[] { new ArgumentNullException(), null };
