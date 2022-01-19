@@ -110,7 +110,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             mockCosmosGateway.Setup(x => x.AddRepair(It.IsAny<Repair>()))
                 .ReturnsAsync((Repair r) => r.Id);
 
-            var _ = await sytemUndertest.Execute(repairRequest);
+            var _ = await systemUnderTest.Execute(repairRequest);
 
             mockSorEngine.Verify(x => x.MapSorCode(Location, Problem, Issue), Times.Once);
             mockCosmosGateway.Verify(x => x.AddRepair(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == null)), Times.Once);
