@@ -121,7 +121,7 @@ namespace HousingRepairsOnlineApi.Tests
             {
                 ContactDetails = new RepairContactDetails
                 {
-                    Type = "sms",
+                    Type = "text",
                     Value = "0765374057"
                 },
                 Time = new RepairAvailability
@@ -134,7 +134,7 @@ namespace HousingRepairsOnlineApi.Tests
                 Id = "1AB2C3D4",
                 ContactDetails = new RepairContactDetails
                 {
-                    Type = "sms",
+                    Type = "text",
                     Value = "0765374057"
                 },
                 Time = new RepairAvailability
