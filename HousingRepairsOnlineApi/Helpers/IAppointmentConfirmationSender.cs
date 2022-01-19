@@ -5,6 +5,6 @@ namespace HousingRepairsOnlineApi.Helpers
 {
     public interface IAppointmentConfirmationSender
     {
-        public Task Execute(Repair repair);
+        public void Execute(Repair repair);
     }
 }

@@ -19,7 +19,7 @@ namespace HousingRepairsOnlineApi.UseCases
             this.templateId = templateId;
             this.internalEmail = internalEmail;
         }
-        public async Task Execute(string repairRef, string uprn, string address, string sor, string repairDescription, string contactNumber, string image)
+        public void Execute(string repairRef, string uprn, string address, string sor, string repairDescription, string contactNumber, string image)
         {
             Guard.Against.NullOrWhiteSpace(repairRef, nameof(repairRef), "The repair reference provided is invalid");
             Guard.Against.NullOrWhiteSpace(uprn, nameof(uprn), "The uprn provided is invalid");

@@ -16,7 +16,7 @@ namespace HousingRepairsOnlineApi.Helpers
             this.sendAppointmentConfirmationSmsUseCase = sendAppointmentConfirmationSmsUseCase;
         }
 
-        public async Task Execute(Repair repair)
+        public void Execute(Repair repair)
         {
             switch (repair?.ContactDetails?.Type)
             {

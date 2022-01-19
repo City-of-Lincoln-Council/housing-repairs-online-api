@@ -34,7 +34,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 #pragma warning restore xUnit1026
         {
             //Act
-            Func<Task> act = async () => await systemUnderTest.Execute(number, "bookingRef", "08:00am");
+            Func<Task> act = async () => systemUnderTest.Execute(number, "bookingRef", "08:00am");
 
             //Assert
             await act.Should().ThrowExactlyAsync<T>();
@@ -54,7 +54,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 #pragma warning restore xUnit1026
         {
             //Act
-            Func<Task> act = async () => await systemUnderTest.Execute("number", bookingRef, "08:00am");
+            Func<Task> act = async () => systemUnderTest.Execute("number", bookingRef, "08:00am");
 
             //Assert
             await act.Should().ThrowExactlyAsync<T>();
@@ -74,7 +74,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 #pragma warning restore xUnit1026
         {
             //Act
-            Func<Task> act = async () => await systemUnderTest.Execute("number", "bookingRef", appointmentTime);
+            Func<Task> act = async () => systemUnderTest.Execute("number", "bookingRef", appointmentTime);
 
             //Assert
             await act.Should().ThrowExactlyAsync<T>();
@@ -84,7 +84,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         public async void GivenValidParameters_WhenExecute_ThenGovNotifyGateWayIsCalled()
         {
             //Act
-            await systemUnderTest.Execute("07415300544", "bookingRef", "10:00am");
+            systemUnderTest.Execute("07415300544", "bookingRef", "10:00am");
 
             //Assert
             govNotifyGatewayMock.Verify(x => x.SendSms("07415300544", "templateId", It.IsAny<Dictionary<string, dynamic>>()), Times.Once);

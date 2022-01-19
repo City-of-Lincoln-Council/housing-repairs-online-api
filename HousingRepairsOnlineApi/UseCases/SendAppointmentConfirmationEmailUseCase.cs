@@ -18,7 +18,7 @@ namespace HousingRepairsOnlineApi.UseCases
             this.notifyGateway = notifyGateway;
             this.templateId = templateId;
         }
-        public async Task Execute(string email, string bookingRef, string appointmentTime)
+        public void Execute(string email, string bookingRef, string appointmentTime)
         {
             Guard.Against.NullOrWhiteSpace(email, nameof(email), "The email provided is invalid");
             Guard.Against.NullOrWhiteSpace(bookingRef, nameof(bookingRef), "The booking reference provided is invalid");

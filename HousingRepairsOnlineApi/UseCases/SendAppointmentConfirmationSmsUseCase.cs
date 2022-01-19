@@ -19,7 +19,7 @@ namespace HousingRepairsOnlineApi.UseCases
             this.templateId = templateId;
         }
 
-        public async Task Execute(string number, string bookingRef, string appointmentTime)
+        public void Execute(string number, string bookingRef, string appointmentTime)
         {
             Guard.Against.NullOrWhiteSpace(number, nameof(number), "The phone number provided is invalid");
             Guard.Against.NullOrWhiteSpace(bookingRef, nameof(bookingRef), "The booking reference provided is invalid");

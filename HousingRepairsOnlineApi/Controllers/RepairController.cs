@@ -35,9 +35,9 @@ namespace HousingRepairsOnlineApi.Controllers
             try
             {
                 var result = await saveRepairRequestUseCase.Execute(repairRequest);
-                await appointmentConfirmationSender.Execute(result);
+                appointmentConfirmationSender.Execute(result);
                 var imageLink = await retrieveImageLinkUseCase.Execute(result.Description.PhotoUrl);
-                await sendInternalEmailUseCase.Execute(result.Id, result.Address.LocationId, result.Address.Display, result.SOR, result.Description.Text, result.ContactDetails?.Value, imageLink);
+                sendInternalEmailUseCase.Execute(result.Id, result.Address.LocationId, result.Address.Display, result.SOR, result.Description.Text, result.ContactDetails?.Value, imageLink);
 
                 return Ok(result);
             }

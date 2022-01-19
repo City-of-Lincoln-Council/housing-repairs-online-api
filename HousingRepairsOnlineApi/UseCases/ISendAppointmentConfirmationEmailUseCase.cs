@@ -5,6 +5,6 @@ namespace HousingRepairsOnlineApi.UseCases
 {
     public interface ISendAppointmentConfirmationEmailUseCase
     {
-        public Task Execute(string email, string bookingRef, string appointmentTime);
+        public void Execute(string email, string bookingRef, string appointmentTime);
     }
 }
