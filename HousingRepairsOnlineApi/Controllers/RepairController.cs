@@ -34,7 +34,7 @@ namespace HousingRepairsOnlineApi.Controllers
                 var result = await saveRepairRequestUseCase.Execute(repairRequest);
                 appointmentConfirmationSender.Execute(result);
                 internalEmailSender.Execute(result);
-                return Ok(result);
+                return Ok(result.Id);
             }
             catch (Exception ex)
             {
