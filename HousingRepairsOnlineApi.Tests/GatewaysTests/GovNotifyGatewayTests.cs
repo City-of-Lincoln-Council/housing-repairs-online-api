@@ -30,7 +30,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             };
 
             //Act
-            await systemUnderTest.SendSms("07415678534", "templateId", personalisation);
+            systemUnderTest.SendSms("07415678534", "templateId", personalisation);
 
             //Assert
             notifyClinet.Verify(x => x.SendSms("07415678534", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
@@ -52,7 +52,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
                     It.IsAny<string>()));
 
             //Act
-            await systemUnderTest.SendSms("07415678534", "templateId", personalisation);
+            systemUnderTest.SendSms("07415678534", "templateId", personalisation);
 
             //Assert
             notifyClinet.Verify(x => x.SendSms("07415678534", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
@@ -73,7 +73,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
                     It.IsAny<string>()));
 
             //Act
-            await systemUnderTest.SendEmail("dr.who@tardis.com", "templateId", personalisation);
+            systemUnderTest.SendEmail("dr.who@tardis.com", "templateId", personalisation);
 
             //Assert
             notifyClinet.Verify(x => x.SendEmail("dr.who@tardis.com", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());
@@ -95,7 +95,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
                     It.IsAny<string>()));
 
             //Act
-            await systemUnderTest.SendEmail("dr.who@tardis.com", "templateId", personalisation);
+            systemUnderTest.SendEmail("dr.who@tardis.com", "templateId", personalisation);
 
             //Assert
             notifyClinet.Verify(x => x.SendEmail("dr.who@tardis.com", "templateId", personalisation, It.IsAny<string>(), It.IsAny<string>()), Times.Once());

@@ -32,7 +32,7 @@ namespace HousingRepairsOnlineApi.UseCases
                 {"appointment_time", appointmentTime}
             };
 
-            await notifyGateway.SendSms(number, templateId, personalisation);
+            notifyGateway.SendSms(number, templateId, personalisation);
         }
 
         private static bool ValidatePhoneNumber(string number)

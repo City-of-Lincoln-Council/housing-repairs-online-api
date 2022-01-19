@@ -42,7 +42,7 @@ namespace HousingRepairsOnlineApi.UseCases
                 {"image_1", image},
             };
 
-            await notifyGateway.SendEmail(internalEmail, templateId, personalisation);
+            notifyGateway.SendEmail(internalEmail, templateId, personalisation);
         }
 
         private static bool ValidateEmail(string email)

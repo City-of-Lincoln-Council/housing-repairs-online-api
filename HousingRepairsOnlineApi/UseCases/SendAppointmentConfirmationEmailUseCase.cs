@@ -31,7 +31,7 @@ namespace HousingRepairsOnlineApi.UseCases
                 {"appointment_time", appointmentTime}
             };
 
-            await notifyGateway.SendEmail(email, templateId, personalisation);
+            notifyGateway.SendEmail(email, templateId, personalisation);
         }
 
         private static bool ValidateEmail(string email)
