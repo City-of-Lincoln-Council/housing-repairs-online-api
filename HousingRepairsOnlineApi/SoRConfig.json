@@ -61,6 +61,34 @@
       "notFlushing":"N630573",
       "overflowing":"N630573",
       "looseFromFloor":"N630516"
+    },
+    "wallsFloorsCeiling":{
+      "wallTiles":"N431041",
+      "floorTiles":"N432005",
+      "lightFitting":"N858111",
+      "skirtingBoardArchitrave":"N381001",
+      "plasteringCeiling":"N413305",
+      "plasteringWalls":"N431023"
+    }
+  },
+  "bedroom": {
+    "wallsFloorsCeiling":{
+      "wallTiles":"N431041",
+      "floorTiles":"N432005",
+      "lightFitting":"N858111",
+      "skirtingBoardArchitrave":"N381001",
+      "plasteringCeiling":"N413305",
+      "plasteringWalls":"N431023"
+    }
+  },
+  "livingAreas": {
+    "wallsFloorsCeiling":{
+      "wallTiles":"N431041",
+      "floorTiles":"N432005",
+      "lightFitting":"N858111",
+      "skirtingBoardArchitrave":"N381001",
+      "plasteringCeiling":"N413305",
+      "plasteringWalls":"N431023"
     }
   }
 }
