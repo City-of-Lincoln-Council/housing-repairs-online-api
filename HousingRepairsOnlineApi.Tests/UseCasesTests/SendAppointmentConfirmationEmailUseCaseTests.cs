@@ -35,7 +35,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 #pragma warning restore xUnit1026
         {
             //Act
-            Func<Task> act = async () =>  systemUnderTest.Execute(email, "bookingRef", "08:00am");
+            Func<Task> act = async () => systemUnderTest.Execute(email, "bookingRef", "08:00am");
 
             //Assert
             await act.Should().ThrowExactlyAsync<T>();
