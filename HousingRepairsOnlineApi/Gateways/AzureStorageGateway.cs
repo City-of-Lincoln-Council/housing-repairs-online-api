@@ -55,7 +55,6 @@ namespace HousingRepairsOnlineApi.Gateways
                 }
 
                 var sasUri = blobClient.GenerateSasUri(sasBuilder);
-                Console.WriteLine("SAS URI for blob is: {0}", sasUri);
                 return sasUri.AbsoluteUri;
             }
             else
