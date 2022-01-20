@@ -19,14 +19,13 @@ namespace HousingRepairsOnlineApi.Helpers
         public async Task Execute(Repair repair)
         {
             var imageLink = "None";
-
-            await Task.Run(() =>
+            if (!String.IsNullOrEmpty(repair.Description?.PhotoUrl))
             {
-                if (!String.IsNullOrEmpty(repair.Description?.PhotoUrl))
+                await Task.Run(() =>
                 {
                     imageLink = retrieveImageLinkUseCase.Execute(repair.Description?.PhotoUrl);
-                }
-            });
+                });
+            }
             sendInternalEmailUseCase.Execute(repair.Id, repair.Address.LocationId, repair.Address.Display, repair.SOR, repair.Description.Text, repair.ContactDetails?.Value, imageLink);
         }
     }
