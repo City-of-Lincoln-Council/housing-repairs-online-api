@@ -101,6 +101,7 @@ namespace HousingRepairsOnlineApi
 
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
             services.AddTransient<ISaveRepairRequestUseCase, SaveRepairRequestUseCase>();
+            services.AddTransient<IInternalEmailSender, InternalEmailSender>();
 
             var cosmosContainer = GetCosmosContainer();
 
