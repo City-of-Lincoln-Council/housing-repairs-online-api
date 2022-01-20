@@ -27,7 +27,7 @@ namespace HousingRepairsOnlineApi.UseCases
             Guard.Against.NullOrWhiteSpace(sor, nameof(sor), "The sor provided is invalid");
             Guard.Against.NullOrWhiteSpace(repairDescription, nameof(repairDescription), "The repairDescription provided is invalid");
             Guard.Against.NullOrWhiteSpace(contactNumber, nameof(contactNumber), "The contact number provided is invalid");
-            Guard.Against.NullOrWhiteSpace(image, nameof(image), "The image provided is invalid");
+
 
             ValidateEmail(internalEmail);
 

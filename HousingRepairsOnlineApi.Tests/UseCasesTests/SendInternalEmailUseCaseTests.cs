@@ -152,19 +152,16 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             yield return new object[] { new ArgumentException(), "" };
         }
 
-        [Theory]
-        [MemberData(nameof(InvalidImageArgumentTestData))]
-#pragma warning disable xUnit1026
-        public async void GivenAnInvalidImage_WhenExecute_ThenExceptionIsThrown<T>(T exception, string image) where T : Exception
-#pragma warning restore xUnit1026
+        [Fact]
+        public async void GivenNoImage_WhenExecute_ThenGovNotifyGateWayIsCalled()
         {
             //Act
-            Func<Task> act = async () => systemUnderTest.Execute(
-                "bookingRef", "address", "sor", "uprn", "repair description", "07465087654", image
-            );
+            const string Base64Img = "";
+
+            systemUnderTest.Execute("bookingRef", "address", "sor", "uprn", "repair description", "07465087654", Base64Img);
 
             //Assert
-            await act.Should().ThrowExactlyAsync<T>();
+            govNotifyGatewayMock.Verify(x => x.SendEmail("dr.who@tardis.com", "templateId", It.IsAny<Dictionary<string, dynamic>>()), Times.Once);
         }
 
         [Fact]
