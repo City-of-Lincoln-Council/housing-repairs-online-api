@@ -74,30 +74,32 @@
     }
   },
   "bedroom": {
-    "damagedOrStuckDoors": {},
+    "wallsFloorsCeiling":{
+      "wallTiles":"N431041",
+      "floorTiles":"N432005",
+      "lightFitting":"N858111",
+      "skirtingBoardArchitrave":"N381001",
+      "plasteringCeiling":"N413305",
+      "plasteringWalls":"N431023",
+      "woodenFloorboards": "N301125"
+    },
     "electricsLightsSwitches": {
       "lights":"N858111",
       "sockets": "N861511"
-    },
-    "damagedOrStuckWindows": {},
-    "dampOrMould": {}
+    }
   },
   "livingAreas": {
-    "damagedOrStuckDoors": {},
+    "wallsFloorsCeiling":{
+      "wallTiles":"N431041",
+      "floorTiles":"N432005",
+      "lightFitting":"N858111",
+      "skirtingBoardArchitrave":"N381001",
+      "plasteringCeiling":"N413305",
+      "plasteringWalls":"N431023",
+    },
     "electricsLightsSwitches": {
       "lights":"N858111",
       "sockets": "N861511"
-    },
-    "damagedOrStuckWindows": {},
-    "dampOrMould": {
-      "damagedOrStuckDoors": {},
-      "electricsLightsSwitches": {
-        "lights":"",
-        "sockets": ""
-      },
-      "damagedOrStuckWindows": {},
-      "dampOrMould": {},
-      "stairs": {}
     }
   }
 }
