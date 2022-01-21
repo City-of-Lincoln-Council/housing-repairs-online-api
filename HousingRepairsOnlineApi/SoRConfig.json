@@ -96,6 +96,7 @@
       "skirtingBoardArchitrave":"N381001",
       "plasteringCeiling":"N413305",
       "plasteringWalls":"N431023",
+      "woodenFloorboards": "N301125"
     },
     "electricsLightsSwitches": {
       "lights":"N858111",
