@@ -18,7 +18,9 @@
     },
     "sink":{
       "taps":"N630147",
-      "pipeworkLeak":"N630147"
+      "pipeworkLeak":"N630147",
+      "leakBlockage": "N620507",
+      "damageSink": "N630714"
     },
     "wallsFloorsCeiling":{
       "wallTiles":"N431041",
@@ -55,9 +57,10 @@
       "showerHead":"N631121"
     },
     "sink":{
-      "sinkTaps":"N631301",
+      "taps":"N631301",
       "damagedSink":"N630714",
-      "leakBlockedSink":"N620507"
+      "leakBlockage":"N620507",
+      "pipeworkLeak":"N630147"
     },
     "toilet":{
       "notFlushing":"N630573",
