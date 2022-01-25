@@ -29,9 +29,11 @@
       "plasteringWalls":"N431023",
       "woodenFloorboards": "N301125"
     },
-    "window":{
+    "windows": {
+      "smashed":"",
+      "stuckOpen":"",
       "stuckShut":"N318125",
-      "condensated":"N318151"
+      "condensation":"N318151"
     },
     "door":{
       "backDoorWooden":"N324123",
@@ -73,6 +75,12 @@
       "plasteringCeiling":"N413305",
       "plasteringWalls":"N431023",
       "woodenFloorboards": "N301125"
+    },
+    "windows": {
+      "smashed":"",
+      "stuckOpen":"",
+      "stuckShut":"N318125",
+      "condensation":"N318151"
     }
   },
   "bedroom": {
@@ -88,6 +96,12 @@
     "electricsLightsSwitches": {
       "lights":"N858111",
       "sockets": "N861511"
+    },
+    "windows": {
+      "smashed":"",
+      "stuckOpen":"",
+      "stuckShut":"N318125",
+      "condensation":"N318151"
     }
   },
   "livingAreas": {
@@ -103,6 +117,12 @@
     "electricsLightsSwitches": {
       "lights":"N858111",
       "sockets": "N861511"
+    },
+    "windows": {
+      "smashed":"",
+      "stuckOpen":"",
+      "stuckShut":"N318125",
+      "condensation":"N318151"
     }
   }
 }
