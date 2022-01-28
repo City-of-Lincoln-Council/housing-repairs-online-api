@@ -5,8 +5,9 @@
       "doorMissing":"N373049"
     },
     "worktop": "N372005",
-    "dampMould":{
-      "dampMould":"N114001"
+    "dampOrMould": {
+      "dampMouldCausedByLeak":"",
+      "dampMouldCausedByOther":"N114001"
     },
     "electrical":{
       "extractorFan":"N841007",
@@ -88,6 +89,10 @@
     "electricsLightsSwitches": {
       "lights":"N858111",
       "sockets": "N861511"
+    },
+    "dampOrMould": {
+      "dampMouldCausedByLeak":"",
+      "dampMouldCausedByOther":"N114001"
     }
   },
   "livingAreas": {
@@ -103,6 +108,10 @@
     "electricsLightsSwitches": {
       "lights":"N858111",
       "sockets": "N861511"
+    },
+    "dampOrMould": {
+      "dampMouldCausedByLeak":"",
+      "dampMouldCausedByOther":"N114001"
     }
   }
 }
