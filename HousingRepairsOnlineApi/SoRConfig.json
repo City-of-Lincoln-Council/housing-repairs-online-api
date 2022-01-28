@@ -6,7 +6,6 @@
     },
     "worktop": "N372005",
     "dampOrMould": {
-      "dampMouldCausedByLeak":"",
       "dampMouldCausedByOther":"N114001"
     },
     "electrical":{
@@ -91,7 +90,6 @@
       "sockets": "N861511"
     },
     "dampOrMould": {
-      "dampMouldCausedByLeak":"",
       "dampMouldCausedByOther":"N114001"
     }
   },
@@ -110,7 +108,6 @@
       "sockets": "N861511"
     },
     "dampOrMould": {
-      "dampMouldCausedByLeak":"",
       "dampMouldCausedByOther":"N114001"
     }
   }
