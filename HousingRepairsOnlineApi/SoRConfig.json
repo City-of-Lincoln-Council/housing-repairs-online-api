@@ -57,11 +57,14 @@
       "bathPanel":"N630945",
       "bathBlockage":"N630945"
     },
-    "shower":{
-      "electricShower":"N631131",
+    "showerIncludingTrayAndDoor":{
+      "electricShowerUnit":"N631131",
       "showerTap":"N631337",
       "showerHose":"N631111",
-      "showerHead":"N631121"
+      "showerHead":"N631121",
+      "showerTrayBroken":"",
+      "cubicleDoorBroken":"",
+      "showerDrainBlocked":""
     },
     "sink":{
       "taps":"N631301",
