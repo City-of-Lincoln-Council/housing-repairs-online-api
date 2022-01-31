@@ -63,7 +63,8 @@
     "toilet":{
       "notFlushing":"N630573",
       "overflowing":"N630573",
-      "looseFromFloor":"N630516"
+      "looseFromFloorOrWall":"N630516",
+      "cracked": ""
     },
     "wallsFloorsCeiling":{
       "wallTiles":"N431041",
