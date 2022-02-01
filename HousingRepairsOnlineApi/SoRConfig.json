@@ -95,6 +95,10 @@
       "stuckOpen": "N315001",
       "stuckShut": "N318125",
       "condensation": "N318151"
+    },
+    "damagedOrStuckDoors": {
+      "internalDoorIssue": "N330007",
+      "lockOnDoor": "N391707"
     }
   },
   "bedroom": {
@@ -117,6 +121,10 @@
       "stuckOpen": "",
       "stuckShut": "N318125",
       "condensation": "N318151"
+    },
+    "damagedOrStuckDoors": {
+      "internalDoorIssue": "N330007",
+      "lockOnDoor": "N391707"
     }
   },
   "livingAreas": {
@@ -139,6 +147,10 @@
       "stuckOpen": "N315001",
       "stuckShut": "N318125",
       "condensation": "N318151"
+    },
+    "damagedOrStuckDoors": {
+      "internalDoorIssue": "N330007",
+      "lockOnDoor": ""
     }
   }
 }
