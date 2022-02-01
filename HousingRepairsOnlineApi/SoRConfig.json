@@ -38,6 +38,10 @@
       "backFrenchDoors":"N325117",
       "internal":"N330007",
       "sliding":"N330007"
+    },
+    "heatingOrHotWater": {
+      "boiler": "",
+      "radiator": ""
     }
   },
   "bathroom":{
