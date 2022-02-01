@@ -42,6 +42,12 @@
     "heatingOrHotWater": {
       "boiler": "",
       "radiator": ""
+    },
+    "damagedOrStuckWindows": {
+      "smashed": "N551055",
+      "stuckOpen": "N315001",
+      "stuckShut": "N318125",
+      "condensation": "N318151"
     }
   },
   "bathroom":{
@@ -83,7 +89,12 @@
       "tubeLights": "N856615",
       "pullCord": "N862004",
       "extractorFan": "N841007"
-
+    },
+    "damagedOrStuckWindows": {
+      "smashed": "N551055",
+      "stuckOpen": "N315001",
+      "stuckShut": "N318125",
+      "condensation": "N318151"
     }
   },
   "bedroom": {
@@ -100,7 +111,13 @@
       "lights":"N858111",
       "sockets": "N861511"
     },
-    "dampOrMould": "N114001"
+    "dampOrMould": "N114001",
+    "damagedOrStuckWindows": {
+      "smashed": "",
+      "stuckOpen": "",
+      "stuckShut": "N318125",
+      "condensation": "N318151"
+    }
   },
   "livingAreas": {
     "wallsFloorsCeiling":{
@@ -116,6 +133,12 @@
       "lights":"N858111",
       "sockets": "N861511"
     },
-    "dampOrMould": "N114001"
+    "dampOrMould": "N114001",
+    "damagedOrStuckWindows": {
+      "smashed": "N551055",
+      "stuckOpen": "N315001",
+      "stuckShut": "N318125",
+      "condensation": "N318151"
+    }
   }
 }
