@@ -38,5 +38,17 @@ namespace HousingRepairsOnlineApi.Gateways
 
             return result;
         }
+
+        public async Task BookAppointment(string bookingReference, string sorCode, string locationId, DateTime startDateTime,
+            DateTime endDateTime)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"/Appointments/BookAppointment?bookingReference={bookingReference}&sorCode={sorCode}&locationId={locationId}&startDateTime={startDateTime}&endDateTime={endDateTime}");
+
+            request.SetupJwtAuthentication(httpClient, authenticationIdentifier);
+
+            await httpClient.SendAsync(request);
+
+        }
     }
 }

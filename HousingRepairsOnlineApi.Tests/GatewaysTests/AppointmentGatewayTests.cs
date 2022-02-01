@@ -94,5 +94,29 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             Assert.Empty(data);
             mockHttp.VerifyNoOutstandingExpectation();
         }
+
+        [Fact]
+        public async Task GivenValidParameters_WhenBookingAppointment_NoExceptionIsThrown()
+        {
+            // Arrange
+            const string SorCode = "SOR Code";
+            const string LocationId = "Location ID";
+            const string BookingReference = "Booking Reference";
+            var startDateTime = new DateTime(2022, 01, 01, 8, 0, 0);
+            var endDateTime = new DateTime(2022, 01, 01, 12, 0, 0);
+
+            mockHttp.Expect($"/Appointments/BookAppointment?bookingReference={BookingReference}&sorCode={SorCode}&locationId={LocationId}&startDateTime={startDateTime}&endDateTime={endDateTime}")
+                .Respond(HttpStatusCode.OK);
+
+            // Act
+            Func<Task> act = async () =>
+            {
+                await systemUnderTest.BookAppointment(BookingReference, SorCode, LocationId, startDateTime, endDateTime);
+            };
+
+            // Assert
+            await act.Should().NotThrowAsync<Exception>();
+            mockHttp.VerifyNoOutstandingExpectation();
+        }
     }
 }

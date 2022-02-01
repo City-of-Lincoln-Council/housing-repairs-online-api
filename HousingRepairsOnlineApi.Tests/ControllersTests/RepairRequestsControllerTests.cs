@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using HousingRepairsOnlineApi.Controllers;
 using HousingRepairsOnlineApi.Domain;
@@ -13,15 +14,29 @@ namespace HousingRepairsOnlineApi.Tests
     {
         private RepairController systemUnderTest;
         private Mock<ISaveRepairRequestUseCase> saveRepairRequestUseCaseMock;
+        private Mock<IBookAppointmentUseCase> bookAppointmentUseCaseMock;
         private Mock<IInternalEmailSender> internalEmailSender;
         private Mock<IAppointmentConfirmationSender> appointmentConfirmationSender;
+
+        private readonly RepairAvailability repairAvailability = new()
+        {
+            Display = "Displayed Time",
+            StartDateTime = new DateTime(2022, 01, 01, 8, 0, 0),
+            EndDateTime = new DateTime(2022, 01, 01, 12, 0, 0),
+        };
+
+        private readonly RepairAddress repairAddress = new()
+        {
+            LocationId = "Location Id",
+        };
 
         public RepairRequestsControllerTests()
         {
             saveRepairRequestUseCaseMock = new Mock<ISaveRepairRequestUseCase>();
+            bookAppointmentUseCaseMock = new Mock<IBookAppointmentUseCase>();
             appointmentConfirmationSender = new Mock<IAppointmentConfirmationSender>();
             internalEmailSender = new Mock<IInternalEmailSender>();
-            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, internalEmailSender.Object, appointmentConfirmationSender.Object);
+            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, internalEmailSender.Object, appointmentConfirmationSender.Object, bookAppointmentUseCaseMock.Object);
 
         }
 
@@ -47,7 +62,8 @@ namespace HousingRepairsOnlineApi.Tests
                 Location = new RepairLocation { Value = "location" },
                 Problem = new RepairProblem { Value = "problem" },
                 Issue = new RepairIssue { Value = "issue" },
-                SOR = "sor"
+                SOR = "sor",
+                Time = repairAvailability,
             };
 
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).ReturnsAsync(repair);
@@ -99,10 +115,8 @@ namespace HousingRepairsOnlineApi.Tests
                     Type = "email",
                     Value = "dr.who@tardis.com"
                 },
-                Time = new RepairAvailability
-                {
-                    Display = "Displayed Time"
-                }
+                Time = repairAvailability,
+                Address = repairAddress
             };
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest)).ReturnsAsync(repair);
 
@@ -137,10 +151,8 @@ namespace HousingRepairsOnlineApi.Tests
                     Type = "text",
                     Value = "0765374057"
                 },
-                Time = new RepairAvailability
-                {
-                    Display = "Displayed Time"
-                }
+                Time = repairAvailability,
+                Address = repairAddress
             };
 
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest)).ReturnsAsync(repair);

@@ -35,6 +35,7 @@ namespace HousingRepairsOnlineApi
 
             services.AddTransient<IRetrieveAddressesUseCase, RetrieveAddressesUseCase>();
             services.AddTransient<IRetrieveAvailableAppointmentsUseCase, RetrieveAvailableAppointmentsUseCase>();
+            services.AddTransient<IBookAppointmentUseCase, BookAppointmentUseCase>();
 
             var addressesApiUrl = GetEnvironmentVariable("ADDRESSES_API_URL");
             var schedulingApiUrl = GetEnvironmentVariable("SCHEDULING_API_URL");
