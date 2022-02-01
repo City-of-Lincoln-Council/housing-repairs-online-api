@@ -5,9 +5,8 @@
       "doorMissing":"N373049"
     },
     "worktop": "N372005",
-    "dampOrMould": {
-      "dampMouldCausedByOther":"N114001"
-    },
+    "dampOrMould": "N114001"
+  ,
     "electrical":{
       "extractorFan":"N841007",
       "sockets":"N861511",
@@ -74,7 +73,7 @@
       "plasteringWalls":"N431023",
       "woodenFloorboards": "N301125"
     },
-    "dampMould": "N114001"
+    "dampOrMould": "N114001"
   },
   "bedroom": {
     "wallsFloorsCeiling":{
@@ -90,9 +89,7 @@
       "lights":"N858111",
       "sockets": "N861511"
     },
-    "dampOrMould": {
-      "dampMouldCausedByOther":"N114001"
-    }
+    "dampOrMould": "N114001"
   },
   "livingAreas": {
     "wallsFloorsCeiling":{
@@ -108,8 +105,6 @@
       "lights":"N858111",
       "sockets": "N861511"
     },
-    "dampOrMould": {
-      "dampMouldCausedByOther":"N114001"
-    }
+    "dampOrMould": "N114001"
   }
 }
