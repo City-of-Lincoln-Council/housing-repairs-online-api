@@ -73,7 +73,14 @@
       "plasteringWalls":"N431023",
       "woodenFloorboards": "N301125"
     },
-    "dampOrMould": "N114001"
+    "dampOrMould": "N114001",
+    "electricsExtractorCords": {
+      "spotLights": "N856615",
+      "tubeLights": "N856615",
+      "pullCord": "N862004",
+      "extractorFan": "N841007"
+
+    }
   },
   "bedroom": {
     "wallsFloorsCeiling":{
