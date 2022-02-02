@@ -118,8 +118,8 @@
     },
     "dampOrMould": "N114001",
     "damagedOrStuckWindows": {
-      "smashed": "",
-      "stuckOpen": "",
+      "smashed": "N551055",
+      "stuckOpen": "N315001",
       "stuckShut": "N318125",
       "condensation": "N318151"
     },
