@@ -155,11 +155,17 @@
     }
   },
   "outside": {
+    "securityLights": "N880112",
+    "roof": {
+      "shedOuthouseRoof": "N223011",
+      "loftInsulation": "N227005",
+      "looseTiles": "N201113",
+      "flatRoofProblems": "N217032"
+    },
     "garage":{
-      "doorDamage":"N345203",
-      "lockDamage":"N345609",
-      "brokenInto":"N345611",
-      "roofIssueOrLeak":"N217032"
-    }
+      "doorDamage": "N345203",
+      "lockDamage": "N345609",
+      "brokenInto": "N345611",
+      "roofIssueOrLeak": "N217032"
   }
 }
