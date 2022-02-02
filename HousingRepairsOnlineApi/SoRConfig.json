@@ -153,5 +153,8 @@
       "internalDoorIssue": "N330007",
       "lockOnDoor": ""
     }
+  },
+  "outside": {
+    "securityLights": "N880112"
   }
 }
