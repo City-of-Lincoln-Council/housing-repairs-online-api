@@ -153,5 +153,13 @@
       "internalDoorIssue": "N330007",
       "lockOnDoor": ""
     }
+  },
+  "outside": {
+    "garage":{
+      "doorDamage":"N345203",
+      "lockDamage":"N345609",
+      "brokenInto":"N345611",
+      "roofIssueOrLeak":"N217032"
+    }
   }
 }
