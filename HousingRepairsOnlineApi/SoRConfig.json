@@ -120,8 +120,7 @@
       "condensation": "N318151"
     },
     "damagedOrStuckDoors": {
-      "internalDoorIssue": "N330007",
-      "lockOnDoor": "N391707"
+      "internalDoorIssue": "N330007"
     }
   },
   "livingAreas": {
@@ -146,8 +145,7 @@
       "condensation": "N318151"
     },
     "damagedOrStuckDoors": {
-      "internalDoorIssue": "N330007",
-      "lockOnDoor": ""
+      "internalDoorIssue": "N330007"
     },
     "stairs": {
       "damagedSteps": "N351003",
