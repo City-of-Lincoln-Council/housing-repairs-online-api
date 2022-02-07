@@ -28,10 +28,6 @@
       "plasteringWalls":"N431023",
       "woodenFloorboards": "N301125"
     },
-    "window":{
-      "stuckShut":"N318125",
-      "condensated":"N318151"
-    },
     "door":{
       "backDoorWooden":"N324123",
       "backDoorUPVC":"N325117",
@@ -43,7 +39,7 @@
       "boiler": "",
       "radiator": ""
     },
-    "damagedOrStuckWindows": {
+    "windows": {
       "smashed": "N551055",
       "stuckOpen": "N315001",
       "stuckShut": "N318125",
@@ -91,7 +87,7 @@
       "pullCord": "N862004",
       "extractorFan": "N841007"
     },
-    "damagedOrStuckWindows": {
+    "windows": {
       "smashed": "N551055",
       "stuckOpen": "N315001",
       "stuckShut": "N318125",
@@ -117,7 +113,7 @@
       "sockets": "N861511"
     },
     "dampOrMould": "N114001",
-    "damagedOrStuckWindows": {
+    "windows": {
       "smashed": "N551055",
       "stuckOpen": "N315001",
       "stuckShut": "N318125",
@@ -143,7 +139,7 @@
       "sockets": "N861511"
     },
     "dampOrMould": "N114001",
-    "damagedOrStuckWindows": {
+    "windows": {
       "smashed": "N551055",
       "stuckOpen": "N315001",
       "stuckShut": "N318125",
