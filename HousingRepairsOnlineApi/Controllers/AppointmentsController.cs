@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HousingRepairsOnlineApi.UseCases;
 using Microsoft.AspNetCore.Mvc;
+using Sentry;
 
 namespace HousingRepairsOnlineApi.Controllers
 {
@@ -25,8 +26,16 @@ namespace HousingRepairsOnlineApi.Controllers
             [FromQuery] string locationId,
             [FromQuery] DateTime? fromDate = null)
         {
-            var result = await retrieveAvailableAppointmentsUseCase.Execute(repairLocation, repairProblem, repairIssue, locationId, fromDate);
-            return Ok(result);
+            try
+            {
+                var result = await retrieveAvailableAppointmentsUseCase.Execute(repairLocation, repairProblem, repairIssue, locationId, fromDate);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

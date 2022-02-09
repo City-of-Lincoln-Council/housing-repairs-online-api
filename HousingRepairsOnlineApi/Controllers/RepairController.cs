@@ -4,6 +4,7 @@ using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Helpers;
 using HousingRepairsOnlineApi.UseCases;
 using Microsoft.AspNetCore.Mvc;
+using Sentry;
 
 namespace HousingRepairsOnlineApi.Controllers
 {
@@ -43,7 +44,8 @@ namespace HousingRepairsOnlineApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex);
+                SentrySdk.CaptureException(ex);
+                return StatusCode(500, ex.Message);
             }
         }
     }
