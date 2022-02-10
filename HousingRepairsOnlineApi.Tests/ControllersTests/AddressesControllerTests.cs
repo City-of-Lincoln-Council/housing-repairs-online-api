@@ -27,5 +27,17 @@ namespace HousingRepairsOnlineApi.Tests
             GetStatusCode(result).Should().Be(200);
             retrieveAddressesUseCaseMock.Verify(x => x.Execute(Postcode), Times.Once);
         }
+
+        [Fact]
+        public async Task ReturnsErrorWhenFailsToSave()
+        {
+            const string Postcode = "M3 0W";
+
+            retrieveAddressesUseCaseMock.Setup(x => x.Execute(It.IsAny<string>())).Throws<System.Exception>();
+
+            var result = await systemUnderTest.Addresses(Postcode);
+
+            GetStatusCode(result).Should().Be(500);
+        }
     }
 }

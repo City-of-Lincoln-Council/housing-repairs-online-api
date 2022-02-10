@@ -48,5 +48,21 @@ namespace HousingRepairsOnlineApi.Tests.ControllersTests
             GetStatusCode(result).Should().Be(200);
             availableAppointmentsUseCaseMock.Verify(x => x.Execute(RepairLocation, RepairProblem, RepairIssue, LocationId, null), Times.Once);
         }
+
+        [Fact]
+        public async Task ReturnsErrorWhenFailsToSave()
+        {
+            const string RepairLocation = "kitchen";
+            const string RepairProblem = "cupboards";
+            const string RepairIssue = "doorHangingOff";
+            const string LocationId = "location ID";
+            var fromDate = new DateTime(2021, 12, 15);
+
+            availableAppointmentsUseCaseMock.Setup(x => x.Execute(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>())).Throws<System.Exception>();
+
+            var result = await systemUndertest.AvailableAppointments(RepairLocation, RepairProblem, RepairIssue, LocationId, fromDate);
+
+            GetStatusCode(result).Should().Be(500);
+        }
     }
 }
