@@ -18,11 +18,13 @@ namespace HousingRepairsOnlineApi
                     webBuilder.UseSentry(o =>
                     {
                         o.Dsn = Environment.GetEnvironmentVariable("SENTRY_DNS");
-                        // When configuring for the first time, to see what the SDK is doing:
-                        o.Debug = true;
-                        // Set TracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-                        // We recommend adjusting this value in production.
-                        o.TracesSampleRate = 1.0;
+
+                        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                        if (environment == Environments.Development)
+                        {
+                            o.Debug = true;
+                            o.TracesSampleRate = 1.0;
+                        }
                     });
                     webBuilder.UseStartup<Startup>();
                 });
