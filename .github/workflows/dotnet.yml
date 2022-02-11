@@ -78,5 +78,5 @@ jobs:
         with:
           app-name: 'housing-repairs-online-api'
           slot-name: 'Staging-HealthChecks'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A7BC88C724A54F3D83D70DF7AF8EC4C7 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_HEALTHCHECKS_SLOT }}
           package: .
