@@ -5,7 +5,9 @@
       "doorMissing":"N373049"
     },
     "worktop": "N372005",
-    "dampOrMould": "N114001"
+    "dampOrMould": {
+      "dampOrMould" : "N114001"
+    }
   ,
     "electrical":{
       "extractorFan":"N841007",
@@ -83,7 +85,9 @@
       "plasteringWalls":"N431023",
       "woodenFloorboards": "N301125"
     },
-    "dampOrMould": "N114001",
+    "dampOrMould": {
+      "dampOrMould" : "N114001"
+    },
     "electricsExtractorCords": {
       "spotLights": "N856615",
       "tubeLights": "N856615",
@@ -115,7 +119,9 @@
       "lights":"N858111",
       "sockets": "N861511"
     },
-    "dampOrMould": "N114001",
+    "dampOrMould": {
+      "dampOrMould" : "N114001"
+    },
     "windows": {
       "smashed": "N551055",
       "stuckOpen": "N315001",
@@ -140,7 +146,9 @@
       "lights":"N858111",
       "sockets": "N861511"
     },
-    "dampOrMould": "N114001",
+    "dampOrMould": {
+      "dampOrMould" : "N114001"
+    },
     "windows": {
       "smashed": "N551055",
       "stuckOpen": "N315001",
