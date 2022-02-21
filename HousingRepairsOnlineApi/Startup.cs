@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Notify.Client;
@@ -132,6 +133,9 @@ namespace HousingRepairsOnlineApi
                 c.AddJwtSecurityScheme();
             });
 
+            services.AddHealthChecks()
+                .AddUrlGroup(new Uri(@$"{addressesApiUrl}/health"), "Addresses API", HealthStatus.Degraded)
+                .AddUrlGroup(new Uri(@$"{schedulingApiUrl}/health"), "Scheduling API", HealthStatus.Degraded);
         }
 
         private static BlobContainerClient GetBlobContainerClient()
@@ -185,6 +189,7 @@ namespace HousingRepairsOnlineApi
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers().RequireAuthorization();
             });
         }
