@@ -26,7 +26,6 @@ namespace HousingRepairsOnlineApi.UseCases
         {
             Guard.Against.NullOrWhiteSpace(repairLocation, nameof(repairLocation));
             Guard.Against.NullOrWhiteSpace(repairProblem, nameof(repairProblem));
-            Guard.Against.NullOrWhiteSpace(repairIssue, nameof(repairIssue));
             Guard.Against.NullOrWhiteSpace(locationId, nameof(locationId));
             var repairCode = sorEngine.MapSorCode(repairLocation, repairProblem, repairIssue);
 

@@ -63,7 +63,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
         [Theory]
         [MemberData(nameof(InvalidArgumentTestData))]
 #pragma warning disable xUnit1026
-        public async void GivenAnInvalidRepairIssue_WhenExecute_ThenExceptionIsThrown<T>(T exception, string repairIssue) where T : Exception
+        public async void GivenValidRepairIssue_WhenExecute_ThenNoExceptionIsThrown<T>(T exception, string repairIssue) where T : Exception
 #pragma warning restore xUnit1026
         {
             // Arrange
@@ -73,7 +73,7 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             Func<Task> act = async () => await systemUnderTest.Execute(kitchen, cupboards, repairIssue, "A UPRN");
 
             // Assert
-            await act.Should().ThrowExactlyAsync<T>();
+            await act.Should().NotThrowAsync<T>();
         }
 
         [Theory]
