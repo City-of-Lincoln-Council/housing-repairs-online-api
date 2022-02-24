@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.AzureStorage" Version="6.0.3" />
+    <PackageReference Include="AspNetCore.HealthChecks.CosmosDb" Version="6.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="6.0.2" />
     <PackageReference Include="Azure.Cosmos" Version="4.0.0-preview3" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
