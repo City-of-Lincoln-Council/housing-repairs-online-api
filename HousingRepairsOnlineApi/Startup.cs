@@ -133,16 +133,12 @@ namespace HousingRepairsOnlineApi
                 c.AddJwtSecurityScheme();
             });
 
-            var cosmosEndpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
-            var cosmosAuthorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
-            var cosmosDatabaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
             var storageConnectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
             var blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
 
             services.AddHealthChecks()
                 .AddUrlGroup(new Uri(@$"{addressesApiUrl}/health"), "Addresses API")
                 .AddUrlGroup(new Uri(@$"{schedulingApiUrl}/health"), "Scheduling API")
-                .AddCosmosDb($"AccountEndpoint={cosmosEndpointUrl};AccountKey={cosmosAuthorizationKey};", cosmosDatabaseId, name: "Azure CosmosDb")
                 .AddAzureBlobStorage(storageConnectionString, blobContainerName, name: "Azure Blob Storage");
         }
 
