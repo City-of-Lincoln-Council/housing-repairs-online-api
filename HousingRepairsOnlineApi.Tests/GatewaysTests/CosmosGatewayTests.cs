@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading;
-using Azure.Cosmos;
 using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Helpers;
+using Microsoft.Azure.Cosmos;
 using Moq;
 using Xunit;
 
@@ -12,12 +13,12 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
     public class CosmosGatewayTests
     {
         private readonly CosmosGateway azureStorageGateway;
-        private readonly Mock<CosmosContainer> mockCosmosContainer;
+        private readonly Mock<Container> mockCosmosContainer;
         private readonly Mock<IIdGenerator> mockIdGenerator;
 
         public CosmosGatewayTests()
         {
-            mockCosmosContainer = new Mock<CosmosContainer>();
+            mockCosmosContainer = new Mock<Container>();
             mockIdGenerator = new Mock<IIdGenerator>();
 
             azureStorageGateway = new CosmosGateway(mockCosmosContainer.Object, mockIdGenerator.Object);
@@ -30,7 +31,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             var dummyRepair = new Repair();
 
             var responseMock = new Mock<ItemResponse<Repair>>();
-            responseMock.Setup(_ => _.Value).Returns(dummyRepair);
+            responseMock.Setup(_ => _.Resource).Returns(dummyRepair);
             mockIdGenerator.Setup(_ => _.Generate()).Returns(repairId);
 
             // Arrange
@@ -56,7 +57,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             var dummyRepair = new Repair();
 
             var responseMock = new Mock<ItemResponse<Repair>>();
-            responseMock.Setup(_ => _.Value).Returns(dummyRepair);
+            responseMock.Setup(_ => _.Resource).Returns(dummyRepair);
             mockIdGenerator.Setup(_ => _.Generate()).Returns(
                 new Queue<string>(new[] { conflictId, repairId }).Dequeue);
 
@@ -68,7 +69,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             )).Callback(() =>
                 {
                     if (dummyRepair.Id == conflictId)
-                        throw new CosmosException("Conflict", 409);
+                        throw new CosmosException("Conflict", HttpStatusCode.Conflict, default, default, default);
                 }).ReturnsAsync(responseMock.Object);
 
             var actual = await azureStorageGateway.AddRepair(dummyRepair);

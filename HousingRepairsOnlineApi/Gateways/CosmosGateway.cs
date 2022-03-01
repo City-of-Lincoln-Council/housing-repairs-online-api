@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Azure.Cosmos;
 using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Helpers;
+using Microsoft.Azure.Cosmos;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
     public class CosmosGateway : IRepairStorageGateway
     {
-        private CosmosContainer cosmosContainer;
+        private Container cosmosContainer;
         private readonly IIdGenerator idGenerator;
 
-        public CosmosGateway(CosmosContainer cosmosContainer, IIdGenerator idGenerator)
+        public CosmosGateway(Container cosmosContainer, IIdGenerator idGenerator)
         {
             this.cosmosContainer = cosmosContainer;
             this.idGenerator = idGenerator;
@@ -28,7 +28,7 @@ namespace HousingRepairsOnlineApi.Gateways
             {
                 ItemResponse<Repair> itemResponse = await cosmosContainer.CreateItemAsync(repair);
 
-                return itemResponse.Value;
+                return itemResponse.Resource;
             }
             catch (CosmosException ex)
             {

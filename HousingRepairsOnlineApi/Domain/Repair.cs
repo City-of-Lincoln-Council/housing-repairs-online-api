@@ -1,10 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace HousingRepairsOnlineApi.Domain
 {
     public class Repair
     {
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public string Id { get; set; }
         public string Postcode { get; set; }
         public string SOR { get; set; }

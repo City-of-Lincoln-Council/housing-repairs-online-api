@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Azure.Cosmos;
 using Azure.Storage.Blobs;
 using HousingRepairsOnline.Authentication.DependencyInjection;
 using HousingRepairsOnlineApi.Gateways;
@@ -9,6 +8,7 @@ using HousingRepairsOnlineApi.Helpers;
 using HousingRepairsOnlineApi.UseCases;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -133,12 +133,16 @@ namespace HousingRepairsOnlineApi
                 c.AddJwtSecurityScheme();
             });
 
+            var cosmosEndpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
+            var cosmosAuthorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
+            var cosmosDatabaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
             var storageConnectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
             var blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
 
             services.AddHealthChecks()
                 .AddUrlGroup(new Uri(@$"{addressesApiUrl}/health"), "Addresses API")
                 .AddUrlGroup(new Uri(@$"{schedulingApiUrl}/health"), "Scheduling API")
+                .AddCosmosDb($"AccountEndpoint={cosmosEndpointUrl};AccountKey={cosmosAuthorizationKey};", cosmosDatabaseId, name: "Azure CosmosDb")
                 .AddAzureBlobStorage(storageConnectionString, blobContainerName, name: "Azure Blob Storage");
         }
 
