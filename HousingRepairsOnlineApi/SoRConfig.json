@@ -10,13 +10,13 @@
     }
   ,
     "electrical":{
-      "extractorFan":"N841007",
-      "sockets":"N861511",
-      "lightFitting":"N858111",
+      "extractorFan":"N840031",
+      "sockets":"N861519",
+      "lightFitting":"N861005",
       "cookerSwitch": "N835005"
     },
     "sink":{
-      "taps":"N630147",
+      "taps":"N631321",
       "pipeworkLeak":"N630147",
       "leakBlockage": "N620507",
       "damageSink": "N630714"
@@ -26,8 +26,8 @@
       "floorTiles":"N432005",
       "lightFitting":"N858111",
       "skirtingBoardArchitrave":"N381001",
-      "plasteringCeiling":"N413305",
-      "plasteringWalls":"N431023",
+      "plasteringCeiling":"N413105",
+      "plasteringWalls":"N411121",
       "woodenFloorboards": "N301125"
     },
     "door":{
@@ -50,7 +50,7 @@
   },
   "bathroom":{
     "bath":{
-      "bathTaps":"N631301",
+      "bathTaps":"N631321",
       "sealAroundBath":"N630945",
       "bathPanel":"N630945",
       "bathBlockage":"N630945"
@@ -65,8 +65,8 @@
       "showerDrainBlocked":"N620515"
     },
     "sink":{
-      "taps":"N631301",
-      "damagedSink":"N630714",
+      "taps":"N631321",
+      "damagedSink":"N630703",
       "leakBlockage":"N620507",
       "pipeworkLeak":"N630147"
     },
@@ -81,8 +81,8 @@
       "floorTiles":"N432005",
       "lightFitting":"N858111",
       "skirtingBoardArchitrave":"N381001",
-      "plasteringCeiling":"N413305",
-      "plasteringWalls":"N431023",
+      "plasteringCeiling":"N413105",
+      "plasteringWalls":"N411121",
       "woodenFloorboards": "N301125"
     },
     "dampOrMould": {
@@ -111,8 +111,8 @@
       "floorTiles":"N432005",
       "lightFitting":"N858111",
       "skirtingBoardArchitrave":"N381001",
-      "plasteringCeiling":"N413305",
-      "plasteringWalls":"N431023",
+      "plasteringCeiling":"N413105",
+      "plasteringWalls":"N411121",
       "woodenFloorboards": "N301125"
     },
     "electricsLightsSwitches": {
@@ -138,8 +138,8 @@
       "floorTiles":"N432005",
       "lightFitting":"N858111",
       "skirtingBoardArchitrave":"N381001",
-      "plasteringCeiling":"N413305",
-      "plasteringWalls":"N431023",
+      "plasteringCeiling":"N413105",
+      "plasteringWalls":"N411121",
       "woodenFloorboards": "N301125"
     },
     "electricsLightsSwitches": {
