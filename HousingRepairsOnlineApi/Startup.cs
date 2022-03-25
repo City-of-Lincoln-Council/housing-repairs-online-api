@@ -38,24 +38,26 @@ namespace HousingRepairsOnlineApi
             services.AddTransient<IRetrieveAvailableAppointmentsUseCase, RetrieveAvailableAppointmentsUseCase>();
             services.AddTransient<IBookAppointmentUseCase, BookAppointmentUseCase>();
 
-            var addressesApiUrl = GetEnvironmentVariable("ADDRESSES_API_URL");
-            var schedulingApiUrl = GetEnvironmentVariable("SCHEDULING_API_URL");
-            var authenticationIdentifier = GetEnvironmentVariable("AUTHENTICATION_IDENTIFIER");
+            // var addressesApiUrl = GetEnvironmentVariable("ADDRESSES_API_URL");
+            // var schedulingApiUrl = GetEnvironmentVariable("SCHEDULING_API_URL");
+            // var authenticationIdentifier = GetEnvironmentVariable("AUTHENTICATION_IDENTIFIER");
             services.AddHttpClient();
 
-            services.AddTransient<IAddressGateway, AddressGateway>(s =>
-            {
-                var httpClient = s.GetService<HttpClient>();
-                httpClient.BaseAddress = new Uri(addressesApiUrl);
-                return new AddressGateway(httpClient, authenticationIdentifier);
-            });
+            // services.AddTransient<IAddressGateway, AddressGateway>(s =>
+            // {
+            //     var httpClient = s.GetService<HttpClient>();
+            //     httpClient.BaseAddress = new Uri(addressesApiUrl);
+            //     return new AddressGateway(httpClient, authenticationIdentifier);
+            // });
+            services.AddTransient<IAddressGateway, DummyAddressGateway>();
 
-            services.AddTransient<IAppointmentsGateway, AppointmentsGateway>(s =>
-            {
-                var httpClient = s.GetService<HttpClient>();
-                httpClient.BaseAddress = new Uri(schedulingApiUrl);
-                return new AppointmentsGateway(httpClient, authenticationIdentifier);
-            });
+            // services.AddTransient<IAppointmentsGateway, AppointmentsGateway>(s =>
+            // {
+            //     var httpClient = s.GetService<HttpClient>();
+            //     httpClient.BaseAddress = new Uri(schedulingApiUrl);
+            //     return new AppointmentsGateway(httpClient, authenticationIdentifier);
+            // });
+            services.AddTransient<IAppointmentsGateway, DummyAppointmentsGateway>();
 
             var notifyApiKey = GetEnvironmentVariable("GOV_NOTIFY_KEY");
 
@@ -105,22 +107,21 @@ namespace HousingRepairsOnlineApi
             services.AddTransient<ISaveRepairRequestUseCase, SaveRepairRequestUseCase>();
             services.AddTransient<IInternalEmailSender, InternalEmailSender>();
 
-            var cosmosContainer = GetCosmosContainer();
-
             services.AddTransient<IIdGenerator, IdGenerator>();
 
             services.AddTransient<IRepairStorageGateway, CosmosGateway>(s =>
             {
                 var idGenerator = s.GetService<IIdGenerator>();
+                var cosmosContainer = GetCosmosContainer();
+
                 return new CosmosGateway(
                     cosmosContainer, idGenerator
                 );
             });
 
-            var blobContainerClient = GetBlobContainerClient();
-
             services.AddTransient<IBlobStorageGateway, AzureStorageGateway>(s =>
             {
+                var blobContainerClient = GetBlobContainerClient();
                 return new AzureStorageGateway(
                     blobContainerClient
                 );
@@ -140,8 +141,8 @@ namespace HousingRepairsOnlineApi
             var blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
 
             services.AddHealthChecks()
-                .AddUrlGroup(new Uri(@$"{addressesApiUrl}/health"), "Addresses API")
-                .AddUrlGroup(new Uri(@$"{schedulingApiUrl}/health"), "Scheduling API")
+                // .AddUrlGroup(new Uri(@$"{addressesApiUrl}/health"), "Addresses API")
+                // .AddUrlGroup(new Uri(@$"{schedulingApiUrl}/health"), "Scheduling API")
                 .AddCosmosDb($"AccountEndpoint={cosmosEndpointUrl};AccountKey={cosmosAuthorizationKey};", cosmosDatabaseId, name: "Azure CosmosDb")
                 .AddAzureBlobStorage(storageConnectionString, blobContainerName, name: "Azure Blob Storage");
         }
