@@ -39,6 +39,43 @@ commands:
           root: *workspace_root
           paths:
             - .aws
+  deploy-lambda:
+    description: "Deploys API via Serverless"
+    parameters:
+      stage:
+        type: string
+      lincoln-nuget-username:
+        type: string
+        default: $LINCOLN_NUGET_USERNAME
+      lincoln-nuget-password:
+        type: string
+        default: $LINCOLN_PACKAGES_TOKEN
+    steps:
+      - *attach_workspace
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Add NuGet package source
+          command: dotnet nuget add source --username <<parameters.lincoln-nuget-username>> --password  <<parameters.lincoln-nuget-password>>  --store-password-in-clear-text --name github "https://nuget.pkg.github.com/City-of-Lincoln-Council/index.json"
+      - run:
+          name: Install Node.js
+          command: |
+            curl -sL https://deb.nodesource.com/setup_14.x | bash -
+            apt-get update && apt-get install -y nodejs
+      - run:
+          name: Install serverless CLI
+          command: npm i -g serverless
+      - run:
+          name: Build lambda
+          command: |
+            cd ./HousingRepairsOnlineApi/
+            chmod +x ./build.sh
+            ./build.sh
+      - run:
+          name: Deploy lambda
+          command: |
+            cd ./HousingRepairsOnlineApi/
+            sls deploy --stage <<parameters.stage>> --conceal
 
 jobs:
   check-code-formatting:
@@ -77,6 +114,11 @@ jobs:
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_DEVELOPMENT
+  deploy-to-development:
+    executor: docker-dotnet
+    steps:
+      - deploy-lambda:
+          stage: "development"
 
 workflows:
   check-and-deploy-development:
@@ -92,3 +134,6 @@ workflows:
           filters:
             branches:
               only: development
+      - deploy-to-development:
+          requires:
+            - assume-role-development

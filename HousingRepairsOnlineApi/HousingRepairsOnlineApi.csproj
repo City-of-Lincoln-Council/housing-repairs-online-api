@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="7.1.0" />
     <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
     <PackageReference Include="AspNetCore.HealthChecks.AzureStorage" Version="6.0.3" />
     <PackageReference Include="AspNetCore.HealthChecks.CosmosDb" Version="6.0.1" />
