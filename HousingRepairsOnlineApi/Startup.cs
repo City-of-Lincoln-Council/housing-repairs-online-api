@@ -141,8 +141,8 @@ namespace HousingRepairsOnlineApi
             var blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
 
             services.AddHealthChecks()
-                // .AddUrlGroup(new Uri(@$"{addressesApiUrl}/health"), "Addresses API")
-                // .AddUrlGroup(new Uri(@$"{schedulingApiUrl}/health"), "Scheduling API")
+            // .AddUrlGroup(new Uri(@$"{addressesApiUrl}/health"), "Addresses API")
+            // .AddUrlGroup(new Uri(@$"{schedulingApiUrl}/health"), "Scheduling API")
                 .AddCosmosDb($"AccountEndpoint={cosmosEndpointUrl};AccountKey={cosmosAuthorizationKey};", cosmosDatabaseId, name: "Azure CosmosDb")
                 .AddAzureBlobStorage(storageConnectionString, blobContainerName, name: "Azure Blob Storage");
         }
