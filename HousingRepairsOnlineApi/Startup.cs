@@ -59,53 +59,53 @@ namespace HousingRepairsOnlineApi
             // });
             services.AddTransient<IAppointmentsGateway, DummyAppointmentsGateway>();
 
-            var notifyApiKey = GetEnvironmentVariable("GOV_NOTIFY_KEY");
-
-            services.AddTransient<INotifyGateway, NotifyGateway>(s =>
-                {
-                    var notifyClient = new NotificationClient(notifyApiKey);
-                    return new NotifyGateway(notifyClient);
-                }
-            );
-            var smsConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_SMS_NOTIFY_TEMPLATE_ID");
-
-            var emailConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_EMAIL_NOTIFY_TEMPLATE_ID");
-
-            var internalEmailConfirmationTemplateId = GetEnvironmentVariable("INTERNAL_EMAIL_NOTIFY_TEMPLATE_ID");
-
-            var internalEmail = GetEnvironmentVariable("INTERNAL_EMAIL");
-
-            var daysUntilImageExpiry = GetEnvironmentVariable("DAYS_UNTIL_IMAGE_EXPIRY");
-
-            services.AddTransient<ISendAppointmentConfirmationSmsUseCase, SendAppointmentConfirmationSmsUseCase>(s =>
-            {
-                var notifyGateway = s.GetService<INotifyGateway>();
-                return new SendAppointmentConfirmationSmsUseCase(notifyGateway, smsConfirmationTemplateId);
-            });
-
-            services.AddTransient<ISendAppointmentConfirmationEmailUseCase, SendAppointmentConfirmationEmailUseCase>(s =>
-            {
-                var notifyGateway = s.GetService<INotifyGateway>();
-                return new SendAppointmentConfirmationEmailUseCase(notifyGateway, emailConfirmationTemplateId);
-            });
-
-            services.AddTransient<IAppointmentConfirmationSender, AppointmentConfirmationSender>();
-
-            services.AddTransient<IRetrieveImageLinkUseCase, RetrieveImageLinkUseCase>(s =>
-            {
-                var azureStorageGateway = s.GetService<IBlobStorageGateway>();
-                return new RetrieveImageLinkUseCase(azureStorageGateway, Int32.Parse(daysUntilImageExpiry));
-            });
-
-            services.AddTransient<ISendInternalEmailUseCase, SendInternalEmailUseCase>(s =>
-            {
-                var notifyGateway = s.GetService<INotifyGateway>();
-                return new SendInternalEmailUseCase(notifyGateway, internalEmailConfirmationTemplateId, internalEmail);
-            });
-
+            // var notifyApiKey = GetEnvironmentVariable("GOV_NOTIFY_KEY");
+            //
+            // services.AddTransient<INotifyGateway, NotifyGateway>(s =>
+            //     {
+            //         var notifyClient = new NotificationClient(notifyApiKey);
+            //         return new NotifyGateway(notifyClient);
+            //     }
+            // );
+            // var smsConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_SMS_NOTIFY_TEMPLATE_ID");
+            //
+            // var emailConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_EMAIL_NOTIFY_TEMPLATE_ID");
+            //
+            // var internalEmailConfirmationTemplateId = GetEnvironmentVariable("INTERNAL_EMAIL_NOTIFY_TEMPLATE_ID");
+            //
+            // var internalEmail = GetEnvironmentVariable("INTERNAL_EMAIL");
+            //
+            // var daysUntilImageExpiry = GetEnvironmentVariable("DAYS_UNTIL_IMAGE_EXPIRY");
+            //
+            // services.AddTransient<ISendAppointmentConfirmationSmsUseCase, SendAppointmentConfirmationSmsUseCase>(s =>
+            // {
+            //     var notifyGateway = s.GetService<INotifyGateway>();
+            //     return new SendAppointmentConfirmationSmsUseCase(notifyGateway, smsConfirmationTemplateId);
+            // });
+            //
+            // services.AddTransient<ISendAppointmentConfirmationEmailUseCase, SendAppointmentConfirmationEmailUseCase>(s =>
+            // {
+            //     var notifyGateway = s.GetService<INotifyGateway>();
+            //     return new SendAppointmentConfirmationEmailUseCase(notifyGateway, emailConfirmationTemplateId);
+            // });
+            //
+            // services.AddTransient<IAppointmentConfirmationSender, AppointmentConfirmationSender>();
+            //
+            // services.AddTransient<IRetrieveImageLinkUseCase, RetrieveImageLinkUseCase>(s =>
+            // {
+            //     var azureStorageGateway = s.GetService<IBlobStorageGateway>();
+            //     return new RetrieveImageLinkUseCase(azureStorageGateway, Int32.Parse(daysUntilImageExpiry));
+            // });
+            //
+            // services.AddTransient<ISendInternalEmailUseCase, SendInternalEmailUseCase>(s =>
+            // {
+            //     var notifyGateway = s.GetService<INotifyGateway>();
+            //     return new SendInternalEmailUseCase(notifyGateway, internalEmailConfirmationTemplateId, internalEmail);
+            // });
+            //
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
             services.AddTransient<ISaveRepairRequestUseCase, SaveRepairRequestUseCase>();
-            services.AddTransient<IInternalEmailSender, InternalEmailSender>();
+            //services.AddTransient<IInternalEmailSender, InternalEmailSender>();
 
             services.AddTransient<IIdGenerator, IdGenerator>();
 
