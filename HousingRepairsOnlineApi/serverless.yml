@@ -31,6 +31,11 @@ functions:
     environment:
       AUTHENTICATION_IDENTIFIER: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/authentication-identifier}
       JWT_SECRET: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/jwt-secret}
+      CONFIRMATION_SMS_NOTIFY_TEMPLATE_ID: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/confirmation-sms-notify-template-id}
+      CONFIRMATION_EMAIL_NOTIFY_TEMPLATE_ID: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/confirmation-email-notify-template-id}
+      INTERNAL_EMAIL_NOTIFY_TEMPLATE_ID: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/internal-email-notify-template-id}
+      INTERNAL_EMAIL: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/internal-email}
+      DAYS_UNTIL_IMAGE_EXPIRY: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/days-until-image-expiry}
     events:
       - http:
           path: /{proxy+}

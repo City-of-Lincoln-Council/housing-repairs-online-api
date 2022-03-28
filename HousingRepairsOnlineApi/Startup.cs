@@ -67,65 +67,68 @@ namespace HousingRepairsOnlineApi
             //         return new NotifyGateway(notifyClient);
             //     }
             // );
-            // var smsConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_SMS_NOTIFY_TEMPLATE_ID");
-            //
-            // var emailConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_EMAIL_NOTIFY_TEMPLATE_ID");
-            //
-            // var internalEmailConfirmationTemplateId = GetEnvironmentVariable("INTERNAL_EMAIL_NOTIFY_TEMPLATE_ID");
-            //
-            // var internalEmail = GetEnvironmentVariable("INTERNAL_EMAIL");
-            //
-            // var daysUntilImageExpiry = GetEnvironmentVariable("DAYS_UNTIL_IMAGE_EXPIRY");
-            //
-            // services.AddTransient<ISendAppointmentConfirmationSmsUseCase, SendAppointmentConfirmationSmsUseCase>(s =>
-            // {
-            //     var notifyGateway = s.GetService<INotifyGateway>();
-            //     return new SendAppointmentConfirmationSmsUseCase(notifyGateway, smsConfirmationTemplateId);
-            // });
-            //
-            // services.AddTransient<ISendAppointmentConfirmationEmailUseCase, SendAppointmentConfirmationEmailUseCase>(s =>
-            // {
-            //     var notifyGateway = s.GetService<INotifyGateway>();
-            //     return new SendAppointmentConfirmationEmailUseCase(notifyGateway, emailConfirmationTemplateId);
-            // });
-            //
-            // services.AddTransient<IAppointmentConfirmationSender, AppointmentConfirmationSender>();
-            //
-            // services.AddTransient<IRetrieveImageLinkUseCase, RetrieveImageLinkUseCase>(s =>
-            // {
-            //     var azureStorageGateway = s.GetService<IBlobStorageGateway>();
-            //     return new RetrieveImageLinkUseCase(azureStorageGateway, Int32.Parse(daysUntilImageExpiry));
-            // });
-            //
-            // services.AddTransient<ISendInternalEmailUseCase, SendInternalEmailUseCase>(s =>
-            // {
-            //     var notifyGateway = s.GetService<INotifyGateway>();
-            //     return new SendInternalEmailUseCase(notifyGateway, internalEmailConfirmationTemplateId, internalEmail);
-            // });
-            //
+            services.AddTransient<INotifyGateway, DummyNotifyGateway>();
+            var smsConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_SMS_NOTIFY_TEMPLATE_ID");
+
+            var emailConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_EMAIL_NOTIFY_TEMPLATE_ID");
+
+            var internalEmailConfirmationTemplateId = GetEnvironmentVariable("INTERNAL_EMAIL_NOTIFY_TEMPLATE_ID");
+
+            var internalEmail = GetEnvironmentVariable("INTERNAL_EMAIL");
+
+            var daysUntilImageExpiry = GetEnvironmentVariable("DAYS_UNTIL_IMAGE_EXPIRY");
+
+            services.AddTransient<ISendAppointmentConfirmationSmsUseCase, SendAppointmentConfirmationSmsUseCase>(s =>
+            {
+                var notifyGateway = s.GetService<INotifyGateway>();
+                return new SendAppointmentConfirmationSmsUseCase(notifyGateway, smsConfirmationTemplateId);
+            });
+
+            services.AddTransient<ISendAppointmentConfirmationEmailUseCase, SendAppointmentConfirmationEmailUseCase>(s =>
+            {
+                var notifyGateway = s.GetService<INotifyGateway>();
+                return new SendAppointmentConfirmationEmailUseCase(notifyGateway, emailConfirmationTemplateId);
+            });
+
+            services.AddTransient<IAppointmentConfirmationSender, AppointmentConfirmationSender>();
+
+            services.AddTransient<IRetrieveImageLinkUseCase, RetrieveImageLinkUseCase>(s =>
+            {
+                var azureStorageGateway = s.GetService<IBlobStorageGateway>();
+                return new RetrieveImageLinkUseCase(azureStorageGateway, Int32.Parse(daysUntilImageExpiry));
+            });
+
+            services.AddTransient<ISendInternalEmailUseCase, SendInternalEmailUseCase>(s =>
+            {
+                var notifyGateway = s.GetService<INotifyGateway>();
+                return new SendInternalEmailUseCase(notifyGateway, internalEmailConfirmationTemplateId, internalEmail);
+            });
+
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
             services.AddTransient<ISaveRepairRequestUseCase, SaveRepairRequestUseCase>();
-            //services.AddTransient<IInternalEmailSender, InternalEmailSender>();
+            services.AddTransient<IInternalEmailSender, InternalEmailSender>();
 
             services.AddTransient<IIdGenerator, IdGenerator>();
 
-            services.AddTransient<IRepairStorageGateway, CosmosGateway>(s =>
-            {
-                var idGenerator = s.GetService<IIdGenerator>();
-                var cosmosContainer = GetCosmosContainer();
+            // services.AddTransient<IRepairStorageGateway, CosmosGateway>(s =>
+            // {
+            //     var idGenerator = s.GetService<IIdGenerator>();
+            //     var cosmosContainer = GetCosmosContainer();
+            //
+            //     return new CosmosGateway(
+            //         cosmosContainer, idGenerator
+            //     );
+            // });
+            services.AddTransient<IRepairStorageGateway, DummyRepairStorageGateway>();
 
-                return new CosmosGateway(
-                    cosmosContainer, idGenerator
-                );
-            });
-
-            services.AddTransient<IBlobStorageGateway, AzureStorageGateway>(s =>
-            {
-                var blobContainerClient = GetBlobContainerClient();
-                return new AzureStorageGateway(
-                    blobContainerClient
-                );
-            });
+            // services.AddTransient<IBlobStorageGateway, AzureStorageGateway>(s =>
+            // {
+            //     var blobContainerClient = GetBlobContainerClient();
+            //     return new AzureStorageGateway(
+            //         blobContainerClient
+            //     );
+            // });
+            services.AddTransient<IBlobStorageGateway, DummyBlobStorageGateway>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -134,17 +137,17 @@ namespace HousingRepairsOnlineApi
                 c.AddJwtSecurityScheme();
             });
 
-            var cosmosEndpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
-            var cosmosAuthorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
-            var cosmosDatabaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
-            var storageConnectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
-            var blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
+            // var cosmosEndpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
+            // var cosmosAuthorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
+            // var cosmosDatabaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
+            // var storageConnectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            // var blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
 
-            services.AddHealthChecks()
+            services.AddHealthChecks();
             // .AddUrlGroup(new Uri(@$"{addressesApiUrl}/health"), "Addresses API")
             // .AddUrlGroup(new Uri(@$"{schedulingApiUrl}/health"), "Scheduling API")
-                .AddCosmosDb($"AccountEndpoint={cosmosEndpointUrl};AccountKey={cosmosAuthorizationKey};", cosmosDatabaseId, name: "Azure CosmosDb")
-                .AddAzureBlobStorage(storageConnectionString, blobContainerName, name: "Azure Blob Storage");
+            // .AddCosmosDb($"AccountEndpoint={cosmosEndpointUrl};AccountKey={cosmosAuthorizationKey};", cosmosDatabaseId, name: "Azure CosmosDb")
+            // .AddAzureBlobStorage(storageConnectionString, blobContainerName, name: "Azure Blob Storage");
         }
 
         private static BlobContainerClient GetBlobContainerClient()
