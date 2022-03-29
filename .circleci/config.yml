@@ -115,6 +115,26 @@ jobs:
     steps:
       - deploy-lambda:
           stage: "development"
+  deploy-to-staging:
+    executor: docker-dotnet
+    steps:
+      - deploy-lambda:
+          stage: "staging"
+  assume-role-staging:
+    executor: docker-python
+    steps:
+      - assume-role-and-persist-workspace:
+          aws-account: $AWS_ACCOUNT_STAGING
+  deploy-to-production:
+    executor: docker-dotnet
+    steps:
+      - deploy-lambda:
+          stage: "production"
+  assume-role-production:
+    executor: docker-python
+    steps:
+      - assume-role-and-persist-workspace:
+          aws-account: $AWS_ACCOUNT_DEVELOPMENT
 
 workflows:
   check-and-deploy-development:
@@ -133,3 +153,43 @@ workflows:
       - deploy-to-development:
           requires:
             - assume-role-development
+  check-and-deploy-staging-and-production:
+    jobs:
+      - build-and-test:
+          context: api-nuget-token-context
+          filters:
+            branches:
+              only: main
+      - assume-role-staging:
+          context: api-assume-role-housing-staging-context
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only: main
+      - deploy-to-staging:
+          context: api-nuget-token-context
+          requires:
+            - assume-role-staging
+          filters:
+            branches:
+              only: main
+      - permit-production-release:
+          type: approval
+          requires:
+            - deploy-to-staging
+      - assume-role-production:
+          context: api-assume-role-housing-production-context
+          requires:
+            - permit-production-release
+          filters:
+            branches:
+              only: main
+      - deploy-to-production:
+          context: api-nuget-token-context
+          requires:
+            - permit-production-release
+            - assume-role-production
+          filters:
+            branches:
+              only: main
