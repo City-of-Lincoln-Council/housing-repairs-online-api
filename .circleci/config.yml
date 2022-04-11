@@ -192,7 +192,7 @@ workflows:
             - assume-role-development
           filters:
             branches:
-              only: main
+              only: development
       - deploy-to-development:
           requires:
             - assume-role-development
