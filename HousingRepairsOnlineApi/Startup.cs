@@ -94,11 +94,12 @@ namespace HousingRepairsOnlineApi
 
             services.AddTransient<IAppointmentConfirmationSender, AppointmentConfirmationSender>();
 
-            services.AddTransient<IRetrieveImageLinkUseCase, RetrieveImageLinkUseCase>(s =>
-            {
-                var azureStorageGateway = s.GetService<IBlobStorageGateway>();
-                return new RetrieveImageLinkUseCase(azureStorageGateway, Int32.Parse(daysUntilImageExpiry));
-            });
+            // services.AddTransient<IRetrieveImageLinkUseCase, RetrieveImageLinkUseCase>(s =>
+            // {
+            //     var azureStorageGateway = s.GetService<IBlobStorageGateway>();
+            //     return new RetrieveImageLinkUseCase(azureStorageGateway, Int32.Parse(daysUntilImageExpiry));
+            // });
+            services.AddTransient<IRetrieveImageLinkUseCase, NullRetrieveImageLinkUseCase>();
 
             services.AddTransient<ISendInternalEmailUseCase, SendInternalEmailUseCase>(s =>
             {
