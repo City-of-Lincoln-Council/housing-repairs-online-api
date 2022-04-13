@@ -1,4 +1,4 @@
-namespace HousingRepairsOnlineApi.UseCases
+﻿namespace HousingRepairsOnlineApi.UseCases
 {
     public class NullRetrieveImageLinkUseCase : IRetrieveImageLinkUseCase
     {
