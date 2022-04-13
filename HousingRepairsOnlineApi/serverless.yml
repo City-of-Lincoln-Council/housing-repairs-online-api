@@ -19,6 +19,27 @@ provider:
         throttle:
           burstLimit: 200
           rateLimit: 100
+  environment:
+    S3_IMAGE_BUCKET_NAME: housing-repairs-online-api-${self:provider.stage}-bucket
+  s3:
+    imagesBucket:
+      accessControl: Private
+      name: ${self:provider.environment.S3_IMAGE_BUCKET_NAME}
+      bucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      publicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      corsConfiguration:
+        CorsRules:
+          - AllowedMethods:
+              - GET
+              - POST
+            AllowedOrigins: ${self:custom.corsDomains.${self:provider.stage}}
 
 package:
   artifact: ./bin/release/net6.0/HousingRepairsOnlineApi.zip
@@ -56,6 +77,8 @@ functions:
           path: /swagger/{proxy+}
           method: GET
           private: false
+      - s3:
+          bucket: imagesBucket
 resources:
   Resources:
     lambdaExecutionRole:
@@ -108,7 +131,27 @@ resources:
                   Action:
                     - "lambda:InvokeFunction"
                   Resource: "*"
+          - PolicyName: imagesBucketAccess
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                Action:
+                  - s3:GetObject
+                  - s3:GetObjectTagging
+                  - s3:PutObject
+                  - s3:PutObjectTagging
+                  - s3:DeleteObject
+                Effect: "Allow"
+                Resource:
+                  - "arn:aws:s3:::${self:provider.environment.S3_IMAGE_BUCKET_NAME}/*"
 custom:
+  corsDomains:
+    staging:
+      - "https://*.hackney.gov.uk"
+    production:
+      - "https://*.hackney.gov.uk"
+    hackney-devscratch:
+      - "https://*.hackney.gov.uk"
   vpc:
     development:
       subnetIds:

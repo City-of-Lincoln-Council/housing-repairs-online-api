@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Amazon.S3;
+using Amazon.S3.Transfer;
 using Azure.Storage.Blobs;
 using HousingRepairsOnline.Authentication.DependencyInjection;
 using HousingRepairsOnlineApi.Gateways;
@@ -128,7 +130,16 @@ namespace HousingRepairsOnlineApi
             //         blobContainerClient
             //     );
             // });
-            services.AddTransient<IBlobStorageGateway, DummyBlobStorageGateway>();
+
+            services.AddTransient<IAmazonS3, AmazonS3Client>();
+            services.AddTransient<ITransferUtility, TransferUtility>();
+
+            services.AddTransient<IBlobStorageGateway, AwsS3BlobStorageGateway>(s => new AwsS3BlobStorageGateway(
+                s.GetService<IAmazonS3>(),
+                s.GetService<ITransferUtility>(),
+                GetEnvironmentVariable("S3_IMAGE_BUCKET_NAME"),
+                int.Parse(daysUntilImageExpiry)
+            ));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
