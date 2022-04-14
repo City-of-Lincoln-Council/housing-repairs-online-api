@@ -69,7 +69,7 @@ namespace HousingRepairsOnlineApi
                     return new NotifyGateway(notifyClient);
                 }
             );
-            // services.AddTransient<INotifyGateway, DummyNotifyGateway>();
+
             var smsConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_SMS_NOTIFY_TEMPLATE_ID");
 
             var emailConfirmationTemplateId = GetEnvironmentVariable("CONFIRMATION_EMAIL_NOTIFY_TEMPLATE_ID");
