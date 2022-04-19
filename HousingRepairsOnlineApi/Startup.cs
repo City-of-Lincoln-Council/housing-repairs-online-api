@@ -129,6 +129,7 @@ namespace HousingRepairsOnlineApi
             services.AddScoped<IDynamoDBContext>(sp =>
             {
                 var db = sp.GetService<IAmazonDynamoDB>();
+                Console.WriteLine("Resolved IAmazonDynamoDB");
                 return new DynamoDBContext(db);
             });
 
