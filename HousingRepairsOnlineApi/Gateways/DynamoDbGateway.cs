@@ -33,7 +33,13 @@ public class DynamoDbGateway : IRepairStorageGateway
             Console.WriteLine("DynamoDbGateway.AddRepair: Calling SaveAsync");
 
             var saveTask = _dynamoDbContext.SaveAsync(repair);
-            var result = await saveTask.ContinueWith(x => repair);
+            saveTask.Wait();
+            var result = await saveTask.ContinueWith(x =>
+            {
+                Console.WriteLine("DynamoDbGateway.AddRepair: SaveAsync...returning repair");
+
+                return repair;
+            });
             Console.WriteLine("DynamoDbGateway.AddRepair: Completed SaveAsync");
 
             return result;
