@@ -133,7 +133,6 @@ namespace HousingRepairsOnlineApi
             });
 
             services.AddTransient<IRepairStorageGateway, DynamoDbGateway>();
-            services.AddTransient<IRepairStorageGateway, DummyRepairStorageGateway>();
 
             // services.AddTransient<IBlobStorageGateway, AzureStorageGateway>(s =>
             // {
