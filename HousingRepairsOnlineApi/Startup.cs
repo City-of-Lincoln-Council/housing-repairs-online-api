@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.S3;
 using Amazon.S3.Transfer;
 using Azure.Storage.Blobs;
@@ -122,6 +124,15 @@ namespace HousingRepairsOnlineApi
             //         cosmosContainer, idGenerator
             //     );
             // });
+
+            services.AddAWSService<IAmazonDynamoDB>();
+            services.AddScoped<IDynamoDBContext>(sp =>
+            {
+                var db = sp.GetService<IAmazonDynamoDB>();
+                return new DynamoDBContext(db);
+            });
+
+            services.AddTransient<IRepairStorageGateway, DynamoDbGateway>();
             services.AddTransient<IRepairStorageGateway, DummyRepairStorageGateway>();
 
             // services.AddTransient<IBlobStorageGateway, AzureStorageGateway>(s =>
