@@ -46,6 +46,8 @@ public class DynamoDbGateway : IRepairStorageGateway
         }
         catch (Exception ex)
         {
+            Console.WriteLine("DynamoDbGateway.AddRepair exception stack trace" + ex.StackTrace);
+            throw;
             var newRepair = await AddRepair(repair);
             return newRepair;
         }
