@@ -20,7 +20,7 @@ terraform {
 module "dynamodb_table" {
   source = "terraform-aws-modules/dynamodb-table/aws"
 
-  name     = "HousingRepairs"
+  name     = "HousingRepairsOnline"
   hash_key = "id"
 
   attributes = [
