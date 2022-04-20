@@ -130,11 +130,11 @@ namespace HousingRepairsOnlineApi
             services.AddScoped<IDynamoDBContext>(sp =>
             {
                 var db = sp.GetService<IAmazonDynamoDB>();
+                Console.WriteLine("Resolved IAmazonDynamoDB");
                 return new DynamoDBContext(db);
             });
 
             services.AddTransient<IRepairStorageGateway, DynamoDbGateway>();
-            services.AddTransient<IRepairStorageGateway, DummyRepairStorageGateway>();
 
             // services.AddTransient<IBlobStorageGateway, AzureStorageGateway>(s =>
             // {
