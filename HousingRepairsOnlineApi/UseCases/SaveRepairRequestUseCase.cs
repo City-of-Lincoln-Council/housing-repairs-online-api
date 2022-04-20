@@ -3,20 +3,19 @@ using System.Threading.Tasks;
 using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Helpers;
-using Microsoft.Extensions.Logging;
 
 namespace HousingRepairsOnlineApi.UseCases
 {
     public class SaveRepairRequestUseCase : ISaveRepairRequestUseCase
     {
-        private readonly IRepairStorageGateway cosmosGateway;
+        private readonly IRepairStorageGateway dynamoDBGateway;
         private readonly IBlobStorageGateway storageGateway;
         private readonly ISoREngine sorEngine;
 
-        public SaveRepairRequestUseCase(IRepairStorageGateway cosmosGateway, IBlobStorageGateway storageGateway, ISoREngine sorEngine)
+        public SaveRepairRequestUseCase(IRepairStorageGateway dynamoDBGateway, IBlobStorageGateway storageGateway, ISoREngine sorEngine)
 
         {
-            this.cosmosGateway = cosmosGateway;
+            this.dynamoDBGateway = dynamoDBGateway;
             this.storageGateway = storageGateway;
             this.sorEngine = sorEngine;
         }
@@ -54,7 +53,7 @@ namespace HousingRepairsOnlineApi.UseCases
 
             }
 
-            var savedRequest = await cosmosGateway.AddRepair(repair);
+            var savedRequest = await dynamoDBGateway.AddRepair(repair);
 
             return savedRequest;
         }

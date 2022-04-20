@@ -88,12 +88,11 @@ namespace HousingRepairsOnlineApi
                 return new SendAppointmentConfirmationSmsUseCase(notifyGateway, smsConfirmationTemplateId);
             });
 
-            services.AddTransient<ISendAppointmentConfirmationEmailUseCase, SendAppointmentConfirmationEmailUseCase>(
-                s =>
-                {
-                    var notifyGateway = s.GetService<INotifyGateway>();
-                    return new SendAppointmentConfirmationEmailUseCase(notifyGateway, emailConfirmationTemplateId);
-                });
+            services.AddTransient<ISendAppointmentConfirmationEmailUseCase, SendAppointmentConfirmationEmailUseCase>(s =>
+            {
+                var notifyGateway = s.GetService<INotifyGateway>();
+                return new SendAppointmentConfirmationEmailUseCase(notifyGateway, emailConfirmationTemplateId);
+            });
 
             services.AddTransient<IAppointmentConfirmationSender, AppointmentConfirmationSender>();
 
@@ -130,7 +129,6 @@ namespace HousingRepairsOnlineApi
             services.AddScoped<IDynamoDBContext>(sp =>
             {
                 var db = sp.GetService<IAmazonDynamoDB>();
-                Console.WriteLine("Resolved IAmazonDynamoDB");
                 return new DynamoDBContext(db);
             });
 
@@ -233,8 +231,7 @@ namespace HousingRepairsOnlineApi
         private static string GetEnvironmentVariable(string name)
         {
             return Environment.GetEnvironmentVariable(name) ??
-                   throw new InvalidOperationException(
-                       $"Incorrect configuration: '{name}' environment variable must be set");
+                   throw new InvalidOperationException($"Incorrect configuration: '{name}' environment variable must be set");
         }
     }
 }
