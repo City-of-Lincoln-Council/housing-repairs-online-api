@@ -2,7 +2,7 @@
 
 namespace HousingRepairsOnlineApi.Domain
 {
-    [DynamoDBTable("my-table", LowerCamelCaseProperties = true)]
+    [DynamoDBTable("HousingRepairsOnline", LowerCamelCaseProperties = true)]
     public class Repair
     {
         [DynamoDBHashKey]
