@@ -14,7 +14,7 @@ public class DynamoDbGateway : IRepairStorageGateway
     public DynamoDbGateway(
         IDynamoDBContext dynamoDbContext,
         IIdGenerator idGenerator
-        )
+    )
     {
         _dynamoDbContext = dynamoDbContext;
         this.idGenerator = idGenerator;
@@ -24,16 +24,8 @@ public class DynamoDbGateway : IRepairStorageGateway
     {
         repair.Id = idGenerator.Generate();
 
-        try
-        {
-            var saveTask = _dynamoDbContext.SaveAsync(repair);
-            var result = await saveTask.ContinueWith(x => repair);
-            return result;
-        }
-        catch (Exception ex)
-        {
-            var newRepair = await AddRepair(repair);
-            return newRepair;
-        }
+        var saveTask = _dynamoDbContext.SaveAsync(repair);
+        var result = await saveTask.ContinueWith(x => repair);
+        return result;
     }
 }

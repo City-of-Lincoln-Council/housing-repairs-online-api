@@ -115,16 +115,6 @@ namespace HousingRepairsOnlineApi
 
             services.AddTransient<IIdGenerator, IdGenerator>();
 
-            // services.AddTransient<IRepairStorageGateway, CosmosGateway>(s =>
-            // {
-            //     var idGenerator = s.GetService<IIdGenerator>();
-            //     var cosmosContainer = GetCosmosContainer();
-            //
-            //     return new CosmosGateway(
-            //         cosmosContainer, idGenerator
-            //     );
-            // });
-
             services.AddAWSService<IAmazonDynamoDB>();
             services.AddScoped<IDynamoDBContext>(sp =>
             {
@@ -134,14 +124,6 @@ namespace HousingRepairsOnlineApi
 
             services.AddTransient<IRepairStorageGateway, DynamoDbGateway>();
             services.AddTransient<IRepairStorageGateway, DummyRepairStorageGateway>();
-
-            // services.AddTransient<IBlobStorageGateway, AzureStorageGateway>(s =>
-            // {
-            //     var blobContainerClient = GetBlobContainerClient();
-            //     return new AzureStorageGateway(
-            //         blobContainerClient
-            //     );
-            // });
 
             services.AddTransient<IAmazonS3, AmazonS3Client>();
             services.AddTransient<ITransferUtility, TransferUtility>();
@@ -160,47 +142,11 @@ namespace HousingRepairsOnlineApi
                 c.AddJwtSecurityScheme();
             });
 
-            // var cosmosEndpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
-            // var cosmosAuthorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
-            // var cosmosDatabaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
-            // var storageConnectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
-            // var blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
-
             services.AddHealthChecks();
             // .AddUrlGroup(new Uri(@$"{addressesApiUrl}/health"), "Addresses API")
             // .AddUrlGroup(new Uri(@$"{schedulingApiUrl}/health"), "Scheduling API")
             // .AddCosmosDb($"AccountEndpoint={cosmosEndpointUrl};AccountKey={cosmosAuthorizationKey};", cosmosDatabaseId, name: "Azure CosmosDb")
             // .AddAzureBlobStorage(storageConnectionString, blobContainerName, name: "Azure Blob Storage");
-        }
-
-        private static BlobContainerClient GetBlobContainerClient()
-        {
-            string storageConnectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
-            string blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
-
-            BlobServiceClient blobServiceClient = new BlobServiceClient(storageConnectionString);
-            BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
-            return blobContainerClient;
-        }
-
-        private static ContainerResponse GetCosmosContainer()
-        {
-            var endpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
-            var authorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
-            var databaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
-            var containerId = GetEnvironmentVariable("COSMOS_CONTAINER_ID");
-
-            CosmosClient cosmosClient = new CosmosClient(endpointUrl, authorizationKey);
-
-            Task<DatabaseResponse> databaseResponseTask = cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
-            _ = databaseResponseTask.GetAwaiter().GetResult();
-            ;
-
-            Task<ContainerResponse> cosmosContainerResponse =
-                cosmosClient.GetDatabase(databaseId).CreateContainerIfNotExistsAsync(containerId, "/RepairID");
-            ContainerResponse cosmosContainer = cosmosContainerResponse.GetAwaiter().GetResult();
-            ;
-            return cosmosContainer;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
