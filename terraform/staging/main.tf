@@ -16,3 +16,18 @@ terraform {
     key     = "services/housing-repairs-online-api/state"
   }
 }
+
+module "dynamodb_table" {
+  source = "terraform-aws-modules/dynamodb-table/aws"
+
+  name     = "HousingRepairsOnline"
+  hash_key = "id"
+
+  attributes = [
+    {
+      name = "id"
+      type = "S"
+    }
+  ]
+}
+
