@@ -1,10 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using Amazon.DynamoDBv2.DataModel;
+using Newtonsoft.Json;
 
 namespace HousingRepairsOnlineApi.Domain
 {
+    [DynamoDBTable("HousingRepairsOnline", LowerCamelCaseProperties = true)]
     public class Repair
     {
         [JsonProperty("id")]
+        [DynamoDBHashKey]
         public string Id { get; set; }
         public string Postcode { get; set; }
         public string SOR { get; set; }

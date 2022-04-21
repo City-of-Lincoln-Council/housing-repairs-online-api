@@ -1,6 +1,6 @@
 provider "aws" {
   region  = "eu-west-2"
-  version = "~> 2.0"
+  version = "~> 3.37.0"
 }
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
@@ -16,3 +16,18 @@ terraform {
     key     = "services/housing-repairs-online-api/state"
   }
 }
+
+module "dynamodb_table" {
+  source = "terraform-aws-modules/dynamodb-table/aws"
+
+  name     = "HousingRepairsOnline"
+  hash_key = "id"
+
+  attributes = [
+    {
+      name = "id"
+      type = "S"
+    }
+  ]
+}
+
