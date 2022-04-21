@@ -11,16 +11,16 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
     {
         private readonly SaveRepairRequestUseCase systemUnderTest;
         private readonly Mock<ISoREngine> mockSorEngine;
-        private readonly Mock<IRepairStorageGateway> mockDynamoDBGateway;
+        private readonly Mock<IRepairStorageGateway> mockRepairStorageGateway;
         private readonly Mock<IBlobStorageGateway> mockAzureStorageGateway;
 
         public SaveRepairRequestUseCaseTests()
         {
             mockSorEngine = new Mock<ISoREngine>();
-            mockDynamoDBGateway = new Mock<IRepairStorageGateway>();
+            mockRepairStorageGateway = new Mock<IRepairStorageGateway>();
             mockAzureStorageGateway = new Mock<IBlobStorageGateway>();
             systemUnderTest = new SaveRepairRequestUseCase(
-                mockDynamoDBGateway.Object,
+                mockRepairStorageGateway.Object,
                 mockAzureStorageGateway.Object,
                 mockSorEngine.Object
                 );
@@ -64,14 +64,14 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             mockAzureStorageGateway.Setup(x => x.UploadBlob(Base64Img, FileExtension))
                 .ReturnsAsync(ImgUrl);
 
-            mockDynamoDBGateway.Setup(x => x.AddRepair(It.IsAny<Repair>()))
+            mockRepairStorageGateway.Setup(x => x.AddRepair(It.IsAny<Repair>()))
                 .ReturnsAsync((Repair r) => r);
 
             var _ = await systemUnderTest.Execute(repairRequest);
 
             mockAzureStorageGateway.Verify(x => x.UploadBlob(Base64Img, FileExtension), Times.Once);
             mockSorEngine.Verify(x => x.MapSorCode(Location, Problem, Issue), Times.Once);
-            mockDynamoDBGateway.Verify(x => x.AddRepair(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == ImgUrl)), Times.Once);
+            mockRepairStorageGateway.Verify(x => x.AddRepair(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == ImgUrl)), Times.Once);
         }
 
         [Fact]
@@ -105,13 +105,13 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
             mockSorEngine.Setup(x => x.MapSorCode(Location, Problem, Issue))
                 .Returns(RepairCode);
 
-            mockDynamoDBGateway.Setup(x => x.AddRepair(It.IsAny<Repair>()))
+            mockRepairStorageGateway.Setup(x => x.AddRepair(It.IsAny<Repair>()))
                 .ReturnsAsync((Repair r) => r);
 
             var _ = await systemUnderTest.Execute(repairRequest);
 
             mockSorEngine.Verify(x => x.MapSorCode(Location, Problem, Issue), Times.Once);
-            mockDynamoDBGateway.Verify(x => x.AddRepair(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == null)), Times.Once);
+            mockRepairStorageGateway.Verify(x => x.AddRepair(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == null)), Times.Once);
             mockAzureStorageGateway.Verify(x => x.UploadBlob(null, null), Times.Never());
         }
     }

@@ -8,14 +8,14 @@ namespace HousingRepairsOnlineApi.UseCases
 {
     public class SaveRepairRequestUseCase : ISaveRepairRequestUseCase
     {
-        private readonly IRepairStorageGateway dynamoDBGateway;
+        private readonly IRepairStorageGateway repairStorageGateway;
         private readonly IBlobStorageGateway storageGateway;
         private readonly ISoREngine sorEngine;
 
-        public SaveRepairRequestUseCase(IRepairStorageGateway dynamoDBGateway, IBlobStorageGateway storageGateway, ISoREngine sorEngine)
+        public SaveRepairRequestUseCase(IRepairStorageGateway repairStorageGateway, IBlobStorageGateway storageGateway, ISoREngine sorEngine)
 
         {
-            this.dynamoDBGateway = dynamoDBGateway;
+            this.repairStorageGateway = repairStorageGateway;
             this.storageGateway = storageGateway;
             this.sorEngine = sorEngine;
         }
@@ -53,7 +53,7 @@ namespace HousingRepairsOnlineApi.UseCases
 
             }
 
-            var savedRequest = await dynamoDBGateway.AddRepair(repair);
+            var savedRequest = await repairStorageGateway.AddRepair(repair);
 
             return savedRequest;
         }
