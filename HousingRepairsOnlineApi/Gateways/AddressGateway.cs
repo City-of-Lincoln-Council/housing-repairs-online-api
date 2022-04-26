@@ -22,7 +22,7 @@ namespace HousingRepairsOnlineApi.Gateways
         public async Task<IEnumerable<PropertyAddress>> Search(string postcode)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"/addresses?postcode={postcode}");
+                $"{Constants.ROUTE_PREFIX}addresses?postcode={postcode}");
 
             request.SetupJwtAuthentication(httpClient, authenticationIdentifier);
 

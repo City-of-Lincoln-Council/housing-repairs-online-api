@@ -7,7 +7,8 @@ using Sentry;
 namespace HousingRepairsOnlineApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route($"{Constants.ROUTE_PREFIX}[controller]")]
+    [ApiVersion("1.0")]
     public class AddressesController : ControllerBase
     {
         private readonly IRetrieveAddressesUseCase retrieveAddressesUseCase;

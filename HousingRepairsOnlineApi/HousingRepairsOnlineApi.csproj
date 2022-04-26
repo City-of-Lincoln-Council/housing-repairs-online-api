@@ -19,6 +19,7 @@
     <PackageReference Include="HousingRepairsOnline.Authentication" Version="1.1.0" />
     <PackageReference Include="JWT" Version="8.4.2" />
     <PackageReference Include="JWT.Extensions.AspNetCore" Version="7.3.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.25.0" />
     <PackageReference Include="Sentry.AspNetCore" Version="3.13.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />

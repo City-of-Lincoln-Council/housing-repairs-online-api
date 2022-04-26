@@ -24,7 +24,7 @@ namespace HousingRepairsOnlineApi.Gateways
         public async Task<IEnumerable<Appointment>> GetAvailableAppointments(string sorCode, string locationId, DateTime? fromDate = null)
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"/Appointments/AvailableAppointments?sorCode={sorCode}&locationId={locationId}&fromDate={fromDate}");
+                $"{Constants.ROUTE_PREFIX}Appointments/AvailableAppointments?sorCode={sorCode}&locationId={locationId}&fromDate={fromDate}");
 
             request.SetupJwtAuthentication(httpClient, authenticationIdentifier);
 
@@ -43,7 +43,7 @@ namespace HousingRepairsOnlineApi.Gateways
             DateTime endDateTime)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
-                $"/Appointments/BookAppointment?bookingReference={bookingReference}&sorCode={sorCode}&locationId={locationId}&startDateTime={startDateTime}&endDateTime={endDateTime}");
+                $"{Constants.ROUTE_PREFIX}/Appointments/BookAppointment?bookingReference={bookingReference}&sorCode={sorCode}&locationId={locationId}&startDateTime={startDateTime}&endDateTime={endDateTime}");
 
             request.SetupJwtAuthentication(httpClient, authenticationIdentifier);
 
