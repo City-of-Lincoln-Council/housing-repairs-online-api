@@ -103,11 +103,21 @@ namespace HousingRepairsOnlineApi
             // });
             services.AddTransient<IRetrieveImageLinkUseCase, NullRetrieveImageLinkUseCase>();
 
-            services.AddTransient<ISendInternalEmailUseCase, SendInternalEmailUseCase>(s =>
+            var internalEmailEnabled = bool.Parse(GetEnvironmentVariable("INTERNAL_EMAIL_ENABLED"));
+
+            if (internalEmailEnabled)
             {
-                var notifyGateway = s.GetService<INotifyGateway>();
-                return new SendInternalEmailUseCase(notifyGateway, internalEmailConfirmationTemplateId, internalEmail);
-            });
+                services.AddTransient<ISendInternalEmailUseCase, SendInternalEmailUseCase>(s =>
+                {
+                    var notifyGateway = s.GetService<INotifyGateway>();
+                    return new SendInternalEmailUseCase(notifyGateway, internalEmailConfirmationTemplateId,
+                        internalEmail);
+                });
+            }
+            else
+            {
+                services.AddTransient<ISendInternalEmailUseCase, NullSendInternalEmailUseCase>();
+            }
 
             services.AddHousingRepairsOnlineAuthentication(HousingRepairsOnlineApiIssuerId);
             services.AddTransient<ISaveRepairRequestUseCase, SaveRepairRequestUseCase>();

@@ -57,6 +57,7 @@ functions:
       CONFIRMATION_EMAIL_NOTIFY_TEMPLATE_ID: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/confirmation-email-notify-template-id}
       INTERNAL_EMAIL_NOTIFY_TEMPLATE_ID: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/internal-email-notify-template-id}
       INTERNAL_EMAIL: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/internal-email}
+      INTERNAL_EMAIL_ENABLED: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/internal-email-enabled}
       DAYS_UNTIL_IMAGE_EXPIRY: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/days-until-image-expiry}
     events:
       - http:
