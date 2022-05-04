@@ -59,6 +59,8 @@ functions:
       INTERNAL_EMAIL: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/internal-email}
       INTERNAL_EMAIL_ENABLED: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/internal-email-enabled}
       DAYS_UNTIL_IMAGE_EXPIRY: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/days-until-image-expiry}
+      ADDRESSES_API_URL: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/addresses-api-url}
+      SCHEDULING_API_URL: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/scheduling-api-url}
     events:
       - http:
           path: /{proxy+}
