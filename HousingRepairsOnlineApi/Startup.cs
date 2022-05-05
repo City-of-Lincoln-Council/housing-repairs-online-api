@@ -42,26 +42,24 @@ namespace HousingRepairsOnlineApi
             services.AddTransient<IRetrieveAvailableAppointmentsUseCase, RetrieveAvailableAppointmentsUseCase>();
             services.AddTransient<IBookAppointmentUseCase, BookAppointmentUseCase>();
 
-            // var addressesApiUrl = GetEnvironmentVariable("ADDRESSES_API_URL");
-            // var schedulingApiUrl = GetEnvironmentVariable("SCHEDULING_API_URL");
-            // var authenticationIdentifier = GetEnvironmentVariable("AUTHENTICATION_IDENTIFIER");
+            var addressesApiUrl = GetEnvironmentVariable("ADDRESSES_API_URL");
+            var schedulingApiUrl = GetEnvironmentVariable("SCHEDULING_API_URL");
+            var authenticationIdentifier = GetEnvironmentVariable("AUTHENTICATION_IDENTIFIER");
             services.AddHttpClient();
 
-            // services.AddTransient<IAddressGateway, AddressGateway>(s =>
-            // {
-            //     var httpClient = s.GetService<HttpClient>();
-            //     httpClient.BaseAddress = new Uri(addressesApiUrl);
-            //     return new AddressGateway(httpClient, authenticationIdentifier);
-            // });
-            services.AddTransient<IAddressGateway, DummyAddressGateway>();
+            services.AddTransient<IAddressGateway, AddressGateway>(s =>
+            {
+                var httpClient = s.GetService<HttpClient>();
+                httpClient.BaseAddress = new Uri(addressesApiUrl);
+                return new AddressGateway(httpClient, authenticationIdentifier);
+            });
 
-            // services.AddTransient<IAppointmentsGateway, AppointmentsGateway>(s =>
-            // {
-            //     var httpClient = s.GetService<HttpClient>();
-            //     httpClient.BaseAddress = new Uri(schedulingApiUrl);
-            //     return new AppointmentsGateway(httpClient, authenticationIdentifier);
-            // });
-            services.AddTransient<IAppointmentsGateway, DummyAppointmentsGateway>();
+            services.AddTransient<IAppointmentsGateway, AppointmentsGateway>(s =>
+            {
+                var httpClient = s.GetService<HttpClient>();
+                httpClient.BaseAddress = new Uri(schedulingApiUrl);
+                return new AppointmentsGateway(httpClient, authenticationIdentifier);
+            });
 
             var notifyApiKey = GetEnvironmentVariable("GOV_NOTIFY_KEY");
 
