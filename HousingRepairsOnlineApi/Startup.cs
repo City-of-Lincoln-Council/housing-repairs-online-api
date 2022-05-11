@@ -121,7 +121,12 @@ namespace HousingRepairsOnlineApi
             services.AddTransient<ISaveRepairRequestUseCase, SaveRepairRequestUseCase>();
             services.AddTransient<IInternalEmailSender, InternalEmailSender>();
 
-            services.AddTransient<IIdGenerator, IdGenerator>();
+            services.AddTransient<IIdGenerator, DynamoDbIncrementingIdGenerator>(s =>
+            {
+                var amazonDynamoDb = s.GetService<IAmazonDynamoDB>();
+                return new DynamoDbIncrementingIdGenerator(amazonDynamoDb, Constants.DYNAMODB_TABLE_NAME,
+                    Constants.DYNAMODB_TABLE_PARTITION_KEY, 20_000_000);
+            });
 
             // services.AddTransient<IRepairStorageGateway, CosmosGateway>(s =>
             // {
