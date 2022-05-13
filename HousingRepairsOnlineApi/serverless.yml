@@ -49,6 +49,7 @@ functions:
     name: ${self:service}-${self:provider.stage}
     handler: HousingRepairsOnlineApi::HousingRepairsOnlineApi.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
+    timeout: 30
     environment:
       AUTHENTICATION_IDENTIFIER: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/authentication-identifier}
       JWT_SECRET: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/jwt-secret}
