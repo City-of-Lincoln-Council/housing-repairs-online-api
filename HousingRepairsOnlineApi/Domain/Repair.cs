@@ -3,10 +3,10 @@ using Newtonsoft.Json;
 
 namespace HousingRepairsOnlineApi.Domain
 {
-    [DynamoDBTable("HousingRepairsOnline", LowerCamelCaseProperties = true)]
+    [DynamoDBTable($"{Constants.DYNAMODB_TABLE_NAME}", LowerCamelCaseProperties = true)]
     public class Repair
     {
-        [JsonProperty("id")]
+        [JsonProperty($"{Constants.DYNAMODB_TABLE_PARTITION_KEY}")]
         [DynamoDBHashKey]
         public string Id { get; set; }
         public string Postcode { get; set; }
