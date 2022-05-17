@@ -62,6 +62,8 @@ functions:
       DAYS_UNTIL_IMAGE_EXPIRY: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/days-until-image-expiry}
       ADDRESSES_API_URL: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/addresses-api-url}
       SCHEDULING_API_URL: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/scheduling-api-url}
+      SENTRY_DSN: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/sentry-dsn}
+      SENTRY_ENVIRONMENT: ${self:provider.stage}
     events:
       - http:
           path: /{proxy+}
