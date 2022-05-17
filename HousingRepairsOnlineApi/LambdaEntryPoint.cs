@@ -9,7 +9,7 @@ namespace HousingRepairsOnlineApi
     {
         protected override void Init(IWebHostBuilder builder)
         {
-            builder.SetupSentry();
+            builder.SetupSentry(true);
             builder
                 .UseStartup<Startup>();
         }
