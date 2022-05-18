@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HACT.Dtos;
+using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Gateways;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
@@ -106,7 +109,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             var endDateTime = new DateTime(2022, 01, 01, 12, 0, 0);
 
             mockHttp.Expect($"/Appointments/BookAppointment?bookingReference={BookingReference}&sorCode={SorCode}&locationId={LocationId}&startDateTime={startDateTime}&endDateTime={endDateTime}")
-                .Respond(HttpStatusCode.OK);
+                .Respond(HttpStatusCode.OK, JsonContent.Create(new SchedulingApiBookingResponse()));
 
             // Act
             Func<Task> act = async () =>
