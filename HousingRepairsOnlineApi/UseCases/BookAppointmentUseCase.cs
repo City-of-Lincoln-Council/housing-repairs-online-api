@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Gateways;
 
 namespace HousingRepairsOnlineApi.UseCases
@@ -14,7 +15,7 @@ namespace HousingRepairsOnlineApi.UseCases
             this.appointmentsGateway = appointmentsGateway;
         }
 
-        public async Task Execute(string bookingReference, string sorCode, string locationId, DateTime startDateTime,
+        public async Task<SchedulingApiBookingResponse> Execute(string bookingReference, string sorCode, string locationId, DateTime startDateTime,
             DateTime endDateTime)
         {
             Guard.Against.NullOrWhiteSpace(bookingReference, nameof(bookingReference));
@@ -22,7 +23,7 @@ namespace HousingRepairsOnlineApi.UseCases
             Guard.Against.NullOrWhiteSpace(locationId, nameof(locationId));
             Guard.Against.OutOfRange(endDateTime, nameof(endDateTime), startDateTime, DateTime.MaxValue);
 
-            await appointmentsGateway.BookAppointment(bookingReference, sorCode, locationId, startDateTime, endDateTime);
+            return await appointmentsGateway.BookAppointment(bookingReference, sorCode, locationId, startDateTime, endDateTime);
         }
     }
 }
