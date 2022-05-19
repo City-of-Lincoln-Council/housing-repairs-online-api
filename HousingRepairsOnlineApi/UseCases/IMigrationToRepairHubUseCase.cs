@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using HousingRepairsOnlineApi.Domain;
 
-namespace HousingRepairsOnlineApi.Controllers
+namespace HousingRepairsOnlineApi.UseCases
 {
     public interface IMigrationToRepairHubUseCase
     {
