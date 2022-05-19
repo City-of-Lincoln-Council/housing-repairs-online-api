@@ -45,7 +45,7 @@ namespace HousingRepairsOnlineApi
             var addressesApiUrl = GetEnvironmentVariable("ADDRESSES_API_URL");
             var schedulingApiUrl = GetEnvironmentVariable("SCHEDULING_API_URL");
             var authenticationIdentifier = GetEnvironmentVariable("AUTHENTICATION_IDENTIFIER");
-            services.AddHttpClient();
+            AddHttpClients(services);
 
             services.AddTransient<IAddressGateway, AddressGateway>(s =>
             {
@@ -245,6 +245,27 @@ namespace HousingRepairsOnlineApi
         {
             return Environment.GetEnvironmentVariable(name) ??
                    throw new InvalidOperationException($"Incorrect configuration: '{name}' environment variable must be set");
+        }
+
+        private static void AddHttpClients(IServiceCollection services)
+        {
+            AddHttpClient(services, HttpClientNames.RepairsHub, "REPAIRS_HUB_API_URL", "REPAIRS_HUB_API_TOKEN");
+        }
+
+        private static void AddHttpClient(IServiceCollection services, string clientName, string apiUriEnvVarName, string apiKey)
+        {
+            var uri = new Uri(GetEnvironmentVariable(apiUriEnvVarName));
+            var key = GetEnvironmentVariable(apiKey);
+            AddClient(services, clientName, uri, key);
+        }
+
+        private static void AddClient(IServiceCollection services, string clientName, Uri uri, string key)
+        {
+            services.AddHttpClient(clientName, c =>
+            {
+                c.BaseAddress = uri;
+                c.DefaultRequestHeaders.Add("Authorization", key);
+            });
         }
     }
 }
