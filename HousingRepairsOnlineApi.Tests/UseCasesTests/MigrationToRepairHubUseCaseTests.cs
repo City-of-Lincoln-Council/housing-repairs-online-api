@@ -24,7 +24,8 @@ public class MigrationToRepairHubUseCaseTests
     {
         repairsHubGateway = new Mock<IRepairsHubGateway>();
         mapRepairsOnlineToRepairsHub = new Mock<IMapRepairsOnlineToRepairsHub>();
-        systemUnderTest = new MigrationToRepairHubUseCase(repairsHubGateway.Object, mapRepairsOnlineToRepairsHub.Object);
+        systemUnderTest =
+            new MigrationToRepairHubUseCase(repairsHubGateway.Object, mapRepairsOnlineToRepairsHub.Object);
     }
 
     [Fact]
@@ -82,5 +83,66 @@ public class MigrationToRepairHubUseCaseTests
         yield return new object[] { new ArgumentNullException(), null };
         yield return new object[] { new ArgumentException(), "" };
         yield return new object[] { new ArgumentException(), " " };
+    }
+
+    [Fact]
+#pragma warning disable xUnit1026
+    public async void GivenValidParameters_WhenExecute_ThenMapperIsCalled()
+#pragma warning restore xUnit1026
+    {
+        //Arrange
+        var repairRequest = new RepairRequest();
+        var repair = new Repair();
+        var repairsHubCreationRequest = new RepairsHubCreationRequest();
+
+        mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest, repair)).Returns(repairsHubCreationRequest);
+
+        // Act
+        var result = await systemUnderTest.Execute(repairRequest, repair, "token");
+
+        // Assert
+        mapRepairsOnlineToRepairsHub.Verify(x => x.Map(repairRequest, repair), Times.Once);
+    }
+
+    [Fact]
+#pragma warning disable xUnit1026
+    public async void GivenValidParameters_WhenExecute_ThenRepairsHubGatewayIsCalled()
+#pragma warning restore xUnit1026
+    {
+        //Arrange
+        var repairRequest = new RepairRequest();
+        var repair = new Repair();
+        var repairsHubCreationRequest = new RepairsHubCreationRequest();
+
+        mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest, repair)).Returns(repairsHubCreationRequest);
+        repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(true);
+
+        // Act
+        var result = await systemUnderTest.Execute(repairRequest, repair, "token");
+
+        // Assert
+        repairsHubGateway.Verify(x => x.CreateWorkOrder(repairsHubCreationRequest), Times.Once);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+#pragma warning disable xUnit1026
+    public async void GivenMigrationSucceeded_WhenExecute_ThenItReturnsTrue(bool createWorkOrderResult)
+#pragma warning restore xUnit1026
+    {
+        //Arrange
+        var repairRequest = new RepairRequest();
+        var repair = new Repair();
+        var repairsHubCreationRequest = new RepairsHubCreationRequest();
+
+        mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest, repair)).Returns(repairsHubCreationRequest);
+        repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(createWorkOrderResult);
+
+        // Act
+        var result = await systemUnderTest.Execute(repairRequest, repair, "token");
+
+        // Assert
+        result.Should().Be(createWorkOrderResult);
     }
 }
