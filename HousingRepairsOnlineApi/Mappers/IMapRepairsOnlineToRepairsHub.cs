@@ -1,4 +1,5 @@
 ﻿using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Domain.Boundaries;
 
 namespace HousingRepairsOnlineApi.Mappers;
 

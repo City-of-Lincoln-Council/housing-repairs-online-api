@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,9 +22,9 @@ public class MigrationToRepairHubUseCaseTests
 
     public MigrationToRepairHubUseCaseTests()
     {
-        repairsHubGateway= new Mock<IRepairsHubGateway>();
+        repairsHubGateway = new Mock<IRepairsHubGateway>();
         mapRepairsOnlineToRepairsHub = new Mock<IMapRepairsOnlineToRepairsHub>();
-        systemUnderTest = new MigrationToRepairHubUseCase(repairsHubGateway.Object,mapRepairsOnlineToRepairsHub.Object);
+        systemUnderTest = new MigrationToRepairHubUseCase(repairsHubGateway.Object, mapRepairsOnlineToRepairsHub.Object);
     }
 
     [Theory]
@@ -37,7 +37,7 @@ public class MigrationToRepairHubUseCaseTests
         var repairRequest = new RepairRequest();
         var repair = new Repair();
         // Act
-        Func<Task> act = async () => await systemUnderTest.Execute(repairRequest,repair, token);
+        Func<Task> act = async () => await systemUnderTest.Execute(repairRequest, repair, token);
 
         // Assert
         await act.Should().ThrowExactlyAsync<T>();

@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Gateways;
@@ -22,7 +22,7 @@ public class MigrationToRepairHubUseCase : IMigrationToRepairHubUseCase
         Guard.Against.NullOrWhiteSpace(token, nameof(token));
 
         var repairsHubCreationRequest = mapRepairsOnlineToRepairsHub.Map(repairRequest, result);
-        var createWorkOrderSucceeded =repairsHubGateway.CreateWorkOrder(repairsHubCreationRequest);
+        var createWorkOrderSucceeded = repairsHubGateway.CreateWorkOrder(repairsHubCreationRequest);
         return createWorkOrderSucceeded;
     }
 }
