@@ -9,7 +9,7 @@ public class MapRepairsOnlineToRepairsHub : IMapRepairsOnlineToRepairsHub
     {
         return new RepairsHubCreationRequest
         {
-
+            DescriptionOfWork = repairRequest.Description.Text
         };
     }
 }
