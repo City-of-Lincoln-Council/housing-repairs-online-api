@@ -17,6 +17,7 @@ public class MigrationToRepairHubUseCase : IMigrationToRepairHubUseCase
         this.repairsHubGateway = repairsHubGateway;
         this.mapRepairsOnlineToRepairsHub = mapRepairsOnlineToRepairsHub;
     }
+
     public Task<bool> Execute(RepairRequest repairRequest, Repair repair, string token)
     {
         Guard.Against.Null(repairRequest, nameof(repairRequest));

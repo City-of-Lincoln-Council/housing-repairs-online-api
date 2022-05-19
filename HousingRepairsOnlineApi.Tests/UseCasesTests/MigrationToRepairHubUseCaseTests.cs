@@ -62,7 +62,8 @@ public class MigrationToRepairHubUseCaseTests
     [Theory]
     [MemberData(nameof(InvalidArgumentTestData))]
 #pragma warning disable xUnit1026
-    public async void GivenAnInvalidToken_WhenExecute_ThenExceptionIsThrown<T>(T exception, string token) where T : Exception
+    public async void GivenAnInvalidToken_WhenExecute_ThenExceptionIsThrown<T>(T exception, string token)
+        where T : Exception
 #pragma warning restore xUnit1026
     {
         //Arrange
