@@ -1,5 +1,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using HousingRepairsOnlineApi.Domain;
 
 namespace HousingRepairsOnlineApi.Gateways;
@@ -15,12 +16,13 @@ public class RepairsHubGateway : IRepairsHubGateway
 
     public async Task<bool> CreateWorkOrder(RepairsHubCreationRequest repairsHubCreationRequest)
     {
+        Guard.Against.Null(repairsHubCreationRequest, nameof(repairsHubCreationRequest));
+
         var httpClient = httpClientFactory.CreateClient(HttpClientNames.RepairsHub);
         var request = new HttpRequestMessage(HttpMethod.Post,
             $"/api/v2/workOrders/schedule");
         var response = await httpClient.SendAsync(request);
 
-
-        return await Task.FromResult<bool>(true);
+        return true;
     }
 }
