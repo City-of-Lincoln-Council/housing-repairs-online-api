@@ -22,7 +22,8 @@ public class RepairsHubGateway : IRepairsHubGateway
         var request = new HttpRequestMessage(HttpMethod.Post,
             $"/api/v2/workOrders/schedule");
         var response = await httpClient.SendAsync(request);
+        var result = response.IsSuccessStatusCode;
 
-        return true;
+        return result;
     }
 }

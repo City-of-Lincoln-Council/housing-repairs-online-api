@@ -14,6 +14,7 @@ public class RepairsHubGatewayTests
     private RepairsHubGateway systemUnderTest;
     private readonly MockHttpMessageHandler mockHttp;
     private const string RepairsHubApiEndpoint = "https://repairshub.api";
+    private const string WorkOrdersUri = $"/api/v2/workOrders/schedule";
 
     public RepairsHubGatewayTests()
     {
@@ -42,12 +43,28 @@ public class RepairsHubGatewayTests
     public async void GivenARepairsHubCreationRequest_WhenCreatingWorkOrder_ThenAWorkOrderRequestIsSent()
     {
         // Arrange
-        mockHttp.When($"/api/v2/workOrders/schedule").Respond(HttpStatusCode.OK);
+        mockHttp.When(WorkOrdersUri).Respond(HttpStatusCode.OK);
 
         // Act
         _ = await systemUnderTest.CreateWorkOrder(new RepairsHubCreationRequest());
 
         // Assert
         mockHttp.VerifyNoOutstandingExpectation();
+    }
+
+
+    [Theory]
+    [InlineData(HttpStatusCode.OK, true)]
+    [InlineData(HttpStatusCode.Forbidden, false)]
+    public async void GivenARepairsHubCreationRequest_WhenCreatingWorkOrderAndResponseHasSuccessfulStatusCode_ThenTrueIsReturned(HttpStatusCode httpStatusCode, bool expected)
+    {
+        // Arrange
+        mockHttp.When(WorkOrdersUri).Respond(httpStatusCode);
+
+        // Act
+        var response = await systemUnderTest.CreateWorkOrder(new RepairsHubCreationRequest());
+
+        // Assert
+        Assert.Equal(expected, response);
     }
 }
