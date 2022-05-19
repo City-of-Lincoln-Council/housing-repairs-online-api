@@ -17,6 +17,7 @@ namespace HousingRepairsOnlineApi.Tests
         private Mock<IBookAppointmentUseCase> bookAppointmentUseCaseMock;
         private Mock<IInternalEmailSender> internalEmailSender;
         private Mock<IAppointmentConfirmationSender> appointmentConfirmationSender;
+        private Mock<IMigrationToRepairHubUseCase> migrationToRepairHubUseCase;
 
         private readonly RepairAvailability repairAvailability = new()
         {
@@ -38,7 +39,13 @@ namespace HousingRepairsOnlineApi.Tests
                 It.IsAny<DateTime>())).ReturnsAsync(new SchedulingApiBookingResponse());
             appointmentConfirmationSender = new Mock<IAppointmentConfirmationSender>();
             internalEmailSender = new Mock<IInternalEmailSender>();
-            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, internalEmailSender.Object, appointmentConfirmationSender.Object, bookAppointmentUseCaseMock.Object);
+            migrationToRepairHubUseCase = new Mock<IMigrationToRepairHubUseCase>();
+            migrationToRepairHubUseCase
+                .Setup(x => x.Execute(It.IsAny<RepairRequest>(), It.IsAny<Repair>(), It.IsAny<string>()))
+                .ReturnsAsync(true);
+            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, internalEmailSender.Object,
+                appointmentConfirmationSender.Object, bookAppointmentUseCaseMock.Object,
+                migrationToRepairHubUseCase.Object);
         }
 
         [Fact]

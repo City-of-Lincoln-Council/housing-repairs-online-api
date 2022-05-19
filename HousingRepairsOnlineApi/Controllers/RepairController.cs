@@ -16,19 +16,22 @@ namespace HousingRepairsOnlineApi.Controllers
         private readonly ISaveRepairRequestUseCase saveRepairRequestUseCase;
         private readonly IAppointmentConfirmationSender appointmentConfirmationSender;
         private readonly IBookAppointmentUseCase bookAppointmentUseCase;
+        private readonly IMigrationToRepairHubUseCase migrationToRepairHubUseCase;
         private readonly IInternalEmailSender internalEmailSender;
 
         public RepairController(
             ISaveRepairRequestUseCase saveRepairRequestUseCase,
             IInternalEmailSender internalEmailSender,
             IAppointmentConfirmationSender appointmentConfirmationSender,
-            IBookAppointmentUseCase bookAppointmentUseCase
+            IBookAppointmentUseCase bookAppointmentUseCase,
+            IMigrationToRepairHubUseCase migrationToRepairHubUseCase
         )
         {
             this.saveRepairRequestUseCase = saveRepairRequestUseCase;
             this.internalEmailSender = internalEmailSender;
             this.appointmentConfirmationSender = appointmentConfirmationSender;
             this.bookAppointmentUseCase = bookAppointmentUseCase;
+            this.migrationToRepairHubUseCase = migrationToRepairHubUseCase;
         }
 
         [HttpPost]
@@ -41,6 +44,12 @@ namespace HousingRepairsOnlineApi.Controllers
                     result.Time.StartDateTime, result.Time.EndDateTime);
 
                 var token = appointmentReponse.TokenId;
+
+                var migrationUseCaseSucceeded = await migrationToRepairHubUseCase.Execute(repairRequest, result, token);
+                if (!migrationUseCaseSucceeded)
+                {
+                    SentrySdk.CaptureMessage($"Unable to migrate work order (ID: {result.Id}) to Repairs Hub.");
+                }
 
                 appointmentConfirmationSender.Execute(result);
                 await internalEmailSender.Execute(result);
