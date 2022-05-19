@@ -1,4 +1,4 @@
-namespace HousingRepairsOnlineApi.Gateways;
+﻿namespace HousingRepairsOnlineApi.Gateways;
 
 public static class HttpClientNames
 {
