@@ -17,13 +17,13 @@ public class MigrationToRepairHubUseCase : IMigrationToRepairHubUseCase
         this.repairsHubGateway = repairsHubGateway;
         this.mapRepairsOnlineToRepairsHub = mapRepairsOnlineToRepairsHub;
     }
-    public Task<bool> Execute(RepairRequest repairRequest, Repair result, string token)
+    public Task<bool> Execute(RepairRequest repairRequest, Repair repair, string token)
     {
         Guard.Against.Null(repairRequest, nameof(repairRequest));
-        Guard.Against.Null(result, nameof(result));
+        Guard.Against.Null(repair, nameof(repair));
         Guard.Against.NullOrWhiteSpace(token, nameof(token));
 
-        var repairsHubCreationRequest = mapRepairsOnlineToRepairsHub.Map(repairRequest, result);
+        var repairsHubCreationRequest = mapRepairsOnlineToRepairsHub.Map(repairRequest, repair);
         var createWorkOrderSucceeded = repairsHubGateway.CreateWorkOrder(repairsHubCreationRequest);
         return createWorkOrderSucceeded;
     }

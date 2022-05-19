@@ -5,6 +5,6 @@ namespace HousingRepairsOnlineApi.UseCases
 {
     public interface IMigrationToRepairHubUseCase
     {
-        Task<bool> Execute(RepairRequest repairRequest, Repair result, string token);
+        Task<bool> Execute(RepairRequest repairRequest, Repair repair, string token);
     }
 }
