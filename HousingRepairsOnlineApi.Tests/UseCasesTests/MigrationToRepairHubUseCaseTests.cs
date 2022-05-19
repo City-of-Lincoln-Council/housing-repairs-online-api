@@ -27,21 +27,55 @@ public class MigrationToRepairHubUseCaseTests
         systemUnderTest = new MigrationToRepairHubUseCase(repairsHubGateway.Object, mapRepairsOnlineToRepairsHub.Object);
     }
 
+    [Fact]
+#pragma warning disable xUnit1026
+    public async void GivenANullRepairRequest_WhenExecute_ThenArgumentNullExceptionIsThrown()
+#pragma warning restore xUnit1026
+    {
+        //Arrange
+        var repair = new Repair();
+        var token = "token";
+
+        // Act
+        Func<Task> act = async () => await systemUnderTest.Execute(null, repair, token);
+
+        // Assert
+        await act.Should().ThrowExactlyAsync<ArgumentNullException>();
+    }
+
+    [Fact]
+#pragma warning disable xUnit1026
+    public async void GivenANullRepair_WhenExecute_ThenArgumentNullExceptionIsThrown()
+#pragma warning restore xUnit1026
+    {
+        //Arrange
+        var repairRequest = new RepairRequest();
+        var token = "token";
+
+        // Act
+        Func<Task> act = async () => await systemUnderTest.Execute(repairRequest, null, token);
+
+        // Assert
+        await act.Should().ThrowExactlyAsync<ArgumentNullException>();
+    }
+
     [Theory]
     [MemberData(nameof(InvalidArgumentTestData))]
 #pragma warning disable xUnit1026
-    public async void GivenAnInvalidRepairLocation_WhenExecute_ThenExceptionIsThrown<T>(T exception, string token) where T : Exception
+    public async void GivenAnInvalidToken_WhenExecute_ThenExceptionIsThrown<T>(T exception, string token) where T : Exception
 #pragma warning restore xUnit1026
     {
         //Arrange
         var repairRequest = new RepairRequest();
         var repair = new Repair();
+
         // Act
         Func<Task> act = async () => await systemUnderTest.Execute(repairRequest, repair, token);
 
         // Assert
         await act.Should().ThrowExactlyAsync<T>();
     }
+
     public static IEnumerable<object[]> InvalidArgumentTestData()
     {
         yield return new object[] { new ArgumentNullException(), null };

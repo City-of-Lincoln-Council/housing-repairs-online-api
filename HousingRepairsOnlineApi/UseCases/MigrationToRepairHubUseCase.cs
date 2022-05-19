@@ -19,6 +19,8 @@ public class MigrationToRepairHubUseCase : IMigrationToRepairHubUseCase
     }
     public Task<bool> Execute(RepairRequest repairRequest, Repair result, string token)
     {
+        Guard.Against.Null(repairRequest, nameof(repairRequest));
+        Guard.Against.Null(result, nameof(result));
         Guard.Against.NullOrWhiteSpace(token, nameof(token));
 
         var repairsHubCreationRequest = mapRepairsOnlineToRepairsHub.Map(repairRequest, result);
