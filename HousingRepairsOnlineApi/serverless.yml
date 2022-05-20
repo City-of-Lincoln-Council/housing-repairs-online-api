@@ -65,7 +65,7 @@ functions:
       SENTRY_DSN: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/sentry-dsn}
       SENTRY_ENVIRONMENT: ${self:provider.stage}
       REPAIRS_HUB_API_TOKEN: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/repairs-api-token}
-      REPAIRS_HUB_API_URL: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/repairshub-api-url}
+      REPAIRS_HUB_API_URL: ${ssm:/HousingRepairsOnlineApi/${self:provider.stage}/repairshub-api-base-url}
     events:
       - http:
           path: /{proxy+}
