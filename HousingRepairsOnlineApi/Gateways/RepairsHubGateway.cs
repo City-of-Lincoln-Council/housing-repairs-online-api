@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
-using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Domain.Boundaries;
 
 namespace HousingRepairsOnlineApi.Gateways;
 

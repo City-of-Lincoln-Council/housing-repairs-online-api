@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Domain.Boundaries;
 using HousingRepairsOnlineApi.Gateways;
 using Moq;
 using RichardSzalay.MockHttp;

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using HACT.Dtos;
 using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Domain.Boundaries;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Mappers;
 using HousingRepairsOnlineApi.UseCases;
