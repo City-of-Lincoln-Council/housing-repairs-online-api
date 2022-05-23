@@ -9,6 +9,7 @@ using Azure.Storage.Blobs;
 using HousingRepairsOnline.Authentication.DependencyInjection;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Helpers;
+using HousingRepairsOnlineApi.Mappers;
 using HousingRepairsOnlineApi.UseCases;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -154,6 +155,9 @@ namespace HousingRepairsOnlineApi
             //         blobContainerClient
             //     );
             // });
+            services.AddTransient<IRepairsHubGateway, RepairsHubGateway>();
+            services.AddTransient<IMapRepairsOnlineToRepairsHub, MapRepairsOnlineToRepairsHub>();
+            services.AddTransient<IMigrationToRepairHubUseCase, MigrationToRepairHubUseCase>();
 
             services.AddTransient<IAmazonS3, AmazonS3Client>();
             services.AddTransient<ITransferUtility, TransferUtility>();
