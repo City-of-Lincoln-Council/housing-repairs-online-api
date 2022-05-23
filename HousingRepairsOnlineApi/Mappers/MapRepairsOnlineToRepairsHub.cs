@@ -1,7 +1,8 @@
-﻿using HousingRepairsOnlineApi.Domain;
-using HousingRepairsOnlineApi.Domain.Boundaries;
-using Ardalis.GuardClauses;
+﻿using System;
 using System.Collections.Generic;
+using Ardalis.GuardClauses;
+using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Domain.Boundaries;
 using Outbound = HousingRepairsOnlineApi.Domain.Boundaries.RepairsHub;
 
 namespace HousingRepairsOnlineApi.Mappers;
@@ -13,15 +14,16 @@ public class MapRepairsOnlineToRepairsHub : IMapRepairsOnlineToRepairsHub
         Guard.Against.InvalidInput(repairRequest.Description.Text, nameof(repairRequest.Description.Text), d => !string.IsNullOrEmpty(d));
         Guard.Against.OutOfRange(int.Parse(repair.Id), nameof(repair.Id), 20000000, 30000000);
 
-
         return new RepairsHubCreationRequest
         {
+            Reference = new List<Outbound.Reference> { new Outbound.Reference{ Id = repair.Id} },
             DescriptionOfWork = repairRequest.Description.Text,
             Priority = new Outbound.Priority
             {
                 PriorityCode = 4,
                 PriorityDescription = "5 [N] NORMAL",
-                NumberOfDays = 21
+                NumberOfDays = 21,
+                RequiredCompletionDateTime = DateTime.Now.AddDays(21),
             },
             WorkClass = new Outbound.WorkClass
             {
@@ -41,7 +43,18 @@ public class MapRepairsOnlineToRepairsHub : IMapRepairsOnlineToRepairsHub
                         PropertyReference = repairRequest.Address.LocationId,
                         Address = new Outbound.Address
                         {
+                            AddressLine = new List<string>
+                            {
+                                repairRequest.Address.Display
+                            },
                             PostalCode = repairRequest.Postcode
+                        },
+                        Reference = new List<Outbound.Reference>
+                        {
+                            new Outbound.Reference
+                            {
+                                Id = repairRequest.Address.LocationId
+                            }
                         }
                     }
                 }
