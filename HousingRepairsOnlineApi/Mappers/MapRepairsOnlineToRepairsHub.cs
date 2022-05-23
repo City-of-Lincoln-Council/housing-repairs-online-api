@@ -105,7 +105,7 @@ public class MapRepairsOnlineToRepairsHub : IMapRepairsOnlineToRepairsHub
                         {
                             Quantity = new Outbound.Quantity
                             {
-                                Amount = { 1 }
+                                Amount = new List<int>{ 1 }
                             },
                             CustomCode = repair.SOR,
                             CustomName = "TBC"
