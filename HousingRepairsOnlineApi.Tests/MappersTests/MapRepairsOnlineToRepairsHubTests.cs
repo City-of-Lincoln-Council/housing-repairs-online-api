@@ -11,6 +11,9 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
     public class MapRepairsOnlineToRepairsHubTests
     {
         private readonly MapRepairsOnlineToRepairsHub sut;
+        private string validRepairRequestPostcode = "N4 2FL";
+        private string validRepairRequestPropertyyReference = "00003277";
+
         public MapRepairsOnlineToRepairsHubTests()
         {
             sut = new MapRepairsOnlineToRepairsHub();
@@ -129,8 +132,8 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             // Assert
             var prop = result.Site.Property.Single();
 
-            prop.PropertyReference.Should().Be("00003277");
-            prop.Address.PostalCode.Should().Be("N4 2FL");
+            prop.PropertyReference.Should().Be(validRepairRequestPropertyyReference);
+            prop.Address.PostalCode.Should().Be(validRepairRequestPostcode);
         }
 
         [Fact]
@@ -198,10 +201,10 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
                 },
                 Address = new RepairAddress
                 {
-                    LocationId = "00003277",
+                    LocationId = validRepairRequestPropertyyReference,
                     Display = "Sample location 1"
                 },
-                Postcode = "N4 2FL",
+                Postcode = validRepairRequestPostcode,
                 ContactPersonNumber = "07720340340"
             };
         }
