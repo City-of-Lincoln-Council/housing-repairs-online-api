@@ -1,4 +1,6 @@
 ﻿using System.Net.Http;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using HousingRepairsOnlineApi.Domain.Boundaries;
@@ -21,6 +23,10 @@ public class RepairsHubGateway : IRepairsHubGateway
         var httpClient = httpClientFactory.CreateClient(HttpClientNames.RepairsHub);
         var request = new HttpRequestMessage(HttpMethod.Post,
             $"/api/v2/workOrders/schedule");
+
+        var jsonContent = JsonSerializer.Serialize(repairsHubCreationRequest);
+        request.Content = new StringContent(jsonContent);
+
         var response = await httpClient.SendAsync(request);
         var result = response.IsSuccessStatusCode;
 
