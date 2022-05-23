@@ -43,7 +43,7 @@ public class RepairsHubGatewayTests
     public async void GivenARepairsHubCreationRequest_WhenCreatingWorkOrder_ThenAWorkOrderRequestIsSent()
     {
         // Arrange
-        mockHttp.When(WorkOrdersUri).Respond(HttpStatusCode.OK);
+        mockHttp.Expect(WorkOrdersUri).Respond(HttpStatusCode.OK);
 
         // Act
         _ = await systemUnderTest.CreateWorkOrder(new RepairsHubCreationRequest());
