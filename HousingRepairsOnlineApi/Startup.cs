@@ -268,7 +268,9 @@ namespace HousingRepairsOnlineApi
             services.AddHttpClient(clientName, c =>
             {
                 c.BaseAddress = uri;
-                c.DefaultRequestHeaders.Add("Authorization", key);
+                c.DefaultRequestHeaders.Add("Authorization", $"Bearer {key}");
+                c.DefaultRequestHeaders.Add("x-hackney-user", key);
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
             });
         }
     }
