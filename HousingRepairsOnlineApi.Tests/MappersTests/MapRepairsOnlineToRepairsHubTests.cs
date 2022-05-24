@@ -183,7 +183,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
 
             var sor = workElement.RateScheduleItem.Single();
             sor.CustomCode.Should().Be("20110200");
-            sor.CustomName.Should().Be("EMERGENCY LIGHT TEST DWELL");
+            sor.CustomName.Should().Be("TBC");
         }
 
         private RepairRequest GenerateValidRequest()
