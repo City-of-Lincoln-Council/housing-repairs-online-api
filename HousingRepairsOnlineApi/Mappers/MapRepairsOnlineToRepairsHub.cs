@@ -104,14 +104,6 @@ public class MapRepairsOnlineToRepairsHub : IMapRepairsOnlineToRepairsHub
             {
                 new Outbound.WorkElement
                 {
-                    Trade = new List<Outbound.Trade>
-                    {
-                        new Outbound.Trade
-                        {
-                            CustomCode = "TBC",
-                            CustomName = "TBC"
-                        }
-                    },
                     RateScheduleItem = new List<Outbound.RateScheduleItem>
                     {
                         new Outbound.RateScheduleItem

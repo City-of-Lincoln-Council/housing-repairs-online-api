@@ -181,11 +181,6 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             // Assert
             var workElement = result.WorkElement.Single();
 
-            var trade = workElement.Trade.Single();
-            trade.Code.Should().Be("SP");
-            trade.CustomCode.Should().Be("EL");
-            trade.CustomName.Should().Be("Electrical - EL");
-
             var sor = workElement.RateScheduleItem.Single();
             sor.CustomCode.Should().Be("20110200");
             sor.CustomName.Should().Be("EMERGENCY LIGHT TEST DWELL");
