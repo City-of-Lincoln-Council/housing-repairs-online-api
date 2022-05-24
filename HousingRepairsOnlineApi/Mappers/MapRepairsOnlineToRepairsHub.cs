@@ -16,7 +16,7 @@ public class MapRepairsOnlineToRepairsHub : IMapRepairsOnlineToRepairsHub
 
         return new RepairsHubCreationRequest
         {
-            Reference = new List<Outbound.Reference> { new Outbound.Reference{ Id = repair.Id} },
+            Reference = new List<Outbound.Reference> { new Outbound.Reference { Id = repair.Id } },
             DescriptionOfWork = repairRequest.Description.Text,
             Priority = new Outbound.Priority
             {

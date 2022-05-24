@@ -51,7 +51,7 @@ public class RepairsHubGatewayTests
 
         var repairsHubCreationRequest = new RepairsHubCreationRequest
         {
-            Reference = new List<Reference>{new Reference{Id = "9925829f-fd0e-4272-8677-9041dac2894d"}},
+            Reference = new List<Reference> { new Reference { Id = "9925829f-fd0e-4272-8677-9041dac2894d" } },
             DescriptionOfWork = "description text",
             Priority = new Domain.Boundaries.RepairsHub.Priority
             {

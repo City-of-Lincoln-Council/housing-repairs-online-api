@@ -1,10 +1,10 @@
-﻿using HousingRepairsOnlineApi.Domain;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using FluentAssertions;
+using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Mappers;
 using Xunit;
-using FluentAssertions;
-using System;
-using System.Threading.Tasks;
-using System.Linq;
 
 namespace HousingRepairsOnlineApi.Tests.MappersTests
 {
