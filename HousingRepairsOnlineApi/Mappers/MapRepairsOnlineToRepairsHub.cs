@@ -9,14 +9,14 @@ namespace HousingRepairsOnlineApi.Mappers;
 
 public class MapRepairsOnlineToRepairsHub : IMapRepairsOnlineToRepairsHub
 {
-    public RepairsHubCreationRequest Map(RepairRequest repairRequest, Repair repair)
+    public RepairsHubCreationRequest Map(RepairRequest repairRequest, string sorCode)
     {
         Guard.Against.InvalidInput(repairRequest.Description.Text, nameof(repairRequest.Description.Text), d => !string.IsNullOrEmpty(d));
-        Guard.Against.OutOfRange(int.Parse(repair.Id), nameof(repair.Id), 20000000, 30000000);
+        Guard.Against.NullOrWhiteSpace(sorCode, nameof(sorCode));
 
         return new RepairsHubCreationRequest
         {
-            Reference = new List<Outbound.Reference> { new Outbound.Reference { Id = repair.Id } },
+            Reference = new List<Outbound.Reference> { new Outbound.Reference { Id = Guid.NewGuid().ToString() } },
             DescriptionOfWork = repairRequest.Description.Text,
             Priority = new Outbound.Priority
             {
@@ -112,7 +112,7 @@ public class MapRepairsOnlineToRepairsHub : IMapRepairsOnlineToRepairsHub
                             {
                                 Amount = new List<int>{ 1 }
                             },
-                            CustomCode = repair.SOR,
+                            CustomCode = sorCode,
                             CustomName = "TBC"
                         }
                     }

@@ -41,7 +41,7 @@ namespace HousingRepairsOnlineApi.Tests
             internalEmailSender = new Mock<IInternalEmailSender>();
             migrationToRepairHubUseCase = new Mock<IMigrationToRepairHubUseCase>();
             migrationToRepairHubUseCase
-                .Setup(x => x.Execute(It.IsAny<RepairRequest>(), It.IsAny<Repair>(), It.IsAny<string>()))
+                .Setup(x => x.Execute(It.IsAny<RepairRequest>(), It.IsAny<Repair>()))
                 .ReturnsAsync(true);
             systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, internalEmailSender.Object,
                 appointmentConfirmationSender.Object, bookAppointmentUseCaseMock.Object,

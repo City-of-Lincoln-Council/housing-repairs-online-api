@@ -6,5 +6,5 @@ namespace HousingRepairsOnlineApi.Gateways;
 
 public interface IRepairsHubGateway
 {
-    Task<bool> CreateWorkOrder(RepairsHubCreationRequest repairsHubCreationRequest);
+    Task<(string, bool)> CreateWorkOrder(RepairsHubCreationRequest repairsHubCreationRequest);
 }

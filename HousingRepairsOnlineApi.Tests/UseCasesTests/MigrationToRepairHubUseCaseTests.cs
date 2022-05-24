@@ -36,10 +36,9 @@ public class MigrationToRepairHubUseCaseTests
     {
         //Arrange
         var repair = new Repair();
-        var token = "token";
 
         // Act
-        Func<Task> act = async () => await systemUnderTest.Execute(null, repair, token);
+        Func<Task> act = async () => await systemUnderTest.Execute(null, repair);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ArgumentNullException>();
@@ -52,38 +51,12 @@ public class MigrationToRepairHubUseCaseTests
     {
         //Arrange
         var repairRequest = new RepairRequest();
-        var token = "token";
 
         // Act
-        Func<Task> act = async () => await systemUnderTest.Execute(repairRequest, null, token);
+        Func<Task> act = async () => await systemUnderTest.Execute(repairRequest, null);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ArgumentNullException>();
-    }
-
-    [Theory]
-    [MemberData(nameof(InvalidArgumentTestData))]
-#pragma warning disable xUnit1026
-    public async void GivenAnInvalidToken_WhenExecute_ThenExceptionIsThrown<T>(T exception, string token)
-        where T : Exception
-#pragma warning restore xUnit1026
-    {
-        //Arrange
-        var repairRequest = new RepairRequest();
-        var repair = new Repair();
-
-        // Act
-        Func<Task> act = async () => await systemUnderTest.Execute(repairRequest, repair, token);
-
-        // Assert
-        await act.Should().ThrowExactlyAsync<T>();
-    }
-
-    public static IEnumerable<object[]> InvalidArgumentTestData()
-    {
-        yield return new object[] { new ArgumentNullException(), null };
-        yield return new object[] { new ArgumentException(), "" };
-        yield return new object[] { new ArgumentException(), " " };
     }
 
     [Fact]
@@ -99,7 +72,7 @@ public class MigrationToRepairHubUseCaseTests
         mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest, repair)).Returns(repairsHubCreationRequest);
 
         // Act
-        var result = await systemUnderTest.Execute(repairRequest, repair, "token");
+        var result = await systemUnderTest.Execute(repairRequest, repair);
 
         // Assert
         mapRepairsOnlineToRepairsHub.Verify(x => x.Map(repairRequest, repair), Times.Once);
@@ -119,7 +92,7 @@ public class MigrationToRepairHubUseCaseTests
         repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(true);
 
         // Act
-        var result = await systemUnderTest.Execute(repairRequest, repair, "token");
+        var result = await systemUnderTest.Execute(repairRequest, repair);
 
         // Assert
         repairsHubGateway.Verify(x => x.CreateWorkOrder(repairsHubCreationRequest), Times.Once);
@@ -141,7 +114,7 @@ public class MigrationToRepairHubUseCaseTests
         repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(createWorkOrderResult);
 
         // Act
-        var result = await systemUnderTest.Execute(repairRequest, repair, "token");
+        var result = await systemUnderTest.Execute(repairRequest, repair);
 
         // Assert
         result.Should().Be(createWorkOrderResult);

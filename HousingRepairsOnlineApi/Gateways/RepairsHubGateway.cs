@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ public class RepairsHubGateway : IRepairsHubGateway
         this.httpClientFactory = httpClientFactory;
     }
 
-    public async Task<bool> CreateWorkOrder(RepairsHubCreationRequest repairsHubCreationRequest)
+    public async Task<(string, bool)> CreateWorkOrder(RepairsHubCreationRequest repairsHubCreationRequest)
     {
         Guard.Against.Null(repairsHubCreationRequest, nameof(repairsHubCreationRequest));
 
@@ -29,7 +30,9 @@ public class RepairsHubGateway : IRepairsHubGateway
         request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
         var response = await httpClient.SendAsync(request);
-        var result = response.IsSuccessStatusCode;
+
+        var orderResult = await response.Content.ReadFromJsonAsync<CreateOrderResult>();
+        var result = (orderResult.Id.ToString(), response.IsSuccessStatusCode);
 
         return result;
     }
