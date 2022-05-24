@@ -169,6 +169,6 @@ public class RepairsHubGatewayTests
         var response = await systemUnderTest.CreateWorkOrder(new RepairsHubCreationRequest());
 
         // Assert
-        Assert.Equal(expected, response);
+        Assert.Equal(expected, response.Succeeded);
     }
 }

@@ -5,5 +5,5 @@ namespace HousingRepairsOnlineApi.Mappers;
 
 public interface IMapRepairsOnlineToRepairsHub
 {
-    RepairsHubCreationRequest Map(RepairRequest repairRequest, string sorCode);
+    RepairsHubCreationRequest Map(RepairRequest repairRequest);
 }

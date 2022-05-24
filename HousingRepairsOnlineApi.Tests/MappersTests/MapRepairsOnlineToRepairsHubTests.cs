@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Helpers;
 using HousingRepairsOnlineApi.Mappers;
+using Moq;
 using Xunit;
 
 namespace HousingRepairsOnlineApi.Tests.MappersTests
@@ -16,7 +18,8 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
 
         public MapRepairsOnlineToRepairsHubTests()
         {
-            sut = new MapRepairsOnlineToRepairsHub();
+            var sorEngineMock = new Mock<ISoREngine>();
+            sut = new MapRepairsOnlineToRepairsHub(sorEngineMock.Object);
         }
 
         [Theory]
@@ -36,7 +39,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             var repair = GenerateValidRepair();
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => sut.Map(repairRequest, repair));
+            Assert.Throws<ArgumentException>(() => sut.Map(repairRequest));
         }
 
         [Theory]
@@ -54,7 +57,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             repair.Id = id;
 
             // Act & Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => sut.Map(repairRequest, repair));
+            Assert.Throws<ArgumentOutOfRangeException>(() => sut.Map(repairRequest));
         }
 
         [Fact]
@@ -69,7 +72,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             };
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => sut.Map(repairRequest, repair));
+            Assert.Throws<ArgumentNullException>(() => sut.Map(repairRequest));
         }
 
         [Fact]
@@ -80,7 +83,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             var repair = GenerateValidRepair();
 
             // Act
-            var result = sut.Map(repairRequest, repair);
+            var result = sut.Map(repairRequest);
 
             // Assert
             result.Priority.PriorityCode.Should().Be(4);
@@ -96,7 +99,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             var repair = GenerateValidRepair();
 
             // Act
-            var result = sut.Map(repairRequest, repair);
+            var result = sut.Map(repairRequest);
 
             // Assert
             result.WorkClass.WorkClassCode.Should().Be(0);
@@ -112,7 +115,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             var repair = GenerateValidRepair();
 
             // Act
-            var result = sut.Map(repairRequest, repair);
+            var result = sut.Map(repairRequest);
 
             // Assert
             result.InstructedBy.Name.Should().Be("Hackney Housing");
@@ -127,7 +130,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             var repair = GenerateValidRepair();
 
             // Act
-            var result = sut.Map(repairRequest, repair);
+            var result = sut.Map(repairRequest);
 
             // Assert
             var prop = result.Site.Property.Single();
@@ -144,7 +147,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             var repair = GenerateValidRepair();
 
             // Act
-            var result = sut.Map(repairRequest, repair);
+            var result = sut.Map(repairRequest);
 
             // Assert
             result.Customer.Name.Should().Be("");
@@ -159,7 +162,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             var repair = GenerateValidRepair();
 
             // Act
-            var result = sut.Map(repairRequest, repair);
+            var result = sut.Map(repairRequest);
 
             // Assert
             var comm = result.Customer.Person.Communication.Single();
@@ -176,7 +179,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             var repair = GenerateValidRepair();
 
             // Act
-            var result = sut.Map(repairRequest, repair);
+            var result = sut.Map(repairRequest);
 
             // Assert
             var workElement = result.WorkElement.Single();

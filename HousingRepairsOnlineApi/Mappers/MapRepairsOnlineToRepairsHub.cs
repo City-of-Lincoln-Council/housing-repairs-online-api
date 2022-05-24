@@ -3,16 +3,25 @@ using System.Collections.Generic;
 using Ardalis.GuardClauses;
 using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Domain.Boundaries;
+using HousingRepairsOnlineApi.Helpers;
 using Outbound = HousingRepairsOnlineApi.Domain.Boundaries.RepairsHub;
 
 namespace HousingRepairsOnlineApi.Mappers;
 
 public class MapRepairsOnlineToRepairsHub : IMapRepairsOnlineToRepairsHub
 {
-    public RepairsHubCreationRequest Map(RepairRequest repairRequest, string sorCode)
+    private readonly ISoREngine sorEngine;
+
+    public MapRepairsOnlineToRepairsHub(ISoREngine sorEngine)
+    {
+        this.sorEngine = sorEngine;
+    }
+
+    public RepairsHubCreationRequest Map(RepairRequest repairRequest)
     {
         Guard.Against.InvalidInput(repairRequest.Description.Text, nameof(repairRequest.Description.Text), d => !string.IsNullOrEmpty(d));
-        Guard.Against.NullOrWhiteSpace(sorCode, nameof(sorCode));
+
+        var sorCode = sorEngine.MapSorCode(repairRequest.Location.Value, repairRequest.Problem.Value, repairRequest.Issue?.Value);
 
         return new RepairsHubCreationRequest
         {

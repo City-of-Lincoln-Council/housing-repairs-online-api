@@ -66,8 +66,9 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 
             mockRepairStorageGateway.Setup(x => x.AddRepair(It.IsAny<Repair>()))
                 .ReturnsAsync((Repair r) => r);
+            var id = string.Empty;
 
-            var _ = await systemUnderTest.Execute(repairRequest);
+            var _ = await systemUnderTest.Execute(repairRequest, id);
 
             mockAzureStorageGateway.Verify(x => x.UploadBlob(Base64Img, FileExtension), Times.Once);
             mockSorEngine.Verify(x => x.MapSorCode(Location, Problem, Issue), Times.Once);
@@ -107,8 +108,9 @@ namespace HousingRepairsOnlineApi.Tests.UseCasesTests
 
             mockRepairStorageGateway.Setup(x => x.AddRepair(It.IsAny<Repair>()))
                 .ReturnsAsync((Repair r) => r);
+            var id = string.Empty;
 
-            var _ = await systemUnderTest.Execute(repairRequest);
+            var _ = await systemUnderTest.Execute(repairRequest, id);
 
             mockSorEngine.Verify(x => x.MapSorCode(Location, Problem, Issue), Times.Once);
             mockRepairStorageGateway.Verify(x => x.AddRepair(It.Is<Repair>(p => p.SOR == RepairCode && p.Description.PhotoUrl == null)), Times.Once);

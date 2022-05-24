@@ -40,12 +40,12 @@ namespace HousingRepairsOnlineApi.Controllers
             try
             {
                 var migrationToRepairHubUseCaseResponse = await migrationToRepairHubUseCase.Execute(repairRequest);
-                if (!migrationToRepairHubUseCaseResponse.Item2)
+                if (!migrationToRepairHubUseCaseResponse.Succeeded)
                 {
                     SentrySdk.CaptureMessage($"Unable to migrate work order to Repairs Hub.");
                 }
 
-                var result = await saveRepairRequestUseCase.Execute(repairRequest);
+                var result = await saveRepairRequestUseCase.Execute(repairRequest, migrationToRepairHubUseCaseResponse.Id);
                 var appointmentReponse = await bookAppointmentUseCase.Execute(result.Id, result.SOR, result.Address.LocationId,
                     result.Time.StartDateTime, result.Time.EndDateTime);
 

@@ -18,7 +18,7 @@ public class RepairsHubGateway : IRepairsHubGateway
         this.httpClientFactory = httpClientFactory;
     }
 
-    public async Task<(string, bool)> CreateWorkOrder(RepairsHubCreationRequest repairsHubCreationRequest)
+    public async Task<CreateWorkOrderResponse> CreateWorkOrder(RepairsHubCreationRequest repairsHubCreationRequest)
     {
         Guard.Against.Null(repairsHubCreationRequest, nameof(repairsHubCreationRequest));
 
@@ -32,7 +32,7 @@ public class RepairsHubGateway : IRepairsHubGateway
         var response = await httpClient.SendAsync(request);
 
         var orderResult = await response.Content.ReadFromJsonAsync<CreateOrderResult>();
-        var result = (orderResult.Id.ToString(), response.IsSuccessStatusCode);
+        var result = new CreateWorkOrderResponse{Id = orderResult.Id.ToString(), Succeeded = response.IsSuccessStatusCode};
 
         return result;
     }

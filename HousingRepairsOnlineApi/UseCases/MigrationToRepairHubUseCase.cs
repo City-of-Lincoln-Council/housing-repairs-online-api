@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Domain.Boundaries;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Mappers;
 
@@ -18,12 +19,11 @@ public class MigrationToRepairHubUseCase : IMigrationToRepairHubUseCase
         this.mapRepairsOnlineToRepairsHub = mapRepairsOnlineToRepairsHub;
     }
 
-    public Task<(string, bool)> Execute(RepairRequest repairRequest, string sorCode)
+    public Task<CreateWorkOrderResponse> Execute(RepairRequest repairRequest)
     {
         Guard.Against.Null(repairRequest, nameof(repairRequest));
-        Guard.Against.Null(sorCode, nameof(sorCode));
 
-        var repairsHubCreationRequest = mapRepairsOnlineToRepairsHub.Map(repairRequest, sorCode);
+        var repairsHubCreationRequest = mapRepairsOnlineToRepairsHub.Map(repairRequest);
         var result = repairsHubGateway.CreateWorkOrder(repairsHubCreationRequest);
 
         return result;

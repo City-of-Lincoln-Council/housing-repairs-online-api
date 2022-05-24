@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Domain.Boundaries;
 
 namespace HousingRepairsOnlineApi.UseCases
 {
     public interface IMigrationToRepairHubUseCase
     {
-        Task<(string, bool)> Execute(RepairRequest repairRequest, string sorCode);
+        Task<CreateWorkOrderResponse> Execute(RepairRequest repairRequest);
     }
 }

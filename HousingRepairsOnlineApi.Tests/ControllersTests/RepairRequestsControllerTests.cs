@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using HousingRepairsOnlineApi.Controllers;
 using HousingRepairsOnlineApi.Domain;
+using HousingRepairsOnlineApi.Domain.Boundaries;
 using HousingRepairsOnlineApi.Helpers;
 using HousingRepairsOnlineApi.UseCases;
 using Moq;
@@ -12,6 +13,7 @@ namespace HousingRepairsOnlineApi.Tests
 {
     public class RepairRequestsControllerTests : ControllerTests
     {
+        private const string repairId = "1AB2C3D4";
         private RepairController systemUnderTest;
         private Mock<ISaveRepairRequestUseCase> saveRepairRequestUseCaseMock;
         private Mock<IBookAppointmentUseCase> bookAppointmentUseCaseMock;
@@ -41,8 +43,8 @@ namespace HousingRepairsOnlineApi.Tests
             internalEmailSender = new Mock<IInternalEmailSender>();
             migrationToRepairHubUseCase = new Mock<IMigrationToRepairHubUseCase>();
             migrationToRepairHubUseCase
-                .Setup(x => x.Execute(It.IsAny<RepairRequest>(), It.IsAny<Repair>()))
-                .ReturnsAsync(true);
+                .Setup(x => x.Execute(It.IsAny<RepairRequest>()))
+                .ReturnsAsync(new CreateWorkOrderResponse{Succeeded = true, Id = repairId});
             systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, internalEmailSender.Object,
                 appointmentConfirmationSender.Object, bookAppointmentUseCaseMock.Object,
                 migrationToRepairHubUseCase.Object);
@@ -63,7 +65,7 @@ namespace HousingRepairsOnlineApi.Tests
 
             var repair = new Repair
             {
-                Id = "1AB2C3D4",
+                Id = repairId,
                 ContactDetails = new RepairContactDetails { Value = "07465087654" },
                 Address = new RepairAddress { Display = "address", LocationId = "uprn" },
                 Description = new RepairDescription { Text = "repair description", Base64Image = "image", PhotoUrl = "x/Url.png" },
@@ -73,15 +75,14 @@ namespace HousingRepairsOnlineApi.Tests
                 SOR = "sor",
                 Time = repairAvailability,
             };
-
-            saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).ReturnsAsync(repair);
+            saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>(), repairId)).ReturnsAsync(repair);
 
             var result = await systemUnderTest.SaveRepair(repairRequest);
 
             GetStatusCode(result).Should().Be(200);
 
 
-            saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
+            saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest, repairId), Times.Once);
 
             internalEmailSender.Verify(x => x.Execute(repair), Times.Once);
         }
@@ -91,12 +92,12 @@ namespace HousingRepairsOnlineApi.Tests
         {
             RepairRequest repairRequest = new RepairRequest();
 
-            saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).Throws<System.Exception>();
+            saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>(), repairId)).Throws<System.Exception>();
 
             var result = await systemUnderTest.SaveRepair(repairRequest);
 
             GetStatusCode(result).Should().Be(500);
-            saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest), Times.Once);
+            saveRepairRequestUseCaseMock.Verify(x => x.Execute(repairRequest, repairId), Times.Once);
         }
 
         [Fact]
@@ -117,7 +118,7 @@ namespace HousingRepairsOnlineApi.Tests
             };
             var repair = new Repair()
             {
-                Id = "1AB2C3D4",
+                Id = repairId,
                 ContactDetails = new RepairContactDetails
                 {
                     Type = "email",
@@ -126,7 +127,8 @@ namespace HousingRepairsOnlineApi.Tests
                 Time = repairAvailability,
                 Address = repairAddress
             };
-            saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest)).ReturnsAsync(repair);
+
+            saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest, repairId)).ReturnsAsync(repair);
 
             //Assert
             await systemUnderTest.SaveRepair(repairRequest);
@@ -153,7 +155,7 @@ namespace HousingRepairsOnlineApi.Tests
             };
             var repair = new Repair
             {
-                Id = "1AB2C3D4",
+                Id = repairId,
                 ContactDetails = new RepairContactDetails
                 {
                     Type = "text",
@@ -163,7 +165,8 @@ namespace HousingRepairsOnlineApi.Tests
                 Address = repairAddress
             };
 
-            saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest)).ReturnsAsync(repair);
+
+            saveRepairRequestUseCaseMock.Setup(x => x.Execute(repairRequest, repairId)).ReturnsAsync(repair);
 
             //Act
             await systemUnderTest.SaveRepair(repairRequest);

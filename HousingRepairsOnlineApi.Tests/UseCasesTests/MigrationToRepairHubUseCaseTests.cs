@@ -38,7 +38,7 @@ public class MigrationToRepairHubUseCaseTests
         var repair = new Repair();
 
         // Act
-        Func<Task> act = async () => await systemUnderTest.Execute(null, repair);
+        Func<Task> act = async () => await systemUnderTest.Execute(null);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ArgumentNullException>();
@@ -53,7 +53,7 @@ public class MigrationToRepairHubUseCaseTests
         var repairRequest = new RepairRequest();
 
         // Act
-        Func<Task> act = async () => await systemUnderTest.Execute(repairRequest, null);
+        Func<Task> act = async () => await systemUnderTest.Execute(repairRequest);
 
         // Assert
         await act.Should().ThrowExactlyAsync<ArgumentNullException>();
@@ -69,13 +69,13 @@ public class MigrationToRepairHubUseCaseTests
         var repair = new Repair();
         var repairsHubCreationRequest = new RepairsHubCreationRequest();
 
-        mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest, repair)).Returns(repairsHubCreationRequest);
+        mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest)).Returns(repairsHubCreationRequest);
 
         // Act
-        var result = await systemUnderTest.Execute(repairRequest, repair);
+        var result = await systemUnderTest.Execute(repairRequest);
 
         // Assert
-        mapRepairsOnlineToRepairsHub.Verify(x => x.Map(repairRequest, repair), Times.Once);
+        mapRepairsOnlineToRepairsHub.Verify(x => x.Map(repairRequest), Times.Once);
     }
 
     [Fact]
@@ -88,11 +88,11 @@ public class MigrationToRepairHubUseCaseTests
         var repair = new Repair();
         var repairsHubCreationRequest = new RepairsHubCreationRequest();
 
-        mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest, repair)).Returns(repairsHubCreationRequest);
-        repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(true);
+        mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest)).Returns(repairsHubCreationRequest);
+        repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(new CreateWorkOrderResponse{Succeeded = true});
 
         // Act
-        var result = await systemUnderTest.Execute(repairRequest, repair);
+        var result = await systemUnderTest.Execute(repairRequest);
 
         // Assert
         repairsHubGateway.Verify(x => x.CreateWorkOrder(repairsHubCreationRequest), Times.Once);
@@ -110,11 +110,11 @@ public class MigrationToRepairHubUseCaseTests
         var repair = new Repair();
         var repairsHubCreationRequest = new RepairsHubCreationRequest();
 
-        mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest, repair)).Returns(repairsHubCreationRequest);
-        repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(createWorkOrderResult);
+        mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest)).Returns(repairsHubCreationRequest);
+        repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(new CreateWorkOrderResponse{Succeeded = createWorkOrderResult});
 
         // Act
-        var result = await systemUnderTest.Execute(repairRequest, repair);
+        var result = await systemUnderTest.Execute(repairRequest);
 
         // Assert
         result.Should().Be(createWorkOrderResult);
