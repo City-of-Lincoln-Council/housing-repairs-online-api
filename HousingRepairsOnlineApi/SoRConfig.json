@@ -83,7 +83,7 @@
       "skirtingBoardArchitrave":"20040020",
       "plasteringCeiling":"20070030",
       "plasteringWalls":"20070030",
-      "woodenFloorboards": ""
+      "woodenFloorboards": "20040020"
     },
     "dampOrMould": {
       "dampOrMould" : "PRE00001"
@@ -168,7 +168,7 @@
   "outside": {
     "securityLights": "20110120",
     "door": {
-      "shedDoor": "",
+      "shedDoor": "PRE00001",
       "outhouseCupboardDoor": "20040020",
       "woodenBackDoor": "20040020",
       "upvcBackDoor": "20040020",
