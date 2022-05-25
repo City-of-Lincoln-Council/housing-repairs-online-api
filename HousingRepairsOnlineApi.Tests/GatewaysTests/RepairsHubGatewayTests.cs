@@ -16,7 +16,7 @@ public class RepairsHubGatewayTests
 {
     private RepairsHubGateway systemUnderTest;
     private readonly MockHttpMessageHandler mockHttp;
-    private readonly StringContent createWorkOrderResponseJsonContent = new (@"{""Id"":""0""}");
+    private readonly StringContent createWorkOrderResponseJsonContent = new(@"{""Id"":""0""}");
     private const string RepairsHubApiEndpoint = "https://repairshub.api/";
     private const string WorkOrdersUri = $"workOrders/schedule";
 

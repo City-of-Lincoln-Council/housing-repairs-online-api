@@ -74,7 +74,8 @@ public class MigrationToRepairHubUseCaseTests
         var repairsHubCreationRequest = new RepairsHubCreationRequest();
 
         mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest)).Returns(repairsHubCreationRequest);
-        repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(new CreateWorkOrderResponse{Succeeded = true});
+        repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest))
+            .ReturnsAsync(new CreateWorkOrderResponse { Succeeded = true });
 
         // Act
         var result = await systemUnderTest.Execute(repairRequest);
@@ -96,7 +97,7 @@ public class MigrationToRepairHubUseCaseTests
         var repairsHubCreationRequest = new RepairsHubCreationRequest();
 
         mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest)).Returns(repairsHubCreationRequest);
-        var actualCreateWorkOrderResponse = new CreateWorkOrderResponse{Succeeded = createWorkOrderResult};
+        var actualCreateWorkOrderResponse = new CreateWorkOrderResponse { Succeeded = createWorkOrderResult };
         repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(actualCreateWorkOrderResponse);
 
         // Act

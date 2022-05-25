@@ -32,7 +32,8 @@ public class RepairsHubGateway : IRepairsHubGateway
         var response = await httpClient.SendAsync(request);
 
         var orderResult = await response.Content.ReadFromJsonAsync<CreateOrderResult>();
-        var result = new CreateWorkOrderResponse{Id = orderResult.Id.ToString(), Succeeded = response.IsSuccessStatusCode};
+        var result =
+            new CreateWorkOrderResponse { Id = orderResult.Id.ToString(), Succeeded = response.IsSuccessStatusCode };
 
         return result;
     }
