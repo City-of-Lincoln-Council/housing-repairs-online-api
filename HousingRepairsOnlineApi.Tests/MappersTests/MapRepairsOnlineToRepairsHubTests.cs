@@ -15,10 +15,15 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
         private readonly MapRepairsOnlineToRepairsHub sut;
         private string validRepairRequestPostcode = "N4 2FL";
         private string validRepairRequestPropertyyReference = "00003277";
+        private const string Location = "location";
+        private const string Problem = "problem";
+        private const string Issue = "issue";
+        private const string SorCode = "SOR Code";
 
         public MapRepairsOnlineToRepairsHubTests()
         {
             var sorEngineMock = new Mock<ISoREngine>();
+            sorEngineMock.Setup(x => x.MapSorCode(Location, Problem, Issue)).Returns(SorCode);
             sut = new MapRepairsOnlineToRepairsHub(sorEngineMock.Object);
         }
 
@@ -40,39 +45,6 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => sut.Map(repairRequest));
-        }
-
-        [Theory]
-        [InlineData("0")]
-        [InlineData("1")]
-        [InlineData("55000")]
-        [InlineData("19999999")]
-        [InlineData("30000001")]
-        public void ReferenceIsNotEmptyAndIsGreaterThan20Mil(string id)
-        {
-            // Arrange
-            var repairRequest = GenerateValidRequest();
-
-            var repair = GenerateValidRepair();
-            repair.Id = id;
-
-            // Act & Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => sut.Map(repairRequest));
-        }
-
-        [Fact]
-        public void ReferenceIsNotNull()
-        {
-            // Arrange
-            var repairRequest = GenerateValidRequest();
-
-            var repair = new Repair
-            {
-                Id = null
-            };
-
-            // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => sut.Map(repairRequest));
         }
 
         [Fact]
@@ -185,7 +157,7 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
             var workElement = result.WorkElement.Single();
 
             var sor = workElement.RateScheduleItem.Single();
-            sor.CustomCode.Should().Be("20110200");
+            sor.CustomCode.Should().Be(SorCode);
             sor.CustomName.Should().Be("TBC");
         }
 
@@ -203,7 +175,19 @@ namespace HousingRepairsOnlineApi.Tests.MappersTests
                     Display = "Sample location 1"
                 },
                 Postcode = validRepairRequestPostcode,
-                ContactPersonNumber = "07720340340"
+                ContactPersonNumber = "07720340340",
+                Location = new()
+                {
+                    Value = Location,
+                },
+                Problem = new()
+                {
+                    Value = Problem
+                },
+                Issue = new()
+                {
+                    Value = Issue
+                },
             };
         }
 

@@ -16,6 +16,7 @@ public class RepairsHubGatewayTests
 {
     private RepairsHubGateway systemUnderTest;
     private readonly MockHttpMessageHandler mockHttp;
+    private readonly StringContent createWorkOrderResponseJsonContent = new (@"{""Id"":""0""}");
     private const string RepairsHubApiEndpoint = "https://repairshub.api/";
     private const string WorkOrdersUri = $"workOrders/schedule";
 
@@ -47,7 +48,7 @@ public class RepairsHubGatewayTests
     {
         // Arrange
         var stringContent = @"{""Reference"":[{""Id"":""9925829f-fd0e-4272-8677-9041dac2894d""}],""DescriptionOfWork"":""description text"",""Priority"":{""PriorityCode"":4,""PriorityDescription"":""5 [N] NORMAL"",""RequiredCompletionDateTime"":""0001-01-01T23:59:00-00:01"",""NumberOfDays"":21},""WorkClass"":{""WorkClassCode"":0},""WorkElement"":[{""RateScheduleItem"":[{""CustomCode"":""20110200"",""CustomName"":""EMERGENCY LIGHTING TEST DWELL"",""Quantity"":{""Amount"":[1]}}]}],""Site"":{""Property"":[{""PropertyReference"":""12345678"",""Address"":{""AddressLine"":[""12 Pitcairn House St Thomass Square""],""PostalCode"":""E9 6PT""},""Reference"":[{""Id"":""12345678""}]}]},""InstructedBy"":{""Name"":""Hackney Housing""},""AssignedToPrimary"":{""Name"":""HH General Building Repai"",""Organization"":{""Reference"":[{""Id"":""H01""}]}},""Customer"":{""Name"":""contact name"",""Person"":{""Name"":{""Full"":""contact name""},""Communication"":[{""Channel"":{""Medium"":""20"",""Code"":""60""},""Value"":""07000000000""}]}},""BudgetCode"":{""Id"":""8""},""MultiTradeWorkOrder"":false}";
-        mockHttp.Expect($"{RepairsHubApiEndpoint}{WorkOrdersUri}").WithContent(stringContent).Respond(HttpStatusCode.OK);
+        mockHttp.Expect($"{RepairsHubApiEndpoint}{WorkOrdersUri}").WithContent(stringContent).Respond(HttpStatusCode.OK, createWorkOrderResponseJsonContent);
 
         var repairsHubCreationRequest = new RepairsHubCreationRequest
         {
@@ -163,7 +164,7 @@ public class RepairsHubGatewayTests
     public async void GivenARepairsHubCreationRequest_WhenCreatingWorkOrderAndResponseHasSuccessfulStatusCode_ThenTrueIsReturned(HttpStatusCode httpStatusCode, bool expected)
     {
         // Arrange
-        mockHttp.When($"{RepairsHubApiEndpoint}{WorkOrdersUri}").Respond(httpStatusCode);
+        mockHttp.When($"{RepairsHubApiEndpoint}{WorkOrdersUri}").Respond(httpStatusCode, createWorkOrderResponseJsonContent);
 
         // Act
         var response = await systemUnderTest.CreateWorkOrder(new RepairsHubCreationRequest());

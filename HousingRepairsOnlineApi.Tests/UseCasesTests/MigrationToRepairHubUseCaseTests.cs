@@ -46,21 +46,6 @@ public class MigrationToRepairHubUseCaseTests
 
     [Fact]
 #pragma warning disable xUnit1026
-    public async void GivenANullRepair_WhenExecute_ThenArgumentNullExceptionIsThrown()
-#pragma warning restore xUnit1026
-    {
-        //Arrange
-        var repairRequest = new RepairRequest();
-
-        // Act
-        Func<Task> act = async () => await systemUnderTest.Execute(repairRequest);
-
-        // Assert
-        await act.Should().ThrowExactlyAsync<ArgumentNullException>();
-    }
-
-    [Fact]
-#pragma warning disable xUnit1026
     public async void GivenValidParameters_WhenExecute_ThenMapperIsCalled()
 #pragma warning restore xUnit1026
     {
@@ -111,12 +96,13 @@ public class MigrationToRepairHubUseCaseTests
         var repairsHubCreationRequest = new RepairsHubCreationRequest();
 
         mapRepairsOnlineToRepairsHub.Setup(x => x.Map(repairRequest)).Returns(repairsHubCreationRequest);
-        repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(new CreateWorkOrderResponse{Succeeded = createWorkOrderResult});
+        var actualCreateWorkOrderResponse = new CreateWorkOrderResponse{Succeeded = createWorkOrderResult};
+        repairsHubGateway.Setup(x => x.CreateWorkOrder(repairsHubCreationRequest)).ReturnsAsync(actualCreateWorkOrderResponse);
 
         // Act
         var result = await systemUnderTest.Execute(repairRequest);
 
         // Assert
-        result.Should().Be(createWorkOrderResult);
+        result.Should().Be(actualCreateWorkOrderResponse);
     }
 }
