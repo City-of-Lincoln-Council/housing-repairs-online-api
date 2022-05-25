@@ -7,7 +7,6 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using HACT.Dtos;
 using HousingRepairsOnline.Authentication.Helpers;
-using HousingRepairsOnlineApi.Domain;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
@@ -40,7 +39,7 @@ namespace HousingRepairsOnlineApi.Gateways
             return result;
         }
 
-        public async Task<SchedulingApiBookingResponse> BookAppointment(string bookingReference, string sorCode, string locationId, DateTime startDateTime,
+        public async Task BookAppointment(string bookingReference, string sorCode, string locationId, DateTime startDateTime,
             DateTime endDateTime)
         {
             var request = new HttpRequestMessage(HttpMethod.Post,
@@ -48,16 +47,8 @@ namespace HousingRepairsOnlineApi.Gateways
 
             request.SetupJwtAuthentication(httpClient, authenticationIdentifier);
 
-            var response = await httpClient.SendAsync(request);
+            await httpClient.SendAsync(request);
 
-            var data = new SchedulingApiBookingResponse();
-
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                data = await response.Content.ReadFromJsonAsync<SchedulingApiBookingResponse>();
-            }
-
-            return data;
         }
     }
 }

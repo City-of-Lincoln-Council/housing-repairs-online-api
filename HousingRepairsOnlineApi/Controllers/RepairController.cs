@@ -46,11 +46,8 @@ namespace HousingRepairsOnlineApi.Controllers
                 }
 
                 var result = await saveRepairRequestUseCase.Execute(repairRequest, migrationToRepairHubUseCaseResponse.Id);
-                var appointmentReponse = await bookAppointmentUseCase.Execute(result.Id, result.SOR, result.Address.LocationId,
+                await bookAppointmentUseCase.Execute(result.Id, result.SOR, result.Address.LocationId,
                     result.Time.StartDateTime, result.Time.EndDateTime);
-
-                var token = appointmentReponse.TokenId;
-
                 appointmentConfirmationSender.Execute(result);
                 await internalEmailSender.Execute(result);
                 return Ok(result.Id);

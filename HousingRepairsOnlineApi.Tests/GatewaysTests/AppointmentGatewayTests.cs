@@ -109,7 +109,7 @@ namespace HousingRepairsOnlineApi.Tests.GatewaysTests
             var endDateTime = new DateTime(2022, 01, 01, 12, 0, 0);
 
             mockHttp.Expect($"/Appointments/BookAppointment?bookingReference={BookingReference}&sorCode={SorCode}&locationId={LocationId}&startDateTime={startDateTime}&endDateTime={endDateTime}")
-                .Respond(HttpStatusCode.OK, JsonContent.Create(new SchedulingApiBookingResponse()));
+                .Respond(HttpStatusCode.OK);
 
             // Act
             Func<Task> act = async () =>

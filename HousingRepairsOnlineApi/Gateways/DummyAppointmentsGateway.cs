@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HACT.Dtos;
-using HousingRepairsOnlineApi.Domain;
 
 namespace HousingRepairsOnlineApi.Gateways
 {
@@ -25,10 +24,10 @@ namespace HousingRepairsOnlineApi.Gateways
             });
         }
 
-        public Task<SchedulingApiBookingResponse> BookAppointment(string bookingReference, string sorCode, string locationId, DateTime startDateTime,
+        public Task BookAppointment(string bookingReference, string sorCode, string locationId, DateTime startDateTime,
             DateTime endDateTime)
         {
-            return Task.FromResult(new SchedulingApiBookingResponse());
+            return Task.CompletedTask;
         }
     }
 }

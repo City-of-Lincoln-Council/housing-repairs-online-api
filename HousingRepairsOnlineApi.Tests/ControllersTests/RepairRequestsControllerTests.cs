@@ -37,8 +37,9 @@ namespace HousingRepairsOnlineApi.Tests
         {
             saveRepairRequestUseCaseMock = new Mock<ISaveRepairRequestUseCase>();
             bookAppointmentUseCaseMock = new Mock<IBookAppointmentUseCase>();
-            bookAppointmentUseCaseMock.Setup(x => x.Execute(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(),
-                It.IsAny<DateTime>())).ReturnsAsync(new SchedulingApiBookingResponse());
+            bookAppointmentUseCaseMock.Setup(x => x.Execute(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<DateTime>()));
             appointmentConfirmationSender = new Mock<IAppointmentConfirmationSender>();
             internalEmailSender = new Mock<IInternalEmailSender>();
             migrationToRepairHubUseCase = new Mock<IMigrationToRepairHubUseCase>();
