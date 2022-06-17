@@ -19,6 +19,10 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Notify.Client;
+using Amazon.XRay.Recorder.Core;
+using Amazon.XRay.Recorder.Core.Strategies;
+using Amazon.XRay.Recorder.Handlers.AwsSdk;
+
 
 namespace HousingRepairsOnlineApi
 {
@@ -29,6 +33,9 @@ namespace HousingRepairsOnlineApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AWSXRayRecorder.InitializeInstance(configuration);
+            AWSSDKHandler.RegisterXRayForAllServices();
+            AWSXRayRecorder.Instance.ContextMissingStrategy = ContextMissingStrategy.LOG_ERROR;
         }
 
         public IConfiguration Configuration { get; }
@@ -224,6 +231,8 @@ namespace HousingRepairsOnlineApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HousingRepairsOnlineApi v1"));
             }
+
+            app.UseXRay("housing-repairs-online");
 
             app.UseHttpsRedirection();
 
