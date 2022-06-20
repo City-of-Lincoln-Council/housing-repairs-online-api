@@ -5,6 +5,9 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.S3;
 using Amazon.S3.Transfer;
+using Amazon.XRay.Recorder.Core;
+using Amazon.XRay.Recorder.Core.Strategies;
+using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Azure.Storage.Blobs;
 using HousingRepairsOnline.Authentication.DependencyInjection;
 using HousingRepairsOnlineApi.Gateways;
@@ -19,9 +22,6 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Notify.Client;
-using Amazon.XRay.Recorder.Core;
-using Amazon.XRay.Recorder.Core.Strategies;
-using Amazon.XRay.Recorder.Handlers.AwsSdk;
 
 
 namespace HousingRepairsOnlineApi
@@ -190,36 +190,6 @@ namespace HousingRepairsOnlineApi
             // .AddUrlGroup(new Uri(@$"{schedulingApiUrl}/health"), "Scheduling API")
             // .AddCosmosDb($"AccountEndpoint={cosmosEndpointUrl};AccountKey={cosmosAuthorizationKey};", cosmosDatabaseId, name: "Azure CosmosDb")
             // .AddAzureBlobStorage(storageConnectionString, blobContainerName, name: "Azure Blob Storage");
-        }
-
-        private static BlobContainerClient GetBlobContainerClient()
-        {
-            string storageConnectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
-            string blobContainerName = Environment.GetEnvironmentVariable("STORAGE_CONTAINER_NAME");
-
-            BlobServiceClient blobServiceClient = new BlobServiceClient(storageConnectionString);
-            BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
-            return blobContainerClient;
-        }
-
-        private static ContainerResponse GetCosmosContainer()
-        {
-            var endpointUrl = GetEnvironmentVariable("COSMOS_ENDPOINT_URL");
-            var authorizationKey = GetEnvironmentVariable("COSMOS_AUTHORIZATION_KEY");
-            var databaseId = GetEnvironmentVariable("COSMOS_DATABASE_ID");
-            var containerId = GetEnvironmentVariable("COSMOS_CONTAINER_ID");
-
-            CosmosClient cosmosClient = new CosmosClient(endpointUrl, authorizationKey);
-
-            Task<DatabaseResponse> databaseResponseTask = cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
-            _ = databaseResponseTask.GetAwaiter().GetResult();
-            ;
-
-            Task<ContainerResponse> cosmosContainerResponse =
-                cosmosClient.GetDatabase(databaseId).CreateContainerIfNotExistsAsync(containerId, "/RepairID");
-            ContainerResponse cosmosContainer = cosmosContainerResponse.GetAwaiter().GetResult();
-            ;
-            return cosmosContainer;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

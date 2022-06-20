@@ -13,11 +13,11 @@ namespace HousingRepairsOnlineApi.Tests
 {
     public class RepairRequestsControllerTests : ControllerTests
     {
-        private RepairController systemUnderTest;
-        private Mock<ISaveRepairRequestUseCase> saveRepairRequestUseCaseMock;
-        private Mock<IBookAppointmentUseCase> bookAppointmentUseCaseMock;
-        private Mock<IInternalEmailSender> internalEmailSender;
-        private Mock<IAppointmentConfirmationSender> appointmentConfirmationSender;
+        private readonly RepairController systemUnderTest;
+        private readonly Mock<ISaveRepairRequestUseCase> saveRepairRequestUseCaseMock;
+        private readonly Mock<IBookAppointmentUseCase> bookAppointmentUseCaseMock;
+        private readonly Mock<IInternalEmailSender> internalEmailSender;
+        private readonly Mock<IAppointmentConfirmationSender> appointmentConfirmationSender;
 
         private readonly RepairAvailability repairAvailability = new()
         {
@@ -82,7 +82,7 @@ namespace HousingRepairsOnlineApi.Tests
         [Fact]
         public async Task ReturnsErrorWhenFailsToSave()
         {
-            RepairRequest repairRequest = new RepairRequest();
+            var repairRequest = new RepairRequest();
 
             saveRepairRequestUseCaseMock.Setup(x => x.Execute(It.IsAny<RepairRequest>())).Throws<System.Exception>();
 
@@ -96,7 +96,7 @@ namespace HousingRepairsOnlineApi.Tests
         public async Task GivenEmailContact_WhenRepair_ThenSendAppointmentConfirmationEmailUseCaseIsCalled()
         {
             //Arrange
-            RepairRequest repairRequest = new RepairRequest
+            var repairRequest = new RepairRequest
             {
                 ContactDetails = new RepairContactDetails
                 {
@@ -147,7 +147,7 @@ namespace HousingRepairsOnlineApi.Tests
                 {
                     Display = "Displayed Time"
                 },
-                Address= new RepairAddress
+                Address = new RepairAddress
                 {
                     LocationId = "12"
                 }
