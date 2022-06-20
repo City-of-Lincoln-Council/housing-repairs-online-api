@@ -1,7 +1,11 @@
-provider "aws" {
-  region  = "eu-west-2"
-  version = "~> 3.37.0"
+required_providers {
+  aws = {
+    source = "registry.terraform.io/hashicorp/aws"
+    version = "~> 3.37.0"
+    region  = "eu-west-2"
+  }
 }
+
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 locals {
