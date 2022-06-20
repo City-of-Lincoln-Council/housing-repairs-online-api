@@ -5,6 +5,7 @@ using HousingRepairsOnlineApi.Controllers;
 using HousingRepairsOnlineApi.Domain;
 using HousingRepairsOnlineApi.Helpers;
 using HousingRepairsOnlineApi.UseCases;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Xunit;
 
@@ -36,7 +37,7 @@ namespace HousingRepairsOnlineApi.Tests
             bookAppointmentUseCaseMock = new Mock<IBookAppointmentUseCase>();
             appointmentConfirmationSender = new Mock<IAppointmentConfirmationSender>();
             internalEmailSender = new Mock<IInternalEmailSender>();
-            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, internalEmailSender.Object, appointmentConfirmationSender.Object, bookAppointmentUseCaseMock.Object);
+            systemUnderTest = new RepairController(saveRepairRequestUseCaseMock.Object, internalEmailSender.Object, appointmentConfirmationSender.Object, bookAppointmentUseCaseMock.Object, new NullLogger<RepairController>());
 
         }
 
