@@ -106,6 +106,10 @@ namespace HousingRepairsOnlineApi.Tests
                 Time = new RepairAvailability
                 {
                     Display = "Displayed Time"
+                },
+                Address = new RepairAddress
+                {
+                    LocationId = "12"
                 }
             };
             var repair = new Repair()
@@ -142,6 +146,10 @@ namespace HousingRepairsOnlineApi.Tests
                 Time = new RepairAvailability
                 {
                     Display = "Displayed Time"
+                },
+                Address= new RepairAddress
+                {
+                    LocationId = "12"
                 }
             };
             var repair = new Repair

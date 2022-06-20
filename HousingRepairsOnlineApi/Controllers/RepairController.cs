@@ -38,7 +38,7 @@ namespace HousingRepairsOnlineApi.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveRepair([FromBody] RepairRequest repairRequest)
         {
-            logger.LogInformation($"Saving repair for location ID {repairRequest.Address.LocationId}");
+            logger.LogInformation($"Saving repair for location ID {repairRequest.Address?.LocationId}");
 
             try
             {
