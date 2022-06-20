@@ -54,6 +54,8 @@ namespace HousingRepairsOnlineApi.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogError(ex.Message, ex);
+
                 SentrySdk.CaptureException(ex);
                 return StatusCode(500, ex.Message);
             }
