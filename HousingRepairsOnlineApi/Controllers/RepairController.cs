@@ -16,19 +16,22 @@ namespace HousingRepairsOnlineApi.Controllers
         private readonly ISaveRepairRequestUseCase saveRepairRequestUseCase;
         private readonly IAppointmentConfirmationSender appointmentConfirmationSender;
         private readonly IBookAppointmentUseCase bookAppointmentUseCase;
+        private readonly IMigrationToRepairHubUseCase migrationToRepairHubUseCase;
         private readonly IInternalEmailSender internalEmailSender;
 
         public RepairController(
             ISaveRepairRequestUseCase saveRepairRequestUseCase,
             IInternalEmailSender internalEmailSender,
             IAppointmentConfirmationSender appointmentConfirmationSender,
-            IBookAppointmentUseCase bookAppointmentUseCase
+            IBookAppointmentUseCase bookAppointmentUseCase,
+            IMigrationToRepairHubUseCase migrationToRepairHubUseCase
         )
         {
             this.saveRepairRequestUseCase = saveRepairRequestUseCase;
             this.internalEmailSender = internalEmailSender;
             this.appointmentConfirmationSender = appointmentConfirmationSender;
             this.bookAppointmentUseCase = bookAppointmentUseCase;
+            this.migrationToRepairHubUseCase = migrationToRepairHubUseCase;
         }
 
         [HttpPost]
@@ -36,7 +39,13 @@ namespace HousingRepairsOnlineApi.Controllers
         {
             try
             {
-                var result = await saveRepairRequestUseCase.Execute(repairRequest);
+                var migrationToRepairHubUseCaseResponse = await migrationToRepairHubUseCase.Execute(repairRequest);
+                if (!migrationToRepairHubUseCaseResponse.Succeeded)
+                {
+                    SentrySdk.CaptureMessage($"Unable to migrate work order to Repairs Hub.");
+                }
+
+                var result = await saveRepairRequestUseCase.Execute(repairRequest, migrationToRepairHubUseCaseResponse.Id);
                 await bookAppointmentUseCase.Execute(result.Id, result.SOR, result.Address.LocationId,
                     result.Time.StartDateTime, result.Time.EndDateTime);
                 appointmentConfirmationSender.Execute(result);

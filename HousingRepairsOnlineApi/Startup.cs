@@ -9,6 +9,7 @@ using Azure.Storage.Blobs;
 using HousingRepairsOnline.Authentication.DependencyInjection;
 using HousingRepairsOnlineApi.Gateways;
 using HousingRepairsOnlineApi.Helpers;
+using HousingRepairsOnlineApi.Mappers;
 using HousingRepairsOnlineApi.UseCases;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,7 +46,7 @@ namespace HousingRepairsOnlineApi
             var addressesApiUrl = GetEnvironmentVariable("ADDRESSES_API_URL");
             var schedulingApiUrl = GetEnvironmentVariable("SCHEDULING_API_URL");
             var authenticationIdentifier = GetEnvironmentVariable("AUTHENTICATION_IDENTIFIER");
-            services.AddHttpClient();
+            AddHttpClients(services);
 
             services.AddTransient<IAddressGateway, AddressGateway>(s =>
             {
@@ -154,6 +155,9 @@ namespace HousingRepairsOnlineApi
             //         blobContainerClient
             //     );
             // });
+            services.AddTransient<IRepairsHubGateway, RepairsHubGateway>();
+            services.AddTransient<IMapRepairsOnlineToRepairsHub, MapRepairsOnlineToRepairsHub>();
+            services.AddTransient<IMigrationToRepairHubUseCase, MigrationToRepairHubUseCase>();
 
             services.AddTransient<IAmazonS3, AmazonS3Client>();
             services.AddTransient<ITransferUtility, TransferUtility>();
@@ -245,6 +249,29 @@ namespace HousingRepairsOnlineApi
         {
             return Environment.GetEnvironmentVariable(name) ??
                    throw new InvalidOperationException($"Incorrect configuration: '{name}' environment variable must be set");
+        }
+
+        private static void AddHttpClients(IServiceCollection services)
+        {
+            AddHttpClient(services, HttpClientNames.RepairsHub, "REPAIRS_HUB_API_URL", "REPAIRS_HUB_API_TOKEN");
+        }
+
+        private static void AddHttpClient(IServiceCollection services, string clientName, string apiUriEnvVarName, string apiKey)
+        {
+            var uri = new Uri(GetEnvironmentVariable(apiUriEnvVarName));
+            var key = GetEnvironmentVariable(apiKey);
+            AddClient(services, clientName, uri, key);
+        }
+
+        private static void AddClient(IServiceCollection services, string clientName, Uri uri, string key)
+        {
+            services.AddHttpClient(clientName, c =>
+            {
+                c.BaseAddress = uri;
+                c.DefaultRequestHeaders.Add("Authorization", $"Bearer {key}");
+                c.DefaultRequestHeaders.Add("x-hackney-user", key);
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
         }
     }
 }
