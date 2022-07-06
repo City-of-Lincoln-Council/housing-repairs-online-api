@@ -1,6 +1,5 @@
 provider "aws" {
   region  = "eu-west-2"
-  version = "~> 3.37.0"
 }
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
@@ -9,6 +8,12 @@ locals {
 }
 
 terraform {
+  required_providers {
+    aws = {
+      source = "registry.terraform.io/hashicorp/aws"
+      version = "~> 3.69.0"
+    }
+  }
   backend "s3" {
     bucket  = "terraform-state-housing-staging"
     encrypt = true
