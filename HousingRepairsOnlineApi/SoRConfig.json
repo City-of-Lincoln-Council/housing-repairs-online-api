@@ -4,7 +4,7 @@
       "doorHangingOff":"20040020",
       "doorMissing":"20040020"
     },
-    "worktop": "20040020",
+    "worktop": "20040060",
     "dampOrMould": {
       "dampOrMould" : "PRE00001"
     }
@@ -28,10 +28,10 @@
       "skirtingBoardArchitrave":"20040020",
       "plasteringCeiling":"20070030",
       "plasteringWalls":"20070030",
-      "woodenFloorboards": "20040020"
+      "woodenFloorboards": "20040090"
     },
     "door":{
-      "backDoorWooden":"20040020",
+      "backDoorWooden":"20040310",
       "backDoorUPVC":"20040310",
       "backFrenchDoors":"20040310",
       "internal":"20040020",
@@ -83,14 +83,14 @@
       "skirtingBoardArchitrave":"20040020",
       "plasteringCeiling":"20070030",
       "plasteringWalls":"20070030",
-      "woodenFloorboards": "20040020"
+      "woodenFloorboards": "20040090"
     },
     "dampOrMould": {
       "dampOrMould" : "PRE00001"
     },
     "electricsExtractorCords": {
       "spotLights": "PRE00001",
-      "tubeLights": "PRE00001",
+      "tubeLights": "20110010",
       "pullCord": "20110010",
       "extractorFan": "20110010"
     },
@@ -101,7 +101,7 @@
       "condensation": "20040310"
     },
     "damagedOrStuckDoors": {
-      "internalDoorIssue": "PRE00001",
+      "internalDoorIssue": "20040020",
       "lockOnDoor": "20040020"
     }
   },
@@ -113,7 +113,7 @@
       "skirtingBoardArchitrave":"20040020",
       "plasteringCeiling":"20070030",
       "plasteringWalls":"20070030",
-      "woodenFloorboards": "20040020"
+      "woodenFloorboards": "20040090"
     },
     "electricsLightsSwitches": {
       "lights":"20110010",
@@ -129,7 +129,8 @@
       "condensation": "20040310"
     },
     "damagedOrStuckDoors": {
-      "internalDoorIssue": "PRE00001"
+      "internalDoorIssue": "20040020",
+      "lockOnDoor":"20040020"
     }
   },
   "livingAreas": {
@@ -140,7 +141,7 @@
       "skirtingBoardArchitrave":"20040020",
       "plasteringCeiling":"20070030",
       "plasteringWalls":"20070030",
-      "woodenFloorboards": "20040020"
+      "woodenFloorboards": "20040090"
     },
     "electricsLightsSwitches": {
       "lights":"20110010",
@@ -150,19 +151,20 @@
       "dampOrMould" : "PRE00001"
     },
     "windows": {
-      "smashed": "20090040",
+      "smashed": "20040310",
       "stuckOpen": "20040310",
       "stuckShut": "20040310",
       "condensation": "20040310"
     },
     "damagedOrStuckDoors": {
-      "internalDoorIssue": "PRE00001"
+      "internalDoorIssue": "20040020",
+      "lockOnDoor":"20040020"
     },
     "stairs": {
-      "damagedSteps": "20040020",
-      "damagedPalistrades": "20040020",
-      "handRail": "20040020",
-      "stairRailLoose": "20040020"
+      "damagedSteps": "20040080",
+      "damagedPalistrades": "20040080",
+      "handRail": "20040080",
+      "stairRailLoose": "20040080"
     }
   },
   "outside": {
